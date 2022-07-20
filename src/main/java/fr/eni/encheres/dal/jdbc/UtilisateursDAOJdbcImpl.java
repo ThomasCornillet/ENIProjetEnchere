@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import fr.eni.encheres.bll.CodesResultatBLL;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.dal.UtilisateursDAO;
 import fr.eni.encheres.exceptions.BusinessException;
