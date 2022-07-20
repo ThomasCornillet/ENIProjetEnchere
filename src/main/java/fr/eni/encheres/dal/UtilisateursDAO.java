@@ -7,4 +7,6 @@ public interface UtilisateursDAO {
 	
 	public Utilisateurs selectByPseudo(String pseudo)throws BusinessException;
 
+	void insert(Utilisateurs utilisateur) throws BusinessException;
+
 }
