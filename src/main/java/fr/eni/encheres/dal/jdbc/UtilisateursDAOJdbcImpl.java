@@ -13,37 +13,50 @@ import fr.eni.encheres.dal.CodesResultatDAL;
 public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	private static final String SELECT_BY_PSEUDO = "SELECT * FROM UTILISATEURS WHERE pseudo = ?";
+	private static final String SELECT_BY_MAIL = "SELECT * FROM UTILISATEURS WHERE email = ?";
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
 	@Override
-	public Utilisateurs selectByPseudo(String pseudo)throws BusinessException {
+	public Utilisateurs selectByPseudo(String pseudo) throws BusinessException {
 		Utilisateurs retour = new Utilisateurs();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_PSEUDO);
 			pstmt.setString(1, pseudo);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				retour.setNoUtilisateur(rs.getInt("no_utilisateur"));
-				retour.setPseudo(rs.getString("pseudo"));
-				retour.setNom(rs.getString("nom"));
-				retour.setPrenom(rs.getString("Prenom"));
-				retour.setEmail(rs.getString("email"));
-				retour.setTelephone(rs.getString("telephone"));
-				retour.setRue(rs.getString("rue"));
-				retour.setCodePostal(rs.getString("code_postal"));
-				retour.setVille(rs.getString("ville"));
-				retour.setMotDePasse(rs.getString("mot_de_passe"));
-				retour.setCredit(rs.getInt("credit"));
-				retour.setAdministrateur(rs.getBoolean("administrateur"));
-			}else {
+				setInfoUtilisateur(retour, rs);
+			} else {
 				BusinessException businessException = new BusinessException();
 				businessException.ajouterErreur(CodesResultatDAL.PSEUDO_INEXISTANT);
-				throw businessException;
+				throw businessException; // TODO à enlever et réfléchir comment gérer une connexion avec un pseudo qui n'existe pas
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECTION_BY_PSEUDO_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	@Override
+	public Utilisateurs selectByMail(String mail) throws BusinessException {
+		Utilisateurs retour = new Utilisateurs();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_MAIL);
+			pstmt.setString(1, mail);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				setInfoUtilisateur(retour, rs);
+			} else {
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.MAIL_INEXISTANT);
+				throw businessException;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECTION_BY_MAIL_CONNEXION_ECHEC);
 			throw businessException;
 		}
 		return retour;
@@ -89,6 +102,26 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.INSERT_CONNEXION_ECHEC);
 			throw businessException;
+		}
+	}
+
+	private void setInfoUtilisateur(Utilisateurs utilisateur, ResultSet rs) throws BusinessException, SQLException {
+		try {
+			utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+			utilisateur.setPseudo(rs.getString("pseudo"));
+			utilisateur.setNom(rs.getString("nom"));
+			utilisateur.setPrenom(rs.getString("Prenom"));
+			utilisateur.setEmail(rs.getString("email"));
+			utilisateur.setTelephone(rs.getString("telephone"));
+			utilisateur.setRue(rs.getString("rue"));
+			utilisateur.setCodePostal(rs.getString("code_postal"));
+			utilisateur.setVille(rs.getString("ville"));
+			utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+			utilisateur.setCredit(rs.getInt("credit"));
+			utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 }

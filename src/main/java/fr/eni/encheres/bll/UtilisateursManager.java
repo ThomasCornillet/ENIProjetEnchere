@@ -24,16 +24,23 @@ public class UtilisateursManager {
 	}
 	
 	public Utilisateurs selectByPseudo(String pseudo) throws BusinessException {
-		
 		if(pseudo.isBlank() || pseudo == null) {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatBLL.PSEUDO_VIDE_OU_NUL);
 			throw businessException;
 		}
-		
 		Utilisateurs retour = utilisateursDAO.selectByPseudo(pseudo);
 		return retour;
-		
+	}
+	
+	public Utilisateurs selectByMail(String mail) throws BusinessException {
+		if(mail.isBlank() || mail == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatBLL.MAIL_VIDE_OU_NUL);
+			throw businessException;
+		}
+		Utilisateurs retour = utilisateursDAO.selectByMail(mail);
+		return retour;
 	}
 	
 }
