@@ -1,6 +1,9 @@
 package fr.eni.encheres.bo;
 
-public class Utilisateurs {
+import java.io.Serializable;
+
+public class Utilisateurs implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	private int noUtilisateur;
 	private String pseudo;
