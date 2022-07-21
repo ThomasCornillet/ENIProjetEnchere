@@ -1,6 +1,8 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Utilisateurs;
-//import fr.eni.encheres.foms.ConnexionForm;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -20,9 +21,6 @@ import fr.eni.encheres.exceptions.BusinessException;
  */
 @WebServlet("/authentification")
 public class ServletAuthentification extends HttpServlet {
-//	public static final String ATT_USER         	= "utilisateur";
-//    public static final String ATT_FORM        	 	= "form";
-//    public static final String ATT_SESSION_USER 	= "sessionUtilisateur";
     public static final String VUE_AUTHENTIFICATION = "/WEB-INF/jsp/authentification.jsp";
 	
 	private static final long serialVersionUID = 1L;
@@ -50,50 +48,72 @@ public class ServletAuthentification extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
+		List<Integer> listeCodesErreur=new ArrayList<>();
 		String identifiant = request.getParameter("identifiant");
 		String motDePasse = request.getParameter("motdepasse");
 		
-		if (identifiant.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
-			// en présence d'un mail
-			try {
-				utilisateur = utilisateurMngr.selectByMail(identifiant);
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		} else {
-			// en présence d'un pseudo
-			try {
-				utilisateur = utilisateurMngr.selectByPseudo(identifiant);
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		// est-ce que l'identifiant est un mail ou un pseudo ?
+		utilisateur = mailOuPseudo(identifiant);
+		
+		// est-ce que l'utilisateur existe ?
 		if (utilisateur.getPseudo() == null) {
-			// utilisateur pas trouvé
-			BusinessException be = new BusinessException();
-			be.ajouterErreur(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
-			request.setAttribute("Exception", be);
+			// l'utilisateur n'existe pas
+//			BusinessException be = new BusinessException();
+//			be.ajouterErreur(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
+			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
 			RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
 			rd.forward(request, response);
 		} else {
-			// on test le mot de pass
-			if (!motDePasse.equals(utilisateur.getMotDePasse())) {
-				BusinessException be = new BusinessException();
-				be.ajouterErreur(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
-				request.setAttribute("Exception", be);
+			// l'utilistaeur existe
+			// on teste alors le mot de passe
+			if (!motDePasseValide(utilisateur, motDePasse)) {
+				// pas le bon mot de passe
+//				BusinessException be = new BusinessException();
+//				be.ajouterErreur(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+				listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
 				RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
 				rd.forward(request, response);
 			} else {
+				// bon mot de passe
 				HttpSession session = request.getSession();
 				session.setAttribute("UtilisateurConnecte", utilisateur);
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp"); // TODO réfléchir ou est-ce qu'on va
 				rd.forward(request, response);
 			}
 		}
-    }
+	}
 	
+	private Utilisateurs mailOuPseudo(String identifiant) {
+		Utilisateurs retour = new Utilisateurs();
+		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+		if (identifiant.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)")) {
+			// en présence d'un mail
+			try {
+				retour = utilisateurMngr.selectByMail(identifiant);	
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			// en présence d'un pseudo
+			try {
+				retour = utilisateurMngr.selectByPseudo(identifiant);	
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return retour;
+	}
+	
+	private boolean motDePasseValide(Utilisateurs utilisateur, String motDePasse) {
+		boolean retour = false;
+		if (motDePasse.equals(utilisateur.getMotDePasse())) {
+			retour = true;
+		}
+		return retour;
+	}
 
 }
