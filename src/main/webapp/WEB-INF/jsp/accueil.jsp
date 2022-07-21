@@ -47,7 +47,7 @@
 							<c:if test="${!empty listeCategories }">
 								<option value="toutes">Toutes</option>
 								<c:forEach var="cat" items="${listeCategories }">
-									<option value="${cat.getLibelle().toLowerCase() }">${cat.getLibelle()}</option>
+									<option value="${cat.getLibelle() }">${cat.getLibelle()}</option>
 								</c:forEach>
 							</c:if>
 						</select>
