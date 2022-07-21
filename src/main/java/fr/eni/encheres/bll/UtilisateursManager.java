@@ -1,5 +1,7 @@
 package fr.eni.encheres.bll;
 
+import java.util.List;
+
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.dal.DAOFactory;
 import fr.eni.encheres.dal.UtilisateursDAO;
@@ -41,6 +43,12 @@ public class UtilisateursManager {
 		}
 		Utilisateurs retour = utilisateursDAO.selectByMail(mail);
 		return retour;
+	}
+
+
+	public void insert(Utilisateurs utilisateur) throws BusinessException {
+		//TODO Vérifications
+		utilisateursDAO.insert(utilisateur);
 	}
 	
 }
