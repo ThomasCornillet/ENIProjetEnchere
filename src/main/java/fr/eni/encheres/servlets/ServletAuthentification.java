@@ -78,7 +78,7 @@ public class ServletAuthentification extends HttpServlet {
 			} else {
 				// bon mot de passe
 				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur);
+				session.setAttribute("UtilisateurConnecte", utilisateur); // TODO revoir comment on gère ça
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp"); // TODO réfléchir ou est-ce qu'on va
 				rd.forward(request, response);
 			}
