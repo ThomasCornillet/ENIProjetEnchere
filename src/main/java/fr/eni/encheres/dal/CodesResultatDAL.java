@@ -12,6 +12,12 @@ public abstract class CodesResultatDAL {
 	public static final int INSERT_OBJET_NULL = 11000;
 	public static final int INSERT_ERREUR_INCONNUE = 11001;
 	public static final int INSERT_CONNEXION_ECHEC = 11002;
+	public static final int SELECT_ALL_ARTICLES_ECHEC = 11003;
+	public static final int SELECT_ARTICLES_BY_CATEGORIE_ECHEC = 11004;
+	public static final int SELECT_ARTICLE_BY_NOM_ECHEC = 11005;
+	public static final int NOM_ARTICLE_INEXISTANT = 11006;
+	public static final int SELECT_ALL_CATEGORIES_ECHEC = 11007;
+	public static final int SELECT_ARTICLE_BY_PORTION_NOM_ECHEC = 11008;
 	
 	// Codes naoufel (12***)
 	
