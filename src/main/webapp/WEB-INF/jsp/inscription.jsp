@@ -78,7 +78,7 @@
 						</div>
 						<div class="form-group row justify-content-center">		
 								<input	class="btn btn-primary btn-lg col-3 " type="submit" value="Créer"/>
-								<a href="${pageContext.request.contextPath }/accueil"  class="btn btn-secondary btn-lg col-3 offset-1 "  role="button" aria-pressed="true">Annuler</a> <!-- TODO Centrer marges -->
+								<a href="${pageContext.request.contextPath }/accueil"  class="btn btn-secondary btn-lg col-3 offset-1 "  role="button" aria-pressed="true">Annuler</a>
 						</div>
 					</form>
 	</div>

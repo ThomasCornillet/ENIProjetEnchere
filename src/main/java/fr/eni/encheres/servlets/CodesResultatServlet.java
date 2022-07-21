@@ -7,5 +7,6 @@ public abstract class CodesResultatServlet {
 	public static final int UTILISATEUR_EXISTE_DEJA = 32000;
 	public static final int MOT_DE_PASSE_NON_IDENTIQUES = 32001;
 	public static final Integer MOT_DE_PASSE_NON_CONFROME = 32002;
+	public static final Integer UTILISATEUR_INEXISTANT = 32003;
 
 }

@@ -22,6 +22,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 @WebServlet("/inscription")
 public class ServletInscription extends HttpServlet {
 	public static final String VUE_INSCRIPTION = "/WEB-INF/jsp/inscription.jsp";
+	public static final String VUE_ACCUEIL = "/WEB-INF/jsp/accueil.jsp";
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -96,7 +97,7 @@ public class ServletInscription extends HttpServlet {
 								utilisateurMngr.insert(utilisateur);
 								HttpSession session = request.getSession();
 								session.setAttribute("UtilisateurConnecte", utilisateur);
-								RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION); // TODO il faut dispatcher vers la page accueil en mode session connectée
+								RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL); 
 								rd.forward(request, response);
 								} catch (BusinessException e) {
 									// TODO Auto-generated catch block
