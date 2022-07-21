@@ -21,9 +21,9 @@ import fr.eni.encheres.exceptions.BusinessException;
  */
 @WebServlet("/authentification")
 public class ServletAuthentification extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     public static final String VUE_AUTHENTIFICATION = "/WEB-INF/jsp/authentification.jsp";
 	
-	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
