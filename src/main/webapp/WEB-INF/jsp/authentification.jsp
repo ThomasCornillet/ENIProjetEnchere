@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="fr.eni.encheres.exceptions.LecteurMessage" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -17,19 +18,21 @@
 </head>
 <body>
 	<!-- AJOUTER HEADER (via fragment)  -->
-	<c:if test="${!empty request.getAttribute(\"Exception\")}">
-		<div class="row">
-	        <div class="col">
-	          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-	          	<h4 class="alert-heading">Erreur</h4>
-	          	<c:forEach var="erreur" items="${request.getAttribute(\"Exception\").getListeCodesErreur()}">
-	          		<p>${erreur}</p>
-	          	</c:forEach>
-	          </div>
-	         </div>
-	     </div>
-		
-		
+	<c:if test="${!empty listeCodesErreur}">
+		<div class="container">
+			<div class="row">
+		        <div class="col">
+		          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+		          	<h4 class="alert-heading">Erreur</h4>
+		          	<ul>
+			          	<c:forEach var="code" items="${listeCodesErreur}">
+			          		<li>${LecteurMessage.getMessageErreur(code)}</li>
+			          	</c:forEach>
+		          	</ul>
+		          </div>
+		         </div>
+		     </div>
+		</div>
 	</c:if>
 	
 	<div class="container">
