@@ -46,7 +46,7 @@
 				<input class="form-control col-10" type="password" id="motdepasse" name="motdepasse" required/>
 			</div>
 			<div class="form-group row">
-				<input class="col-2" type="submit" value="Connexion""/>
+				<input class="col-2" type="submit" value="Connexion"/>
 				<div class="col-10">
 					<input type="checkbox" id="se souvenir de moi" name="se souvenir de moi" />
 					<label for="se souvenir de moi">Se souvenir de moi</label>
@@ -55,8 +55,9 @@
 			</div>
 		</form>
 				
-		<div class="row">		
-			<input type="button" id="créer un compte" value="Créer un compte" />
+		<div class="row">
+		<a href="${pageContext.request.contextPath }/accueil"  class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Créer un compte</a>		
+			
 		</div>
 				
 		

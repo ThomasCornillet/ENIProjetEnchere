@@ -19,14 +19,14 @@ import fr.eni.encheres.exceptions.BusinessException;
  * Servlet implementation class ServletProfile
  */
 @WebServlet("/profile")
-public class ServletProfile extends HttpServlet {
-	public static final String VUE_PROFILE = "/WEB-INF/jsp/profile.jsp";
+public class ServletProfil extends HttpServlet {
+	public static final String VUE_PROFILE = "/WEB-INF/jsp/profil.jsp";
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServletProfile() {
+    public ServletProfil() {
         super();
         // TODO Auto-generated constructor stub
     }

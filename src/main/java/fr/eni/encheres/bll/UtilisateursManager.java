@@ -50,5 +50,12 @@ public class UtilisateursManager {
 		//TODO Vérifications
 		utilisateursDAO.insert(utilisateur);
 	}
+
+
+	public void update(Utilisateurs utilisateur) throws BusinessException {
+		//TODO Vérifications
+		utilisateursDAO.update(utilisateur);
+		
+	}
 	
 }
