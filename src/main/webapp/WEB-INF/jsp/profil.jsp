@@ -37,24 +37,43 @@
 	</c:if>
 	
 	<div class="container">
-		<div class="row">			
-				<div class="row">
-					<ul class="list-group col-12">
-						<c:forEach var="u" items="${utilisateur }">
-							<li class="list-group-item d-flex justify-content-between align-items-center">${u.pseudo }
-								<div>
-									<label class="col-2 label" for="pseudo" >Pseudo : </label>${pageContext.request.contextPath }/profile?id=${u.pseudo}
-								</div>
-							</li>
-						</c:forEach>
-				</ul>
-			</div>
-				
-				
-		</div>
-	
+		<c:choose>
+    		<c:when test="${!empty utilisateur}">
+		        <ul class="list-group col col-lg-4">
+		         	<li class=" d-flex justify-content-between align-items-center">
+		         		<p>Pseudo : </p> ${utilisateur.getPseudo()}
+					</li>
+		         	<li class=" d-flex justify-content-between align-items-center">
+		         		<p>Nom : </p> ${utilisateur.getNom()}
+					</li>
+		         	<li class="d-flex justify-content-between align-items-center">
+		         		<p>Prénom : </p> ${utilisateur.getPrenom()}
+					</li>
+					<li class="d-flex justify-content-between align-items-center">
+		         		<p>Email : </p> ${utilisateur.getEmail()}
+					</li>
+					<li class="d-flex justify-content-between align-items-center">
+		         		<p>Téléphone : </p> ${utilisateur.getTelephone()}
+					</li>
+					<li class=" d-flex justify-content-between align-items-center">
+		         		<p>Rue : </p> ${utilisateur.getRue()}
+					</li>
+					<li class="d-flex justify-content-between align-items-center">
+		         		<p>Rue : </p> ${utilisateur.getCodePostal()}
+					</li>
+					<li class="d-flex justify-content-between align-items-center">
+		         		<p>Rue : </p> ${utilisateur.getVille()}
+					</li>
+				 </ul>
+				 <c:if test="">
+				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
+				 </c:if>
+	        </c:when>
+	        <c:otherwise>
+	        	<p class="alert alert-danger alert-dismissible fade show" role="alert">Pas de profile à afficher<p>
+	        </c:otherwise>
+        </c:choose>
 	</div>
-
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
