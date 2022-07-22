@@ -98,7 +98,7 @@
 							Supprimer mon compte
 						</button>
 						
-						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
 						  <div class="modal-dialog" role="document">
 						    <div class="modal-content">
 						      <div class="modal-header">
@@ -109,19 +109,22 @@
 						      <div class="modal-body">
 								<form action="${pageContext.request.contextPath}/supprimerProfil" id="form" method="post">	      
 						        
-							        <p> class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte ?</p>
+							        <p class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte, ${sessionScope.pseudo} ${sessionScope.noUtilisateur} ?</p>
 							      
 							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
-									<input type="hidden" name="id" value="1003"/>
+									<input type="hidden" name="noUtilisateur" value="${sessionScope.noUtilisateur}"/>
 									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao les boloss !</button>
 									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
 								</form>	 	   
 						    </div>
 						  </div>
-						 </div>
-				
+						 </div>	
 	</div>
-
+	<%-- Vérification de la présence d'un objet utilisateur en session --%>
+		<c:if test="${!empty sessionScope}">
+			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${utilisateur.get}</p>
+		</c:if>	
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

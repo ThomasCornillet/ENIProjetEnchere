@@ -72,7 +72,7 @@ public class ServletAuthentification extends HttpServlet {
 				HttpSession session = request.getSession();
 				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
 				session.setAttribute("pseudo", pseudo); //Pour la phase de tests 
-				RequestDispatcher rd = request.getRequestDispatcher("/accueil");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp");// TODO rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
 				rd.forward(request, response);
 			}
 		}

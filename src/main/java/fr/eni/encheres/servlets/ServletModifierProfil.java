@@ -144,7 +144,8 @@ public class ServletModifierProfil extends HttpServlet {
 	} else
 			if(request.getServletPath().equals("/supprimerProfil")) {
 			// Récupérer idUtilsiateur de la session
-			int noUtilisateur = 1004;
+			int noUtilisateur = (int) request.getAttribute("noUtilisateur");
+			
 			//deleteById()		
 			
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
