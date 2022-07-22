@@ -54,7 +54,7 @@
 						<c:choose>
 							<c:when test="${!empty listeCategories }">
 								<c:forEach var="categorie" items="${listeCategories}">
-									<option></option>
+									<option value="${categorie.getNoCategorie()}">${categorie.getLibelle()}</option>
 								</c:forEach>
 							</c:when>
 						</c:choose>

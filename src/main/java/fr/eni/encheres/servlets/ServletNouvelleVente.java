@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +42,11 @@ public class ServletNouvelleVente extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		//transmettre notre liste de catégories à la jsp.
+		//passer la liste de catégorie en attributs de requêtes
+		request.setAttribute("listeCategories", listeCategories);
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/nouvelleVente.jsp")  ;   //permet de dispatcher la requete en iindiquant type nom de variable
+		rd.forward(request, response);//appel à la méthode forward de la variable rd requestDispatcher avec en parametre la requete et la reponse (request response)
 	}
 
 	/**
