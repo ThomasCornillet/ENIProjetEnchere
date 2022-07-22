@@ -50,7 +50,9 @@
 				<div class="col-10">
 					<input type="checkbox" id="se souvenir de moi" name="se souvenir de moi" />
 					<label for="se souvenir de moi">Se souvenir de moi</label>
-					<a href="#">Mot de passe oublié</a>
+					<p>
+						<a href="#">Mot de passe oublié</a>
+					</p>
 				</div>
 			</div>
 		</form>

@@ -95,6 +95,14 @@ public class ServletAccueil extends HttpServlet {
 				}
 				request.setAttribute("listeArticles", listeArticles);
 			}
+			// on recharge la liste des catégories pour l'affichage dans le menu déroulant
+			CategoriesManager categoriesMnger = CategoriesManager.getInstance();
+			try {
+				request.setAttribute("listeCategories", categoriesMnger.selectAll());
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 			rd.forward(request, response);
 		}

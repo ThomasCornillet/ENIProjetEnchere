@@ -17,7 +17,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	private static final String SELECT_ALL = "SELECT * FROM ARTICLES ORDER BY date_fin_encheres DESC";
 	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
 	private static final String SELECT_BY_NOM = "SELECT * FROM ARTICLES WHERE nom_article = ?"; // TODO est-ce qu'on utilise cette sélection ?
-	private static final String SELECT_BY_PORTION_NOM = "SELECT * FROM ARTICLES WHERE nom_article LIKE '%?%' ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_BY_PORTION_NOM = "SELECT * FROM ARTICLES WHERE nom_article LIKE ? ORDER BY date_fin_encheres DESC";
 
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -85,7 +85,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		List<Articles> retour = new ArrayList<>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_PORTION_NOM);
-			pstmt.setString(1, portionNom);
+			pstmt.setString(1, "%" + portionNom + "%");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				retour.add(creerArticle(rs));
