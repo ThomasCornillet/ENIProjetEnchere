@@ -134,7 +134,7 @@ public class ServletInscription extends HttpServlet {
 	// TODO revérifier les demandes client format password
 	private boolean formatMotDePasseValid(Utilisateurs utilisateur, String motDePasse) {
 		boolean retour = false;
-		if (motDePasse.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$")) {
+		if (motDePasse.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{12,30}$")) {
 			retour = true;
 		}
 		return retour;
