@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.dal.UtilisateursDAO;
@@ -14,6 +17,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	private static final String SELECT_BY_PSEUDO = "SELECT * FROM UTILISATEURS WHERE pseudo = ?";
 	private static final String SELECT_BY_MAIL = "SELECT * FROM UTILISATEURS WHERE email = ?";
+	private static final String SELECT_ALL = "SELECT * FROM UTILISATEURS";
 	private static final String INSERT_UTILISATEUR = "INSERT INTO UTILISATEURS (pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) "
 													+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS "
@@ -62,6 +66,37 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECTION_BY_MAIL_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	@Override
+	public List<Utilisateurs> selectAll() throws BusinessException {
+		List<Utilisateurs> retour = new ArrayList<>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			Statement stmt = cnx.createStatement();
+			ResultSet rs = stmt.executeQuery(SELECT_ALL);
+			while (rs.next()) {
+				Utilisateurs utilisateur = new Utilisateurs();
+				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+				utilisateur.setPseudo(rs.getString("pseudo"));
+				utilisateur.setNom(rs.getString("nom"));
+				utilisateur.setPrenom(rs.getString("prenom"));
+				utilisateur.setEmail(rs.getString("email"));
+				utilisateur.setTelephone(rs.getString("telephone"));
+				utilisateur.setRue(rs.getString("rue"));
+				utilisateur.setCodePostal(rs.getString("code_postal"));
+				utilisateur.setVille(rs.getString("ville"));
+				utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+				utilisateur.setCredit(rs.getInt("credit"));
+				utilisateur.setAdministrateur(rs.getBoolean("administrateur"));
+				retour.add(utilisateur);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECTION_ALL_CONNEXION_ECHEC);
 			throw businessException;
 		}
 		return retour;
