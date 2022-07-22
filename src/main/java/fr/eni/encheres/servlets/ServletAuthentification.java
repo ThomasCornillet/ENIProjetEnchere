@@ -23,6 +23,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 public class ServletAuthentification extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String VUE_AUTHENTIFICATION = "/WEB-INF/jsp/authentification.jsp";
+    public static final String VUE_ACCUEIL = "/WEB-INF/jsp/accueil.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +38,6 @@ public class ServletAuthentification extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
 		List<Integer> listeCodesErreur=new ArrayList<>();
 		String identifiant = request.getParameter("identifiant");
@@ -68,9 +68,11 @@ public class ServletAuthentification extends HttpServlet {
 				rd.forward(request, response);
 			} else {
 				// bon mot de passe
+				String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
 				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur); // TODO revoir comment on gère ça
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp"); // TODO réfléchir ou est-ce qu'on va
+				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
+				session.setAttribute("pseudo", pseudo); //Pour la phase de tests 
+				RequestDispatcher rd = request.getRequestDispatcher("/accueil");
 				rd.forward(request, response);
 			}
 		}

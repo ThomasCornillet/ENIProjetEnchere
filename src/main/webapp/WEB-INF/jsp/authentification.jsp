@@ -51,14 +51,14 @@
 					<input type="checkbox" id="se souvenir de moi" name="se souvenir de moi" />
 					<label for="se souvenir de moi">Se souvenir de moi</label>
 					<p>
-						<a href="#">Mot de passe oublié</a>
+						<a href="${pageContext.request.contextPath }/recuperationMotDePasse">Mot de passe oublié</a>
 					</p>
 				</div>
 			</div>
 		</form>
 				
 		<div class="row">
-		<a href="${pageContext.request.contextPath }/accueil"  class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Créer un compte</a>		
+		<a href="${pageContext.request.contextPath }/inscription"  class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Créer un compte</a>		
 			
 		</div>
 				
@@ -67,23 +67,11 @@
 	
 	
 	<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${!empty sessionScope.sessionUtilisateur}">
+		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.sessionUtilisateur.email}</p>
-				
-				<%
-					if (session.getAttribute("compteurAcces") != null) {
-						int compteurAcces = (int) session.getAttribute("compteurAcces");
-				%>
-				<p> Vous avez accédé <%=compteurAcces%> fois à cette session</p>
-				<%
-					} else {
-				%>
-						<p>Le compteur d'accès n'existe pas en session</p>
-				<%
-							}
-				%>
-		</c:if>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo}</p>
+		</c:if>		
+		
 
 
 <!-- import javascript pour Boostrap -->

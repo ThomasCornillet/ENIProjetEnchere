@@ -35,28 +35,32 @@ public class ServletProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Si on reçoit un pseudo ou un noUtilisateur en paramètre dans l'URL, c'est que l'on veut afficher un profile
-		String noUtilisateur = request.getParameter("noUtilisateur");
-		String pseudo = request.getParameter("pseudo");
+		
+		String pseudo = "test"; // Pour la phase test, maintenant il faur récupérer ici le pseudo ou l'id de la personne 
+								// qu'on veut consulter via un lien qui pointe vers cette servelet
+		
+		
 		List<Integer> listeCodesErreur= new ArrayList<>();
-		if(noUtilisateur != null) {
+		
+//		if(pseudo != null) { // A décommenter après la phase test puis supprimer ce commentaire
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 			try {
-				Utilisateurs utilisateur = new Utilisateurs();
-				utilisateurMngr.selectByPseudo(pseudo);
+				Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);
 				request.setAttribute("utilisateur", utilisateur);
-				System.out.println(pseudo); //TODO Delete this line
+				
+				
+				
 				this.getServletContext().getRequestDispatcher( VUE_PROFILE ).forward( request, response );
 			} catch (BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else {
-			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_INEXISTANT);
-			request.setAttribute("listeCodesErreur", listeCodesErreur);
-			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-			rd.forward(request, response);
-		}
+//		}else {
+//			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_INEXISTANT);
+//			request.setAttribute("listeCodesErreur", listeCodesErreur);
+//			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+//			rd.forward(request, response);
+//		} // A décommenter après la phase test puis supprimer ce commentaire
 		
 		
 	}
