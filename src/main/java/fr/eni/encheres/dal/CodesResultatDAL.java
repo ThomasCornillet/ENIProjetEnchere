@@ -24,10 +24,11 @@ public abstract class CodesResultatDAL {
 	public static final int SELECTION_ALL_CONNEXION_ECHEC = 11009;
 
 
+
 	
 	
 	// Codes naoufel (12***)
-	
+
 	// Codes johanna (13***)
 
 }

@@ -20,7 +20,8 @@ import fr.eni.encheres.exceptions.BusinessException;
 /**
  * Servlet implementation class ServletModifierProfil
  */
-@WebServlet("/modificationProfile")
+@WebServlet(urlPatterns = {"/modificationProfile",
+							"/supprimerProfile"})
 public class ServletModifierProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String VUE_PROFILE = "/WEB-INF/jsp/profil.jsp";
@@ -37,6 +38,23 @@ public class ServletModifierProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getServletPath().equals("/supprimerProfile")) {
+			// Récupérer idUtilsiateur de la session
+			int noUtilisateur = 0;
+			//deleteById()
+			List<Integer> listeCodesErreur=new ArrayList<>();
+			
+			
+			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+			try {
+				utilisateurMngr.deleteById(noUtilisateur);
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/accueil.jsp").forward( request, response );
+		}
+		
 		this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp").forward( request, response );
 	}
 

@@ -23,7 +23,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS "
 													+ "SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?,administrateur=? "
 													+ "WHERE no_utilisateur = ?";
-											
+	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";										
 	
 	@Override
 	public Utilisateurs selectByPseudo(String pseudo) throws BusinessException {
@@ -164,6 +164,20 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 			businessException.ajouterErreur(CodesResultatDAL.UPDATE_CONNEXION_ECHEC);
 			throw businessException;
 		}
+	}
+	
+	@Override
+	public void deleteById(int noUtilisateur) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(DELETE_UTILISATEUR);
+			pstmt.setInt(1, noUtilisateur
+					);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 		
 	private void preparationDuStatement(Utilisateurs utilisateur, PreparedStatement pstmt) throws SQLException {

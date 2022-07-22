@@ -80,6 +80,11 @@ public class UtilisateursManager {
 		
 	}
 	
+	public void deleteById(int noUtilisateur) throws BusinessException {
+		// TODO vérifications
+		utilisateursDAO.deleteById(noUtilisateur);
+	}
+	
 	private boolean verifUtilisateurs(Utilisateurs utilisateur, List<Integer> codesErreurs) throws BusinessException {
 		boolean retour = false;
 		List<Utilisateurs> listeUtilisateurs = new ArrayList<>();
