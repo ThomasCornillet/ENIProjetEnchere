@@ -63,6 +63,8 @@ public class ServletModifierProfil extends HttpServlet {
 		
 		List<Integer> listeCodesErreur= new ArrayList<>();
 		
+		// test de quelle(s) modification(s) apportées dans le formulaire et donc à prendre en compte pour l'update
+		// TODO à terme, à mettre dans une méthode testsUpdate() séparé du doPost (plus facile à lire comme ça)
 		if(request.getParameter("pseudo") != null){
 			if(!request.getParameter("pseudo").isBlank()) {
 				utilisateur.setPseudo(request.getParameter("pseudo"));
