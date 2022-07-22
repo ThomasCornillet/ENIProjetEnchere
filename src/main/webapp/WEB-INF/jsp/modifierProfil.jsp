@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="fr.eni.encheres.exceptions.LecteurMessage" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -109,10 +110,10 @@
 						      <div class="modal-body">
 								<form action="${pageContext.request.contextPath}/supprimerProfil" id="form" method="post">	      
 						        
-							        <p class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte, ${sessionScope.pseudo} ${sessionScope.noUtilisateur} ?</p>
+							        <p class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte, ${sessionScope.pseudo} ${sessionScope.nom} ?</p>
 							      
 							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
-									<input type="hidden" name="noUtilisateur" value="${sessionScope.noUtilisateur}"/>
+									<input type="hidden" name="noUtilisateur" value="${sessionScope.nom}"/>
 									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao les boloss !</button>
 									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
 								</form>	 	   
@@ -123,7 +124,7 @@
 	<%-- Vérification de la présence d'un objet utilisateur en session --%>
 		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${utilisateur.get}</p>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo}</p>
 		</c:if>	
 
 <!-- import javascript pour Boostrap -->

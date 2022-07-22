@@ -50,7 +50,6 @@ public class ServletModifierProfil extends HttpServlet {
 //	Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
 	
 	if(request.getServletPath().equals("/modificationProfil")) {
-				
 		
 		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
@@ -144,8 +143,8 @@ public class ServletModifierProfil extends HttpServlet {
 	} else
 			if(request.getServletPath().equals("/supprimerProfil")) {
 			// Récupérer idUtilsiateur de la session
-			int noUtilisateur = (int) request.getAttribute("noUtilisateur");
-			
+			String pseudo = (String) request.getAttribute("pseudo");
+			int noUtilisateur = 1004;
 			//deleteById()		
 			
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
@@ -153,6 +152,7 @@ public class ServletModifierProfil extends HttpServlet {
 				utilisateurMngr.deleteById(noUtilisateur);
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 				rd.forward(request, response);
+				
 			} catch (BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
