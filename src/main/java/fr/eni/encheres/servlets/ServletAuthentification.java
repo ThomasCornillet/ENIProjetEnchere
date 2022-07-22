@@ -23,6 +23,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 public class ServletAuthentification extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String VUE_AUTHENTIFICATION = "/WEB-INF/jsp/authentification.jsp";
+    public static final String VUE_ACCUEIL = "/WEB-INF/jsp/accueil.jsp";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -70,7 +71,22 @@ public class ServletAuthentification extends HttpServlet {
 				// bon mot de passe
 				HttpSession session = request.getSession();
 				session.setAttribute("UtilisateurConnecte", utilisateur); // TODO revoir comment on gère ça
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/inscription.jsp"); // TODO réfléchir ou est-ce qu'on va
+				
+				// Compteur d'accès pour la phase de testes uniquement
+				int compteurAccesPendantSession = 0;
+				String pseudo = utilisateur.getPseudo();
+				System.out.println(pseudo);
+				if(session.getAttribute("compteurAcces")!= null)
+				{
+					compteurAccesPendantSession = (int)session.getAttribute("compteurAcces");
+					pseudo = (String)session.getAttribute("pseudo");
+				}
+				compteurAccesPendantSession+=1;
+				session.setAttribute("compteurAcces", compteurAccesPendantSession);
+				session.setAttribute("pseudo", pseudo);
+				// supprimer les ligne sus-jacentes jusqu'au commentaire
+				
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL); // TODO réfléchir ou est-ce qu'on va
 				rd.forward(request, response);
 			}
 		}

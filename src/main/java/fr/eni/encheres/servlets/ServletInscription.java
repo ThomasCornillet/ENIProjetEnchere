@@ -70,7 +70,14 @@ public class ServletInscription extends HttpServlet {
 					request.setAttribute("listeCodesErreur", listeCodesErreur);
 					RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
 					rd.forward(request, response);
-				}else {
+				}else {// est-ce que le pseudo existe déjà?
+					if(pseudoExists(utilisateur, pseudo)) {
+						listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_EXISTE_DEJA);
+						request.setAttribute("listeCodesErreur", listeCodesErreur);
+						RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
+						rd.forward(request, response);
+					} 
+					else {
 					
 						
 						utilisateur.setPseudo(pseudo);
@@ -83,15 +90,7 @@ public class ServletInscription extends HttpServlet {
 						utilisateur.setCodePostal(codePostal);
 						utilisateur.setMotDePasse(motDePasse);
 						utilisateur.setCredit(1000); //TODO où mettre l'attribution du crédit?
-	
-						// est-ce que le pseudo existe déjà?
-						if(pseudoExists(utilisateur, pseudo)) {
-							listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_EXISTE_DEJA);
-							request.setAttribute("listeCodesErreur", listeCodesErreur);
-							RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
-							rd.forward(request, response);
-						} 
-						else {
+						
 							try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		
 								utilisateurMngr.insert(utilisateur);
