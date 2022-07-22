@@ -80,6 +80,11 @@ public class UtilisateursManager {
 		
 	}
 	
+	public void deleteById(int noUtilisateur) throws BusinessException {
+		// TODO vérifications
+		utilisateursDAO.deleteById(noUtilisateur);
+	}
+	
 	private boolean verifUtilisateurs(Utilisateurs utilisateur, List<Integer> codesErreurs) throws BusinessException {
 		boolean retour = false;
 		List<Utilisateurs> listeUtilisateurs = new ArrayList<>();
@@ -144,7 +149,7 @@ public class UtilisateursManager {
 		// telephone
 		if (codesErreurs.size() > 0) {
 			retour = false;
-		} else if (utilisateur.getTelephone() == null  || utilisateur.getTelephone().isBlank() || utilisateur.getTelephone().length() != 10) {
+		} else if (utilisateur.getTelephone() != null  && !utilisateur.getTelephone().isBlank() && utilisateur.getTelephone().length() != 10) {
 			codesErreurs.add(CodesResultatBLL.FORMATAGE_TELEPHONE_ERREUR);
 		} else {
 			retour = true;
@@ -173,7 +178,7 @@ public class UtilisateursManager {
 		} else {
 			retour = true;
 		}
-		// mdp
+		// mdp 
 		if (codesErreurs.size() > 0) {
 			retour = false;
 		} else if (utilisateur.getMotDePasse() == null  || utilisateur.getMotDePasse().isBlank() || utilisateur.getMotDePasse().length() > 30
