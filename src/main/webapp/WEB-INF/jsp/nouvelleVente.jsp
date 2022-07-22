@@ -50,7 +50,7 @@
 			
 			<div class="form-group row">
 				<label class="col col-form-label" for="categorie">Catégorie :</label>
-				<select multiple class="form-control col" name="categorie" id="categorie"  required>
+				<select class="form-control col" name="categorie" id="categorie"  required>
 						<c:choose>
 							<c:when test="${!empty listeCategories }">
 								<c:forEach var="categorie" items="${listeCategories}">
