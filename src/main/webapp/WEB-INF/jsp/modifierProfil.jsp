@@ -88,35 +88,38 @@
 						<div class="form-group row justify-content-center">		
 								<input	class="btn btn-primary btn-lg col-2 " type="submit" value="Enregistrer"/>
 								
-								<!-- Bouton modal supprimer-->
-								<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
-									Supprimer mon compte
-								</button>
-								
-								<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-								  <div class="modal-dialog" role="document">
-								    <div class="modal-content">
-								      <div class="modal-header">
-								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								          <span aria-hidden="true">&times;</span>
-								        </button>
-								      </div>
-								      <div class="modal-body">
-								      
-								        <p> class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte ?</p>
-								        
-	
-								      </div>
-								      <div class="modal-footer">
-								        <button type="submit" class="btn btn-primary " data-dismiss="modal" >Pas encore</button>
-										<a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfile"  role="button" aria-pressed="true">Yep, ciao les boloss !</a>
 
-								      </div>
-								    </div>
-								  </div>
 								</div>
-						</div>
+						
 					</form>
+					
+					
+						<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+							Supprimer mon compte
+						</button>
+						
+						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+								<form action="${pageContext.request.contextPath}/supprimerProfil" id="form" method="post">	      
+						        
+							        <p> class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte ?</p>
+							      
+							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
+									<input type="hidden" name="id" value="1003"/>
+									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao les boloss !</button>
+									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
+								</form>	 	   
+						    </div>
+						  </div>
+						 </div>
+				
 	</div>
 
 

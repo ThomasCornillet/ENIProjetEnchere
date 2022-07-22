@@ -170,8 +170,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	public void deleteById(int noUtilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(DELETE_UTILISATEUR);
-			pstmt.setInt(1, noUtilisateur
-					);
+			pstmt.setInt(1, noUtilisateur);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
