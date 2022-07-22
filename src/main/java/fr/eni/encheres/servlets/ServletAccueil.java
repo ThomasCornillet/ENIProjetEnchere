@@ -58,7 +58,7 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if ((request.getParameter("portionNom").isBlank() || request.getParameter("portionNom") == null) && request.getParameter("categorie").equals("toutes")) {
+		if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes")) {
 			doGet(request, response);
 		} else {
 			ArticlesManager articlesMngr = ArticlesManager.getInstance();
