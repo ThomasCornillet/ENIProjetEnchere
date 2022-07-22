@@ -67,24 +67,10 @@
 	
 	
 	<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${!empty sessionScope.sessionUtilisateur}">
+		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.sessionUtilisateur.email}</p>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo}</p>
 		</c:if>		
-				<%
-					if (session.getAttribute("compteurAcces") != null) {
-						int compteurAcces = (int) session.getAttribute("compteurAcces");
-				%>
-					<p> Vous avez accédé <%=compteurAcces%> fois à cette session</p>
-					<br>
-					<p class="succes">Vous êtes connecté.e en tant que : ${sessionScope.sessionUtilisateur.pseudo}</p>
-				<%
-					} else {
-				%>
-						<p>Le compteur d'accès n'existe pas en session</p>
-				<%
-							}
-				%>
 		
 
 

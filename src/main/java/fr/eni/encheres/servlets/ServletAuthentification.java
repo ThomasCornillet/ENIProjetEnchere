@@ -38,7 +38,6 @@ public class ServletAuthentification extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
 		List<Integer> listeCodesErreur=new ArrayList<>();
 		String identifiant = request.getParameter("identifiant");
@@ -69,24 +68,11 @@ public class ServletAuthentification extends HttpServlet {
 				rd.forward(request, response);
 			} else {
 				// bon mot de passe
+				String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
 				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur); // TODO revoir comment on gère ça
-				
-				// Compteur d'accès pour la phase de testes uniquement
-				int compteurAccesPendantSession = 0;
-				String pseudo = utilisateur.getPseudo();
-				System.out.println(pseudo);
-				if(session.getAttribute("compteurAcces")!= null)
-				{
-					compteurAccesPendantSession = (int)session.getAttribute("compteurAcces");
-					pseudo = (String)session.getAttribute("pseudo");
-				}
-				compteurAccesPendantSession+=1;
-				session.setAttribute("compteurAcces", compteurAccesPendantSession);
-				session.setAttribute("pseudo", pseudo);
-				// supprimer les ligne sus-jacentes jusqu'au commentaire
-				
-				RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL); // TODO réfléchir ou est-ce qu'on va
+				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
+				session.setAttribute("pseudo", pseudo); //Pour la phase de tests 
+				RequestDispatcher rd = request.getRequestDispatcher("/accueil");
 				rd.forward(request, response);
 			}
 		}
