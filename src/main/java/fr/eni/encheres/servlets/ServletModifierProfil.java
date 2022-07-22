@@ -145,13 +145,20 @@ public class ServletModifierProfil extends HttpServlet {
 	} else
 			if(request.getServletPath().equals("/supprimerProfil")) {
 			// Récupérer idUtilsiateur de la session
-			String pseudo = (String) request.getAttribute("pseudo");
 			int noUtilisateur = 1004;
-			//deleteById()		
 			
+			Utilisateurs utilisateur = new Utilisateurs();
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+			int NoUtilisateur = utilisateur.getNoUtilisateur();
+			PrintWriter out = response.getWriter();
 			try {
+				//deleteById()		
+				HttpSession session = request.getSession();
+				session.setAttribute("UtilisateurConnecte", utilisateur);
 				utilisateurMngr.deleteById(noUtilisateur);
+				out.println("je suis là");
+				
+				session.setAttribute("UtilisateurConnecte", utilisateur);
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 				rd.forward(request, response);
 				
