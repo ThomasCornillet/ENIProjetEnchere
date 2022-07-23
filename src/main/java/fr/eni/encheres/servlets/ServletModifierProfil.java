@@ -1,7 +1,6 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +20,11 @@ import fr.eni.encheres.exceptions.BusinessException;
  * Servlet implementation class ServletModifierProfil
  */
 @WebServlet(urlPatterns = {"/modificationProfil",
-							"/supprimerProfil"})
+							"/supprimerProfil",
+							"/AfficherProfile"})
 public class ServletModifierProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	public static final String VUE_PROFILE = "/WEB-INF/jsp/profil.jsp";
+	public static final String VUE_PROFILE = "/WEB-INF/jsp/AfficherProfil.jsp";
 	public static final String VUE_MODIFIER_PROFILE = "/WEB-INF/jsp/modifierProfil.jsp";
        
     /**
@@ -39,7 +39,39 @@ public class ServletModifierProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher(VUE_MODIFIER_PROFILE).forward( request, response );
+		if(request.getServletPath().equals("/AfficherProfile")) {
+			
+			List<Integer> listeCodesErreur= new ArrayList<>();
+			
+	//		if(pseudo != null) { // A décommenter après la phase test puis supprimer ce commentaire
+				UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+				try {
+					HttpSession session = request.getSession();
+					
+					String pseudo = (String) session.getAttribute("pseudo");
+					
+					Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);
+					request.setAttribute("utilisateur", utilisateur);
+					
+					System.out.println(pseudo); // TODO delete
+					
+					this.getServletContext().getRequestDispatcher( VUE_PROFILE ).forward( request, response );
+				} catch (BusinessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	//		}else {
+	//			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_INEXISTANT);
+	//			request.setAttribute("listeCodesErreur", listeCodesErreur);
+	//			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+	//			rd.forward(request, response);
+	//		} // A décommenter après la phase test puis supprimer ce commentaire
+			
+			
+		} else {
+		
+			this.getServletContext().getRequestDispatcher(VUE_MODIFIER_PROFILE).forward( request, response );
+		}
 	}
 
 	/**
@@ -117,8 +149,6 @@ public class ServletModifierProfil extends HttpServlet {
 		//		}
 		//	}
 		//	String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
-			PrintWriter out = response.getWriter();
-		
 			
 		if(utilisateur.getMotDePasse().equals(request.getParameter("motDePasseActuel"))) {
 			
@@ -133,42 +163,39 @@ public class ServletModifierProfil extends HttpServlet {
 				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
 				rd.forward(request, response);
 			}
-	//		session.setAttribute("UtilisateurConnecte", utilisateur);
 			
 		}else {
 			listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
 			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
 			rd.forward(request, response);
-			out.println("Ca ne marche pas");
 		}
 	} else
-			if(request.getServletPath().equals("/supprimerProfil")) {
-			// Récupérer idUtilsiateur de la session
-			int noUtilisateur = 1004;
+	
+	if(request.getServletPath().equals("/supprimerProfil")) {
+		try {
+			//deleteById()
+			HttpSession session = request.getSession();
+			session.getAttribute("UtilisateurConnecte");
+			int NoUtilisateur = (int)session.getAttribute("NoUtilisateur");
+			String pseudo = (String) session.getAttribute("pseudo");
 			
-			Utilisateurs utilisateur = new Utilisateurs();
+			System.out.println(pseudo); // TODO delete
+			System.out.println(NoUtilisateur); // TODO delete
+			
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-			int NoUtilisateur = utilisateur.getNoUtilisateur();
-			PrintWriter out = response.getWriter();
-			try {
-				//deleteById()		
-				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur);
-				utilisateurMngr.deleteById(noUtilisateur);
-				out.println("je suis là");
-				
-				session.setAttribute("UtilisateurConnecte", utilisateur);
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
-				rd.forward(request, response);
-				
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}											
+			utilisateurMngr.deleteById(NoUtilisateur);
+			
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+			rd.forward(request, response);
+			
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}											
 	}
 	
-//	this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp").forward(request, response);
 	}
 
 }

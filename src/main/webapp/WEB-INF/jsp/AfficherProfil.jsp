@@ -75,6 +75,12 @@
         </c:choose>
 	</div>
 
+		<%-- Vérification de la présence d'un objet utilisateur en session --%>
+		<c:if test="${!empty sessionScope}">
+			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${sessionScope.noUtilisateur}</p>
+		</c:if>		
+
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
