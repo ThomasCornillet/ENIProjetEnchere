@@ -22,6 +22,8 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_ALL_CATEGORIES_ECHEC = 11007;
 	public static final int SELECT_ARTICLE_BY_PORTION_NOM_ECHEC = 11008;
 	public static final int SELECTION_ALL_CONNEXION_ECHEC = 11009;
+	public static final int SELECT_BY_ID_EMPTY = 11010;
+	public static final int SELECT_BY_ID_CONNECTION_ERROR = 11011;
 
 
 

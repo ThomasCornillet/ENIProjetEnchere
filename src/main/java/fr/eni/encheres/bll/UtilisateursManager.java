@@ -85,6 +85,15 @@ public class UtilisateursManager {
 		utilisateursDAO.deleteById(noUtilisateur);
 	}
 	
+	public Utilisateurs selectById(int noUtilisateur) throws BusinessException {
+		if (noUtilisateur <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.SELECT_BY_ID_ID_NEGATIVE);
+			throw be;
+		}
+		return utilisateursDAO.selectById(noUtilisateur);
+	}
+	
 	private boolean verifUtilisateurs(Utilisateurs utilisateur, List<Integer> codesErreurs) throws BusinessException {
 		boolean retour = false;
 		List<Utilisateurs> listeUtilisateurs = new ArrayList<>();
