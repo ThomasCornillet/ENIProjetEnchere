@@ -162,6 +162,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		retour.setPrix_initial(rs.getInt("prix_initial"));
 		retour.setPrix_vente(rs.getInt("prix_vente"));
 		retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
+		retour.setPseudoUtilisateur(rs.getString("pseudo"));
 		retour.setNo_categorie(rs.getInt("no_categorie"));
 		retour.setLibelleCatagorie(rs.getString("libelle"));
 		retour.setVendu(rs.getBoolean("vendu"));
