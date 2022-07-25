@@ -48,7 +48,7 @@
 								<p class="card-text">${article.getDescription() }</p>
 								<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 								<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
-								<a href="${pageContext.request.contextPath }/afficherProfil">Vendeur : ${article.getPseudoUtilisateur() }</a>
+								<a href="${pageContext.request.contextPath }/afficherProfil?id=${article.getNo_utilisateur()}">Vendeur : ${article.getPseudoUtilisateur() }</a>
 							</div>
 						</div>
 					</div>
