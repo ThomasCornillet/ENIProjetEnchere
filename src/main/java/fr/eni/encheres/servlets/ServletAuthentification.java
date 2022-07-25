@@ -19,7 +19,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 /**
  * Servlet implementation class ServletConnection
  */
-@WebServlet("/authentification")
+@WebServlet(urlPatterns = {"/authentification", "/deconnexion"})
 public class ServletAuthentification extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String VUE_AUTHENTIFICATION = "/WEB-INF/jsp/authentification.jsp";
