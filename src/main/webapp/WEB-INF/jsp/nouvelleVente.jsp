@@ -39,7 +39,7 @@
 			</div>
 			
 			<div class="form-group row">
-				<label class="col col-form-label" for="categorie">Catégorie :</label>
+				<label class="col col-form-label" for="categorie">Catégorie </label>
 				<select class="form-control col" name="categorie" id="categorie"  required>
 						<c:choose>
 							<c:when test="${!empty listeCategories }">
@@ -49,46 +49,65 @@
 							</c:when>
 						</c:choose>
 				</select>
-				
+			</div>		
+			
+   			<div class="form-group row">	
+            	<label class="col col-form-label" for="UPLOADER">Photo de l'article</label>
+           		<input type="file" name="uploader" id="uploader" placeholder="UPLOADER" required class="shadow-lg p-3 mb-5 bg-white"> 
+           		           	
+          	</div>
+          	
+          	<div class="form-group row">
+          		<label class="col col-form-label" for="UPLOADER">Mise à prix :</label>
+          		 <input class="input" type="number" name="Prix" id="Prix" required> 
+            </div>
+            
+            <div class="form-group row">
+            	<label class="col col-form-label"for="date_debut_encheres">Début de l'enchère :</label>
+            	<input class="input" type="date" name="date_debut_encheres" id="date_debut_encheres" required> 
+        	</div>
+        	
+        	<div class="form-group row">
+            	<label class="col col-form-label" for="date_fin_encheres ">Fin de l'enchère :</label>
+            	<input class= "input" type="date" name="date_fin_encheres " id="date_fin_encheres " required> 
+        	</div>
+        	
+        	<div class="form-group row">
+        		<label class="col col-form-label" for="retrait">Retrait</label>
+        	</div>
+        	
+        	
+        	<div class="form-group row">
+      			<label class="col col-form-label"for="rue">Rue :</label>
+          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes" required>
+      		</div>
+      		
+      		<div class="form-group row">
+          		<label class="col col-form-label" for="code_postal ">Code Postale :</label>
+         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800" required>
+      		</div>
+
+      		<div class="form-group row">
+          		<label class="col col-form-label" for="ville">Ville :</label>
+          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain" required>
+      		</div>
+      	
+      		<div class="form-group row">	
+			<button type="submit"  name="enregistrer">Enregistrer</button>	
+			<a href="#"><button type="submit" >Annuler</button></a>
 			</div>
-				
-				
-				
 			
-			
-			
-			
-			
+	
+	
+	
+		</form>
+
+	</div>					
+	
 			
 			
 		
 		
-		
-			
-		</form>		
-	</div>
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- import javascript pour Boostrap -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->

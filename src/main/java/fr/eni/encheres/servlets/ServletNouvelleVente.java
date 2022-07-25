@@ -49,12 +49,18 @@ public class ServletNouvelleVente extends HttpServlet {
 		rd.forward(request, response);//appel à la méthode forward de la variable rd requestDispatcher avec en parametre la requete et la reponse (request response)
 	}
 
+	
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+		
+	}	
+	
+	
+	
 }
+
+
+
