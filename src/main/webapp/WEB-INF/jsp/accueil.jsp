@@ -28,30 +28,83 @@
 	
 	<div class="container">
 		<div class="row">
-			<h1 class="col">Liste des enchères</h1>
+			<h1 class="col text-center">Liste des enchères</h1>
 		</div>
 		<div class="row">
 			<h2 class="col">Filtres :</h2>
 		</div>
-		<form class="row" method="post" action="${pageContext.request.contextPath }/accueil">
-			<div class="col-6">
-				<input type="search" name="portionNom" placeholder="Le nom de l'article contient">
-				<div>
-					<label for="categorie">Catégorie :</label>
-					<span>
-						<select name="categorie">
-							<c:if test="${!empty listeCategories }">
-								<option value="toutes">Toutes</option>
-								<c:forEach var="cat" items="${listeCategories }">
-									<option value="${cat.getLibelle() }">${cat.getLibelle()}</option>
-								</c:forEach>
-							</c:if>
-						</select>
-					</span>
+			<form class="row" method="post" action="${pageContext.request.contextPath }/accueilfiltre">
+				<div class="col-6">
+					<input type="search" name="portionNom" placeholder="Le nom de l'article contient">
+					<div>
+						<label for="categorie">Catégorie :</label>
+						<span>
+							<select name="categorie">
+								<c:if test="${!empty listeCategories }">
+									<option value="toutes">Toutes</option>
+									<c:forEach var="cat" items="${listeCategories }">
+										<option value="${cat.getLibelle() }">${cat.getLibelle()}</option>
+									</c:forEach>
+								</c:if>
+							</select>
+						</span>
+					</div>
+					<!-- si un utilisateur est connecté, on affiche des filtres en plus -->
+					<c:if test="${connecte}">
+						<div class="container">
+							<div class="row">
+								
+							
+								<div class="form-check col-6">
+								<!-- filtre achat -->
+									<div class="container">
+										<div class="row">
+											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked>
+											<label class="form-check-label" for="filtreConnecte">Achats</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="encheresOuvertes" value="encheresOuvertes" id="encheresOuvertes" checked>
+											<label class="form-check-label" for="encheresOuvertes">enchères ouvertes</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="encheresEnCours" value="encheresEnCours" id="encheresEnCours">
+											<label class="form-check-label" for="encheresEnCours">mes enchères en cours</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="encheresRemportees" value="encheresRemportees" id="encheresRemportees">
+											<label class="form-check-label" for="encheresRemportees">mes enchères remportés</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-check col-6">
+								<!-- filtre mes ventes -->
+									<div class="container">
+										<div class="row">
+											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioMesVentes" value="mesVentes">
+											<label class="form-check-label" for="filtreConnecte">Mes ventes</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="ventesEnCours" value="ventesEnCours" id="ventesEnCours">
+											<label class="form-check-label" for="ventesEnCours">mes ventes en cours</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" id="ventesNonDebutees">
+											<label class="form-check-label" for="ventesNonDebutees">mes ventes non débutées</label>
+										</div>
+										<div class="form-check row">
+											<input class="form-check-input" type="checkbox" name="ventesTerminees" value="ventesTerminees" id="ventesTerminees">
+											<label class="form-check-label" for="ventesTerminees">mes ventes terminées</label>
+										</div>
+									</div>
+								</div>
+									
+									
+							</div>
+						</div>
+					</c:if>
 				</div>
-			</div>
-			<input class="col-6" type="submit" value="Rechercher">
-		</form>
+				<input class="col-6" type="submit" value="Rechercher">
+			</form>
 	</div>
 	
 	<div class="container">
@@ -62,7 +115,7 @@
 						<div class="card">
 							<div class="card-body">
 								<h5 class="card-title"><a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a></h5>
-								<div class"card-test->
+								<div class="card-test">
 									<a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
 									<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 									<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
