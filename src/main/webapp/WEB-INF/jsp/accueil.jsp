@@ -4,30 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Accueil</title>
-	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-</head>
+<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Accueil</title>
 <body>
-	<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
-	
-	<!-- affichage des erreurs s'il y en a -->
-	<c:if test="${!empty listeCodesErreur }">
-		<div class="container">
-			<div class="row"">
-				<div class="col">
-					<div class="alert alert-danger" role="alert">
-	          			<h4 class="alert-heading">Une ou plusieurs erreurs ont eu lieu :</h4>
-	          			<ul>
-	          			<c:forEach var="code" items="${listeCodesErreur}">
-	          				<li>${LecteurMessage.getMessageErreur(code)}</li>
-	          			</c:forEach>
-	          			</ul>
-	          		</div>
-				</div>
-			</div>
-		</div>
-	</c:if>
+<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	
 	<div class="container">
 		<div class="row">
@@ -36,7 +16,7 @@
 		<div class="row">
 			<h2 class="col">Filtres :</h2>
 		</div>
-		<form class="row" method="post" action="${pageContext.request.contextPath }/accueilfiltre">
+		<form class="row" method="post" action="${pageContext.request.contextPath }/accueil">
 			<div class="col-6">
 				<input type="search" name="portionNom" placeholder="Le nom de l'article contient">
 				<div>
@@ -64,12 +44,11 @@
 					<div class="col-12 col-md-6">
 						<div class="card">
 							<div class="card-body">
-								<h5 class="card-title text-decoration-underline">${article.getNomArticle()}</h5>
-								<p class="card-text">
-									<p>Prix : ${article.getPrix_initial() }</p>
-									<p>Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
-									<p>Vendeur : ${article.getPseudoUtilisateur() }</p>
-								</p>
+								<a href="${pageContext.request.contextPath }/detailVente">${article.getNomArticle()}</a>
+								<p class="card-text">${article.getDescription() }</p>
+								<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
+								<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
+								<a href="${pageContext.request.contextPath }/afficherProfil">Vendeur : ${article.getPseudoUtilisateur() }</a>
 							</div>
 						</div>
 					</div>

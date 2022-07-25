@@ -67,4 +67,9 @@ public class ArticlesManager {
 		retour = articlesDAO.selectByPortionNom(portionNom);
 		return retour;
 	}
+
+	public Articles selectArticleByNoUtilisateur(int noUtilisateur) throws BusinessException {
+		Articles retour = articlesDAO.selectArticleByNoUtilisateur(noUtilisateur);
+		return retour;
+	}
 }

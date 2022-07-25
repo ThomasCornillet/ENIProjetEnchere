@@ -84,6 +84,16 @@ public class ServletAuthentification extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher("/accueil");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
 					rd.forward(request, response);
 				}
+				// bon mot de passe
+				String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
+				int NoUtilisateur = utilisateur.getNoUtilisateur();
+				HttpSession session = request.getSession();
+				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
+				session.setAttribute("pseudo", pseudo); //Pour la phase de tests
+				session.setAttribute("NoUtilisateur", NoUtilisateur);
+				response.sendRedirect("/ENIProjetEncheres/AfficherProfile"); 
+//				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
+//				rd.forward(request, response);
 			}
 		}
 	}

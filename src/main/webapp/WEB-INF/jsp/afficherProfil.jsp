@@ -55,7 +55,12 @@
 		         		<p>Rue : </p> ${utilisateur.getVille()}
 					</li>
 				 </ul>
-				 <c:if test="">
+				 <c:if test="${!empty sessionScope}">
+				 	<ul class="list-group col col-lg-4">
+					 	<li class="d-flex justify-content-between align-items-center">
+					 		<p>Crédit : </p> ${utilisateur.getCredit()}
+					 	</li>
+				 </ul>
 				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
 				 </c:if>
 	        </c:when>
@@ -69,6 +74,7 @@
 		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
 			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${sessionScope.noUtilisateur}</p>
+			<a></a>
 		</c:if>		
 
 <!-- import javascript pour Boostrap -->
