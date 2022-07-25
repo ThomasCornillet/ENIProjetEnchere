@@ -47,10 +47,9 @@ public class ServletProfil extends HttpServlet {
 				UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 				try {
 					HttpSession session = request.getSession();
-					
-					String pseudo = (String) session.getAttribute("pseudo");
-					
-					Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);
+					Utilisateurs utilisateurConnecte = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
+//					String pseudo = (String) session.getAttribute("pseudo");
+//					Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);
 					request.setAttribute("utilisateur", utilisateur);
 					
 					System.out.println(pseudo); // TODO delete

@@ -27,7 +27,7 @@ public class UtilisateursManager {
 	}
 	
 	public Utilisateurs selectByPseudo(String pseudo) throws BusinessException {
-		if(pseudo.isBlank() || pseudo == null) {
+		if(pseudo == null || pseudo.isBlank()) {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatBLL.PSEUDO_VIDE_OU_NUL);
 			throw businessException;

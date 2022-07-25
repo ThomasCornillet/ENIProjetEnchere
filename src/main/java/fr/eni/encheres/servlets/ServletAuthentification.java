@@ -29,6 +29,14 @@ public class ServletAuthentification extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getServletPath().equals("/deconnexion")) {
+			System.out.println("deconnexion en cours");
+			HttpSession session = request.getSession();
+//			session.invalidate();
+			session.setAttribute("connecte", false);
+			session.setAttribute("UtilisateurConnecte", null);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
 		rd.forward(request, response);
 		
@@ -40,43 +48,42 @@ public class ServletAuthentification extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utilisateurs utilisateur = new Utilisateurs();
 		List<Integer> listeCodesErreur=new ArrayList<>();
-		String identifiant = request.getParameter("identifiant");
-		String motDePasse = request.getParameter("motdepasse");
-		
-		// est-ce que l'identifiant est un mail ou un pseudo ?
-		utilisateur = mailOuPseudo(identifiant);
-		
-		// est-ce que l'utilisateur existe ?
-		if (utilisateur.getPseudo() == null) {
-			// l'utilisateur n'existe pas
-//			BusinessException be = new BusinessException();
-//			be.ajouterErreur(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
-			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
-			request.setAttribute("listeCodesErreur", listeCodesErreur);
-			RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
-			rd.forward(request, response);
-		} else {
-			// l'utilistaeur existe
-			// on teste alors le mot de passe
-			if (!motDePasseValide(utilisateur, motDePasse)) {
-				// pas le bon mot de passe
-//				BusinessException be = new BusinessException();
-//				be.ajouterErreur(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
-				listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+		if(request.getServletPath().equals("/authentification")) {
+			String identifiant = request.getParameter("identifiant");
+			String motDePasse = request.getParameter("motdepasse");
+			
+			// est-ce que l'identifiant est un mail ou un pseudo ?
+			utilisateur = mailOuPseudo(identifiant); // TODO revoir la méthode pour meilleur compréhension
+			
+			// est-ce que l'utilisateur existe ?
+			if (utilisateur.getPseudo() == null) {
+				// l'utilisateur n'existe pas
+				listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_NON_TROUVE);
 				request.setAttribute("listeCodesErreur", listeCodesErreur);
 				RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
 				rd.forward(request, response);
 			} else {
-				// bon mot de passe
-				String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
-				int NoUtilisateur = utilisateur.getNoUtilisateur();
-				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
-				session.setAttribute("pseudo", pseudo); //Pour la phase de tests
-				session.setAttribute("NoUtilisateur", NoUtilisateur);
-				response.sendRedirect("/ENIProjetEncheres/AfficherProfile"); 
-//				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
-//				rd.forward(request, response);
+				// l'utilistaeur existe
+				// on teste alors le mot de passe
+				if (!motDePasseValide(utilisateur, motDePasse)) {
+					// pas le bon mot de passe
+					listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+					request.setAttribute("listeCodesErreur", listeCodesErreur);
+					RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
+					rd.forward(request, response);
+				} else {
+					// bon mot de passe
+					String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
+					int NoUtilisateur = utilisateur.getNoUtilisateur();
+					HttpSession session = request.getSession();
+					session.setAttribute("connecte", true); // voir si la session est avec un utilisateur connecté
+					session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
+//					session.setAttribute("pseudo", pseudo); //Pour la phase de tests
+//					session.setAttribute("NoUtilisateur", NoUtilisateur);
+					// TODO ce n'est un sendredirect mais un forward qu'il faut faire
+					RequestDispatcher rd = request.getRequestDispatcher("/accueil");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
+					rd.forward(request, response);
+				}
 			}
 		}
 	}
