@@ -6,8 +6,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
+<head>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
 <title>Affichage détails vente - enchérir</title>
+</head>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	
@@ -35,7 +37,7 @@
 	</div>
 	<div class="container">
 		<c:choose>
-    		 <c:when test="${!empty sessionScope }">
+    		 <c:when test="${!empty article ||!empty sessionScope }">
 		        <ul class="list-group col col-lg-4">
 		         	<li class=" d-flex justify-content-between align-items-center">
 		         		<p>${article.getNomArticle()}</p> 
@@ -44,7 +46,7 @@
 		         		<p>Description : ${article.getDescription()}</p> 
 					</li>
 		         	<li class="d-flex justify-content-between align-items-center">
-		         		<p>Catégorie : ${artcile.getCategorie()}</p> 
+		         		<p>Catégorie : ${artcile.getLibelleCatagorie()}</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
 		         		<p>Meilleure offre : ${encherisseur.getDerniereEnchere()} pts par ${encherisseur.getPseudo()}</p> 

@@ -74,9 +74,8 @@ public class ServletAuthentification extends HttpServlet {
 				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
 				session.setAttribute("pseudo", pseudo); //Pour la phase de tests
 				session.setAttribute("NoUtilisateur", NoUtilisateur);
-				response.sendRedirect("/ENIProjetEncheres/AfficherProfile"); 
-//				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
-//				rd.forward(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+				rd.forward(request, response);
 			}
 		}
 	}

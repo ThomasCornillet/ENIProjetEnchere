@@ -21,10 +21,10 @@ import fr.eni.encheres.exceptions.BusinessException;
  */
 @WebServlet(urlPatterns = {"/modificationProfil",
 							"/supprimerProfil",
-							"/AfficherProfile"})
+							"/afficherProfil"})
 public class ServletProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	public static final String VUE_PROFILE = "/WEB-INF/jsp/AfficherProfil.jsp";
+	public static final String VUE_PROFILE = "/WEB-INF/jsp/afficherProfil.jsp";
 	public static final String VUE_MODIFIER_PROFILE = "/WEB-INF/jsp/modifierProfil.jsp";
        
     /**
@@ -39,7 +39,7 @@ public class ServletProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getServletPath().equals("/AfficherProfile")) {
+		if(request.getServletPath().equals("/afficherProfil")) {
 			
 			List<Integer> listeCodesErreur= new ArrayList<>();
 			

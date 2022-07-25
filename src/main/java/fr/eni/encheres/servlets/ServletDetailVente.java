@@ -37,14 +37,14 @@ public class ServletDetailVente extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Integer> listeCodesErreur= new ArrayList<>();
 		
-		this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
+		
 		ArticlesManager articleMngr = ArticlesManager.getInstance();
 		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		try {
 			HttpSession session = request.getSession();
 			String pseudo = (String) session.getAttribute("pseudo");
-			int noUtilisateur = (int) session.getAttribute("noUtilisateur");
 			Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);	
+			int noUtilisateur = utilisateur.getNoUtilisateur();
 			request.setAttribute("utilisateur", utilisateur);
 			request.setAttribute("noUtilisateur", noUtilisateur);
 			
@@ -53,6 +53,7 @@ public class ServletDetailVente extends HttpServlet {
 			
 			System.out.println(pseudo); // TODO delete
 			System.out.println(article.toString()); // TODO delete
+			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

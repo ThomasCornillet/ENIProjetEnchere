@@ -74,6 +74,7 @@
 		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
 			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${sessionScope.noUtilisateur}</p>
+			<a></a>
 		</c:if>		
 
 <!-- import javascript pour Boostrap -->

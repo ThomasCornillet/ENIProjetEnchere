@@ -44,11 +44,11 @@
 					<div class="col-12 col-md-6">
 						<div class="card">
 							<div class="card-body">
-								<h5 class="card-title text-decoration-underline">${article.getNomArticle()}</h5>
+								<a href="${pageContext.request.contextPath }/detailVente">${article.getNomArticle()}</a>
 								<p class="card-text">${article.getDescription() }</p>
 								<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 								<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
-								<a href="${pageContext.request.contextPath }/detailVente">Vendeur : ${article.getNo_utilisateur() }</a>
+								<a href="${pageContext.request.contextPath }/afficherProfil">Vendeur : ${article.getPseudoUtilisateur() }</a>
 							</div>
 						</div>
 					</div>
