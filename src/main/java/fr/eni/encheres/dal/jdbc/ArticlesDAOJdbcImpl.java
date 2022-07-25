@@ -41,10 +41,12 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																+ "WHERE nom_article LIKE ? "
 																+ "ORDER BY date_fin_encheres DESC";
 
-	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle FROM ARTICLES a\r\n"
-			+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur\r\n"
-			+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie\r\n"
-			+ "WHERE u.no_utilisateur =?";
+	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT a.no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle" 
+															+ "FROM ARTICLES a"
+														+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur"
+														+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie"
+														+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
+														+ "WHERE u.no_utilisateur =?";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {

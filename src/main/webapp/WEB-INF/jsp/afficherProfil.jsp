@@ -63,6 +63,9 @@
 				 </ul>
 				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
 				 </c:if>
+				 <c:if test="${sessionScope.noUtilisateur == id}">
+				 	<a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" type="button">Modifier</a>
+				 </c:if>
 	        </c:when>
 	        <c:otherwise>
 	        	<p class="alert alert-danger alert-dismissible fade show" role="alert">Pas de profile à afficher<p>
@@ -73,7 +76,7 @@
 		<%-- Vérification de la présence d'un objet utilisateur en session --%>
 		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo} ${sessionScope.noUtilisateur}</p>
+			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${utilisateur.getPseudo()} ${sessionScope.noUtilisateur}</p>
 			<a></a>
 		</c:if>		
 

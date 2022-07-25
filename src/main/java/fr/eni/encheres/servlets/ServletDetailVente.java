@@ -43,7 +43,7 @@ public class ServletDetailVente extends HttpServlet {
 		try {
 			HttpSession session = request.getSession();
 			String pseudo = (String) session.getAttribute("pseudo");
-			Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);	
+			Utilisateurs utilisateur = utilisateurMngr.selectByPseudo("del");	
 			int noUtilisateur = utilisateur.getNoUtilisateur();
 			request.setAttribute("utilisateur", utilisateur);
 			request.setAttribute("noUtilisateur", noUtilisateur);
