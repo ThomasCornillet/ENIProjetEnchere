@@ -4,8 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-<title>Accueil</title>
+<head>
+	<title>Accueil</title>
+	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+</head>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	
@@ -16,7 +18,7 @@
 		<div class="row">
 			<h2 class="col">Filtres :</h2>
 		</div>
-		<form class="row" method="post" action="${pageContext.request.contextPath }/accueil">
+		<form class="row" method="post" action="${pageContext.request.contextPath }/accueilfiltre">
 			<div class="col-6">
 				<input type="search" name="portionNom" placeholder="Le nom de l'article contient">
 				<div>
