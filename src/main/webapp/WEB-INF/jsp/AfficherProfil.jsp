@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Affichage profil</title>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	<c:if test="${!empty listeCodesErreur}">

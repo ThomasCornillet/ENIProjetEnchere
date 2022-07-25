@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Modifier Profil</title>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	<c:if test="${!empty listeCodesErreur}">
@@ -101,7 +102,7 @@
 							      
 							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
 									<input type="hidden" name="noUtilisateur" value="${sessionScope.nom}"/>
-									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao les boloss !</button>
+									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao et bon dev !</button>
 									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
 								</form>	 	   
 						    </div>

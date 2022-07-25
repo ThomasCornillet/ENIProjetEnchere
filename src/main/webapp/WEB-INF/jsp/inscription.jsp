@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Inscription</title>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	<c:if test="${!empty listeCodesErreur}">

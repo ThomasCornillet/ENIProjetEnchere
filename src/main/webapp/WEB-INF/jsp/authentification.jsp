@@ -4,7 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
+<head>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Authentification</title>
+</head>
 <body>
 
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>

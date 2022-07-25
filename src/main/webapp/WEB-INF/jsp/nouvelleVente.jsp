@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+<title>Nouvelle vente</title>
 <body>
 	<header>
 		<div class="container">
