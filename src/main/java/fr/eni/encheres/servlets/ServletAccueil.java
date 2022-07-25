@@ -66,7 +66,6 @@ public class ServletAccueil extends HttpServlet {
 		List<Integer> listeCodesErreur = new ArrayList<>();
 		// url /accueilfiltre
 		if(request.getServletPath().equals("/accueilfiltre")) {
-		
 			if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes")) {
 				doGet(request, response);
 			} else {
@@ -136,6 +135,8 @@ public class ServletAccueil extends HttpServlet {
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 				rd.forward(request, response);
 			}
+		} else if (request.getServletPath().equals("/accueil")) {
+			doGet(request, response);
 		}
 	}
 
