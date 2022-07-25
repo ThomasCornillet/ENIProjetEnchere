@@ -68,7 +68,7 @@
 								<p class="card-text">
 									<p>Prix : ${article.getPrix_initial() }</p>
 									<p>Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
-									<p>Vendeur : <strong>À FAIRE</strong></p>
+									<p>Vendeur : ${article.getPseudoUtilisateur() }</p>
 								</p>
 							</div>
 						</div>

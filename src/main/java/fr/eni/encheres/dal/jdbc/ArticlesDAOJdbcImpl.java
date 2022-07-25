@@ -14,10 +14,32 @@ import fr.eni.encheres.dal.CodesResultatDAL;
 import fr.eni.encheres.exceptions.BusinessException;
 
 public class ArticlesDAOJdbcImpl implements ArticlesDAO {
-	private static final String SELECT_ALL = "SELECT * FROM ARTICLES ORDER BY date_fin_encheres DESC";
-	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
-	private static final String SELECT_BY_NOM = "SELECT * FROM ARTICLES WHERE nom_article = ?"; // TODO est-ce qu'on utilise cette sélection ?
-	private static final String SELECT_BY_PORTION_NOM = "SELECT * FROM ARTICLES WHERE nom_article LIKE ? ORDER BY date_fin_encheres DESC";
+//	private static final String SELECT_ALL = "SELECT * FROM ARTICLES ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_ALL = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+												+ "FROM ARTICLES a "
+													+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+													+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+													+ "ORDER BY date_fin_encheres DESC";
+//	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_BY_CATEGORIE = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+														+ "FROM ARTICLES a "
+															+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+															+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+															+ "WHERE a.no_categorie = ? "
+															+ "ORDER BY date_fin_encheres DESC";
+//	private static final String SELECT_BY_NOM = "SELECT * FROM ARTICLES WHERE nom_article = ?"; // TODO est-ce qu'on utilise cette sélection ?
+	private static final String SELECT_BY_NOM = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+													+ "FROM ARTICLES a "
+														+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+														+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+														+ "WHERE nom_article = ?";
+//	private static final String SELECT_BY_PORTION_NOM = "SELECT * FROM ARTICLES WHERE nom_article LIKE ? ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_BY_PORTION_NOM = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+															+ "FROM ARTICLES a "
+																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+																+ "WHERE nom_article LIKE ? "
+																+ "ORDER BY date_fin_encheres DESC";
 
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -26,7 +48,9 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			Statement stmt = cnx.createStatement();
 			ResultSet rs =  stmt.executeQuery(SELECT_ALL);
 			while (rs.next()) {
-				retour.add(creerArticle(rs));
+				Articles article = creerArticle(rs);
+				
+				retour.add(article);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -110,6 +134,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		retour.setPrix_vente(rs.getInt("prix_vente"));
 		retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
 		retour.setNo_categorie(rs.getInt("no_categorie"));
+		retour.setLibelleCatagorie(rs.getString("libelle"));
 		retour.setVendu(rs.getBoolean("vendu"));
 		return retour;
 	}

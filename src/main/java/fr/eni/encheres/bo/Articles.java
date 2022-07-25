@@ -1,8 +1,10 @@
 package fr.eni.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Articles {
+public class Articles implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int noArticle;
 	private String nomArticle;
 	private String description;
@@ -11,7 +13,9 @@ public class Articles {
 	private int prix_initial;
 	private int prix_vente;
 	private int no_utilisateur;
+	private String pseudoUtilisateur;
 	private int no_categorie;
+	private String libelleCatagorie;
 	private boolean vendu;
 	
 	public int getNoArticle() {
@@ -74,9 +78,22 @@ public class Articles {
 	public void setVendu(boolean vendu) {
 		this.vendu = vendu;
 	}
+	public String getPseudoUtilisateur() {
+		return pseudoUtilisateur;
+	}
+	public void setPseudoUtilisateur(String pseudoUtilisateur) {
+		this.pseudoUtilisateur = pseudoUtilisateur;
+	}
+	public String getLibelleCatagorie() {
+		return libelleCatagorie;
+	}
+	public void setLibelleCatagorie(String libelleCatagorie) {
+		this.libelleCatagorie = libelleCatagorie;
+	}
 	
 	public Articles() {
 	}
+	
 	
 	
 
