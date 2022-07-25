@@ -22,7 +22,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 @WebServlet(urlPatterns = {"/modificationProfil",
 							"/supprimerProfil",
 							"/AfficherProfile"})
-public class ServletModifierProfil extends HttpServlet {
+public class ServletProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String VUE_PROFILE = "/WEB-INF/jsp/AfficherProfil.jsp";
 	public static final String VUE_MODIFIER_PROFILE = "/WEB-INF/jsp/modifierProfil.jsp";
@@ -30,7 +30,7 @@ public class ServletModifierProfil extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServletModifierProfil() {
+    public ServletProfil() {
         super();
         // TODO Auto-generated constructor stub
     }
