@@ -14,6 +14,7 @@ public interface UtilisateursDAO {
 	public void insert(Utilisateurs utilisateur) throws BusinessException;
 	public void update(Utilisateurs utilisateur) throws BusinessException;
 	public void deleteById(int noUtilisateur)throws BusinessException;
+	public Utilisateurs selectById(int noUtilisateur) throws BusinessException;
 	
 
 }

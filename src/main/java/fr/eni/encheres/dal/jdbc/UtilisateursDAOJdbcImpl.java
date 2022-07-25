@@ -23,7 +23,8 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 	private static final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS "
 													+ "SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?,administrateur=? "
 													+ "WHERE no_utilisateur = ?";
-	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";										
+	private static final String DELETE_UTILISATEUR = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?";
+	private static final String SELECT_BY_ID = "SELECT * FROM UTILISATEURS WHERE no_utilisateur = ?";
 	
 	@Override
 	public Utilisateurs selectByPseudo(String pseudo) throws BusinessException {
@@ -178,6 +179,30 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 		}
 		
 	}
+	
+
+	@Override
+	public Utilisateurs selectById(int noUtilisateur) throws BusinessException {
+		Utilisateurs retour = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_ID);
+			pstmt.setInt(1, noUtilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				setInfoUtilisateur(retour, rs);
+			} else {
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.SELECT_BY_ID_EMPTY);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.SELECT_BY_ID_CONNECTION_ERROR);
+			throw be;
+		}
+		return retour;		
+	}
+
 		
 	private void preparationDuStatement(Utilisateurs utilisateur, PreparedStatement pstmt) throws SQLException {
 		pstmt.setString(1, utilisateur.getPseudo());

@@ -20,7 +20,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 /**
  * Servlet implementation class ServletAccueil
  */
-@WebServlet("/accueil")
+@WebServlet(urlPatterns = {"/accueil", "/accueilfiltre"})
 public class ServletAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -38,18 +38,23 @@ public class ServletAccueil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager categoriesMnger = CategoriesManager.getInstance();
 		ArticlesManager articlesMnger = ArticlesManager.getInstance();
+		List<Integer> listeCodesErreur = new ArrayList<>();
 		try {
 			request.setAttribute("listeCategories", categoriesMnger.selectAll());
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			request.setAttribute("listeArticles", articlesMnger.selectAll());
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if (e.hasErreurs()) {
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+			}
 		}
+		
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 		rd.forward(request, response);
 	}
@@ -58,53 +63,79 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes")) {
-			doGet(request, response);
-		} else {
-			ArticlesManager articlesMngr = ArticlesManager.getInstance();
-			// on met un paramètre comme quoi il y a un filtre (afin de savoir si on affiche tout ou juste ce qui est filtré dans la jsp
-			request.setAttribute("filtre", true);
-			if (request.getParameter("portionNom").isBlank() || request.getParameter("portionNom") == null) {
-				// si pas de filtre sur le nom, on ne gère que le filtre sur la catégorie
-				try {
-					request.setAttribute("listeArticles", articlesMngr.selectByCategorie(request.getParameter("categorie")));
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else if (request.getParameter("categorie").equals("toutes")) {
-				// si pas de filtre sur la catégorie, on ne gere que le nom
-				try {
-					request.setAttribute("listeArticles", articlesMngr.selectByPortionNom(request.getParameter("portionNom")));
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
+		List<Integer> listeCodesErreur = new ArrayList<>();
+		// url /accueilfiltre
+		if(request.getServletPath().equals("/accueilfiltre")) {
+		
+			if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes")) {
+				doGet(request, response);
 			} else {
-				List<Articles> listeArticles = new ArrayList<>();
-				try {
-					for (Articles a : articlesMngr.selectByCategorie(request.getParameter("categorie"))) {
-						listeArticles.add(a);
+				ArticlesManager articlesMngr = ArticlesManager.getInstance();
+				// on met un paramètre comme quoi il y a un filtre (afin de savoir si on affiche tout ou juste ce qui est filtré dans la jsp
+				request.setAttribute("filtre", true);
+				if (request.getParameter("portionNom").isBlank() || request.getParameter("portionNom") == null) {
+					// si pas de filtre sur le nom, on ne gère que le filtre sur la catégorie
+					try {
+						request.setAttribute("listeArticles", articlesMngr.selectByCategorie(request.getParameter("categorie")));
+					} catch (BusinessException e) {
+						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
 					}
-					for (Articles a : articlesMngr.selectByPortionNom(request.getParameter("portionNom"))) {
-						listeArticles.add(a);
+				} else if (request.getParameter("categorie").equals("toutes")) {
+					// si pas de filtre sur la catégorie, on ne gere que le nom
+					try {
+						request.setAttribute("listeArticles", articlesMngr.selectByPortionNom(request.getParameter("portionNom")));
+					} catch (BusinessException e) {
+						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
+					}				
+				} else {
+					List<Articles> listeArticles = new ArrayList<>();
+					try {
+						for (Articles a : articlesMngr.selectByCategorie(request.getParameter("categorie"))) {
+							listeArticles.add(a);
+						}
+						for (Articles a : articlesMngr.selectByPortionNom(request.getParameter("portionNom"))) {
+							listeArticles.add(a);
+						}
+					} catch (BusinessException e) {
+						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
 					}
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("listeArticles", listeArticles);
 				}
-				request.setAttribute("listeArticles", listeArticles);
+				// on recharge la liste des catégories pour l'affichage dans le menu déroulant
+				CategoriesManager categoriesMnger = CategoriesManager.getInstance();
+				try {
+					request.setAttribute("listeCategories", categoriesMnger.selectAll());
+				} catch (BusinessException e) {
+					e.printStackTrace();
+					if (e.hasErreurs()) {
+						for (int code : e.getListeCodesErreur()) {
+							listeCodesErreur.add(code);
+						}
+					}
+				}
+				
+				if (!listeCodesErreur.isEmpty()) {
+					request.setAttribute("listeCodesErreur", listeCodesErreur);
+				}
+				
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+				rd.forward(request, response);
 			}
-			// on recharge la liste des catégories pour l'affichage dans le menu déroulant
-			CategoriesManager categoriesMnger = CategoriesManager.getInstance();
-			try {
-				request.setAttribute("listeCategories", categoriesMnger.selectAll());
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
-			rd.forward(request, response);
 		}
 	}
 
