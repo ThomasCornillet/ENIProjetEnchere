@@ -46,8 +46,12 @@
 					<div class="col-12 col-md-6">
 						<div class="card">
 							<div class="card-body">
-								<h5 class="card-title text-decoration-underline">${article.getNom()}</h5>
-								<p class="card-text">${article.getDescription() }</p>
+								<h5 class="card-title text-decoration-underline">${article.getNomArticle()}</h5>
+								<p class="card-text">
+									<p>Prix : ${article.getPrix_initial() }</p>
+									<p>Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
+									<p>Vendeur : <strong>À FAIRE</strong></p>
+								</p>
 							</div>
 						</div>
 					</div>
