@@ -77,23 +77,10 @@ public class ServletAuthentification extends HttpServlet {
 					int NoUtilisateur = utilisateur.getNoUtilisateur();
 					HttpSession session = request.getSession();
 					session.setAttribute("connecte", true); // voir si la session est avec un utilisateur connecté
-					session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
-//					session.setAttribute("pseudo", pseudo); //Pour la phase de tests
-//					session.setAttribute("NoUtilisateur", NoUtilisateur);
-					// TODO ce n'est un sendredirect mais un forward qu'il faut faire
-					RequestDispatcher rd = request.getRequestDispatcher("/accueil");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
+					session.setAttribute("UtilisateurConnecte", utilisateur); // Pour la phase de tests 
+					RequestDispatcher rd = request.getRequestDispatcher("/accueil");
 					rd.forward(request, response);
 				}
-				// bon mot de passe
-				String pseudo = utilisateur.getPseudo(); // Pour la phase de tests 
-				int NoUtilisateur = utilisateur.getNoUtilisateur();
-				HttpSession session = request.getSession();
-				session.setAttribute("UtilisateurConnecte", utilisateur); //Pour la phase de tests 
-				session.setAttribute("pseudo", pseudo); //Pour la phase de tests
-				session.setAttribute("NoUtilisateur", NoUtilisateur);
-				response.sendRedirect("/ENIProjetEncheres/AfficherProfile"); 
-//				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/modifierProfil.jsp");// TODO A rediriger vers accueil quand il n'y aura plus de bug dans l'acceuil et utilisateur Manager 
-//				rd.forward(request, response);
 			}
 		}
 	}
