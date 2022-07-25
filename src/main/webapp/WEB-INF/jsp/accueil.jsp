@@ -9,7 +9,25 @@
 	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
+	
+	<!-- affichage des erreurs s'il y en a -->
+	<c:if test="${!empty listeCodesErreur }">
+		<div class="container">
+			<div class="row"">
+				<div class="col">
+					<div class="alert alert-danger" role="alert">
+	          			<h4 class="alert-heading">Une ou plusieurs erreurs ont eu lieu :</h4>
+	          			<ul>
+	          			<c:forEach var="code" items="${listeCodesErreur}">
+	          				<li>${LecteurMessage.getMessageErreur(code)}</li>
+	          			</c:forEach>
+	          			</ul>
+	          		</div>
+				</div>
+			</div>
+		</div>
+	</c:if>
 	
 	<div class="container">
 		<div class="row">
