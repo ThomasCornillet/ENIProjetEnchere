@@ -39,37 +39,28 @@ public class ServletProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getServletPath().equals("/afficherProfil")) {
-			
-			List<Integer> listeCodesErreur= new ArrayList<>();
-			
-	//		if(pseudo != null) { // A décommenter après la phase test puis supprimer ce commentaire
-				UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-				try {
-					HttpSession session = request.getSession();
-					Utilisateurs utilisateurConnecte = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
-//					String pseudo = (String) session.getAttribute("pseudo");
-//					Utilisateurs utilisateur = utilisateurMngr.selectByPseudo(pseudo);
-					request.setAttribute("utilisateur", utilisateur);
-					
-					System.out.println(pseudo); // TODO delete
-					
-					this.getServletContext().getRequestDispatcher( VUE_PROFILE ).forward( request, response );
-				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		List<Integer> listeCodesErreur= new ArrayList<>();
+		if (request.getServletPath().equals("/afficherProfil")) {
+			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+			try {
+				Utilisateurs utilisateur = utilisateurMngr.selectById((Integer)request.getAttribute("id"));
+				request.setAttribute("utilisateur", utilisateur);
+			} catch (BusinessException e) {
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
 				}
-	//		}else {
-	//			listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_INEXISTANT);
-	//			request.setAttribute("listeCodesErreur", listeCodesErreur);
-	//			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-	//			rd.forward(request, response);
-	//		} // A décommenter après la phase test puis supprimer ce commentaire
-			
-			
-		} else {
-		
+			}
+			if (!listeCodesErreur.isEmpty()) {
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+			rd.forward(request, response);
+
+		} else if (request.getServletPath().equals("/modificationProfil")) {
+			// TODO vérifier fonctionnement
 			this.getServletContext().getRequestDispatcher(VUE_MODIFIER_PROFILE).forward( request, response );
+		}  else if (request.getServletPath().equals("/supprimerProfil")) {
+			
 		}
 	}
 
