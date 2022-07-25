@@ -75,9 +75,9 @@ public class ServletProfil extends HttpServlet {
 		
 		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
-		
 		try {
-			utilisateur = utilisateurMngr.selectByPseudo("test");
+			utilisateur = utilisateurMngr.selectById((Integer)request.getAttribute("id"));
+			request.setAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

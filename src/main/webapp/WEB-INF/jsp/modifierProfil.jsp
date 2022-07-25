@@ -108,11 +108,12 @@
 						    </div>
 						  </div>
 						 </div>	
+			</div>
 	</div>
 	<%-- Vérification de la présence d'un objet utilisateur en session --%>
 		<c:if test="${!empty sessionScope}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${sessionScope.pseudo}</p>
+			<p class="succes">Vous êtes connecté.e avec l'adresse : ${utilisateur.getPseudo()}</p>
 		</c:if>	
 
 <!-- import javascript pour Boostrap -->

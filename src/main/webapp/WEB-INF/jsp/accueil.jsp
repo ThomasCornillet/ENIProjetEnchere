@@ -7,7 +7,24 @@
 <jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
 <title>Accueil</title>
 <body>
-<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
+	
+	<c:if test="${!empty listeCodesErreur }">
+		<div class="container">
+			<div class="row">
+	        	<div class="col">
+	        		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	          			<h4 class="alert-heading">Au moins une erreur est survenue</h4>
+	          			<ul>
+	          			<c:forEach var="code" items="${listeCodesErreur}">
+	          				<li>${LecteurMessage.getMessageErreur(code)}</li>
+	          			</c:forEach>
+	          			</ul>
+	          		</div>
+	         	</div>
+	    	 </div>
+		</div>
+	</c:if>
 	
 	<div class="container">
 		<div class="row">
@@ -44,7 +61,7 @@
 					<div class="col-12 col-md-6">
 						<div class="card">
 							<div class="card-body">
-								<a href="${pageContext.request.contextPath }/detailVente">${article.getNomArticle()}</a>
+								<a href="${pageContext.request.contextPath }/detailVenteid=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
 								<p class="card-text">${article.getDescription() }</p>
 								<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 								<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
