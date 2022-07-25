@@ -46,7 +46,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 														+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur"
 														+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie"
 														+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
-														+ "WHERE u.no_utilisateur =?";
+														+ "WHERE u.no_utilisateur =7";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -137,7 +137,18 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			pstmt.setInt(1, noUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				retour = creerArticle(rs);
+				retour.setNoArticle(rs.getInt("no_article"));
+				retour.setNomArticle(rs.getString("nom_article"));
+				retour.setDescription(rs.getString("description"));
+				retour.setDate_debut_enchere(rs.getDate("date_debut_encheres").toLocalDate());
+				retour.setDate_fin_enchere(rs.getDate("date_fin_encheres").toLocalDate());
+				retour.setPrix_initial(rs.getInt("prix_initial"));
+				retour.setPrix_vente(rs.getInt("prix_vente"));
+				retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
+				retour.setNo_categorie(rs.getInt("no_categorie"));
+				retour.setVendu(rs.getBoolean("vendu"));
+				retour.setLibelleCatagorie(rs.getString("libelle"));
+				retour.setLibelleCatagorie(rs.getString("libelle"));
 			} else {
 				BusinessException businessException = new BusinessException();
 				businessException.ajouterErreur(CodesResultatDAL.NO_UTILISATEUR_INEXISTANT); //ici pas seulement connexion echec mais echec de la sélection
