@@ -38,18 +38,23 @@ public class ServletAccueil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager categoriesMnger = CategoriesManager.getInstance();
 		ArticlesManager articlesMnger = ArticlesManager.getInstance();
+		List<Integer> listeCodesErreur = new ArrayList<>();
 		try {
 			request.setAttribute("listeCategories", categoriesMnger.selectAll());
-		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			request.setAttribute("listeArticles", articlesMnger.selectAll());
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			if (e.hasErreurs()) {
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+			}
 		}
+		
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 		rd.forward(request, response);
 	}
@@ -58,6 +63,7 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Integer> listeCodesErreur = new ArrayList<>();
 		// url /accueilfiltre
 		if(request.getServletPath().equals("/accueilfiltre")) {
 		
@@ -72,16 +78,24 @@ public class ServletAccueil extends HttpServlet {
 					try {
 						request.setAttribute("listeArticles", articlesMngr.selectByCategorie(request.getParameter("categorie")));
 					} catch (BusinessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
 					}
 				} else if (request.getParameter("categorie").equals("toutes")) {
 					// si pas de filtre sur la catégorie, on ne gere que le nom
 					try {
 						request.setAttribute("listeArticles", articlesMngr.selectByPortionNom(request.getParameter("portionNom")));
 					} catch (BusinessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
 					}				
 				} else {
 					List<Articles> listeArticles = new ArrayList<>();
@@ -93,8 +107,12 @@ public class ServletAccueil extends HttpServlet {
 							listeArticles.add(a);
 						}
 					} catch (BusinessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						if (e.hasErreurs()) {
+							for (int code : e.getListeCodesErreur()) {
+								listeCodesErreur.add(code);
+							}
+						}
 					}
 					request.setAttribute("listeArticles", listeArticles);
 				}
@@ -103,9 +121,18 @@ public class ServletAccueil extends HttpServlet {
 				try {
 					request.setAttribute("listeCategories", categoriesMnger.selectAll());
 				} catch (BusinessException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					if (e.hasErreurs()) {
+						for (int code : e.getListeCodesErreur()) {
+							listeCodesErreur.add(code);
+						}
+					}
 				}
+				
+				if (!listeCodesErreur.isEmpty()) {
+					request.setAttribute("listeCodesErreur", listeCodesErreur);
+				}
+				
 				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 				rd.forward(request, response);
 			}
