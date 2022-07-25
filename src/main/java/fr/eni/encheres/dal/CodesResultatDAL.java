@@ -25,11 +25,10 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_BY_ID_EMPTY = 11010;
 	public static final int SELECT_BY_ID_CONNECTION_ERROR = 11011;
 
-
-
-	
 	
 	// Codes naoufel (12***)
+	public static final int NO_UTILISATEUR_INEXISTANT = 12000;
+    public static final int SELECT_BY_NO_UTILISATEUR_ECHEC = 12001;
 
 	// Codes johanna (13***)
 
