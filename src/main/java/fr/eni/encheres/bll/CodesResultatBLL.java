@@ -22,9 +22,10 @@ public abstract class CodesResultatBLL {
 	public static final int FORMATAGE_CREDIT_ERREUR = 21012;
 	public static final int PSEUDO_DEJA_EXISTANT = 21013;
 	public static final int EMAIL_DEJA_EXISTANT = 21014;
+
 	
 	// Codes naoufel (22***)
-	
+
 	// Codes johanna (23***)
 
 }

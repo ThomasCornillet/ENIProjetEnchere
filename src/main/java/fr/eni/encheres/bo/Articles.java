@@ -77,7 +77,13 @@ public class Articles {
 	
 	public Articles() {
 	}
-	
+	@Override
+	public String toString() {
+		return "Articles [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+				+ ", date_debut_enchere=" + date_debut_enchere + ", date_fin_enchere=" + date_fin_enchere
+				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
+				+ ", no_categorie=" + no_categorie + ", vendu=" + vendu + "]";
+	}
 	
 
 }

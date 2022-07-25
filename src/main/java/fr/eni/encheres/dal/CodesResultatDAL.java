@@ -22,13 +22,18 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_ALL_CATEGORIES_ECHEC = 11007;
 	public static final int SELECT_ARTICLE_BY_PORTION_NOM_ECHEC = 11008;
 	public static final int SELECTION_ALL_CONNEXION_ECHEC = 11009;
+	
+
 
 
 
 	
 	
 	// Codes naoufel (12***)
-
+	
+	public static final int NO_UTILISATEUR_INEXISTANT = 12000;
+	public static final int SELECT_BY_NO_UTILISATEUR_ECHEC = 12001;
+	
 	// Codes johanna (13***)
 
 }

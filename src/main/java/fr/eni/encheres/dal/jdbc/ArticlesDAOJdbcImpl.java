@@ -18,6 +18,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
 	private static final String SELECT_BY_NOM = "SELECT * FROM ARTICLES WHERE nom_article = ?"; // TODO est-ce qu'on utilise cette sélection ?
 	private static final String SELECT_BY_PORTION_NOM = "SELECT * FROM ARTICLES WHERE nom_article LIKE ? ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT * FROM ARTICLES a JOIN UTILISATEURS u ON u.no_utilisateur= a.no_utilisateur WHERE u.no_utilisateur = ?";
 
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -94,6 +95,29 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLE_BY_PORTION_NOM_ECHEC); //ici pas seulement connexion echec mais echec de la sélection
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	@Override
+	public Articles selectArticleByNoUtilisateur(int noUtilisateur) throws BusinessException {
+		Articles retour = new Articles();
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_UTILISATEUR);
+			pstmt.setInt(1, noUtilisateur);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				retour = creerArticle(rs);
+			} else {
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.NO_UTILISATEUR_INEXISTANT); //ici pas seulement connexion echec mais echec de la sélection
+				throw businessException;
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_UTILISATEUR_ECHEC); //ici pas seulement connexion echec mais echec de la sélection
 			throw businessException;
 		}
 		return retour;
