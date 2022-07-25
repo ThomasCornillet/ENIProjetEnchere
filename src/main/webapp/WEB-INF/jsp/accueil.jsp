@@ -61,7 +61,7 @@
 					<div class="col-12 col-md-6">
 						<div class="card">
 							<div class="card-body">
-								<a href="${pageContext.request.contextPath }/detailVente">${article.getNomArticle()}</a>
+								<a href="${pageContext.request.contextPath }/detailVenteid=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
 								<p class="card-text">${article.getDescription() }</p>
 								<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 								<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
