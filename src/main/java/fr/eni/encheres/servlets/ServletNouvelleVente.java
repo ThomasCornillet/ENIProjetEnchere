@@ -44,6 +44,8 @@ public class ServletNouvelleVente extends HttpServlet {
 		}
 		//transmettre notre liste de catégories à la jsp.
 		//passer la liste de catégorie en attributs de requêtes
+		//TODO gérer l'affichage du retrait
+		//TODO gérer filtre : page uniquement visible par un utilisateur connecté. 
 		request.setAttribute("listeCategories", listeCategories);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/nouvelleVente.jsp")  ;   //permet de dispatcher la requete en iindiquant type nom de variable
 		rd.forward(request, response);//appel à la méthode forward de la variable rd requestDispatcher avec en parametre la requete et la reponse (request response)
@@ -55,7 +57,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	
 	}	
 	
 	
