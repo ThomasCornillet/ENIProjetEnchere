@@ -32,7 +32,6 @@ public class ServletAuthentification extends HttpServlet {
 		if(request.getServletPath().equals("/deconnexion")) {
 			System.out.println("deconnexion en cours");
 			HttpSession session = request.getSession();
-//			session.invalidate();
 			session.setAttribute("connecte", false);
 			session.setAttribute("UtilisateurConnecte", null);
 		}

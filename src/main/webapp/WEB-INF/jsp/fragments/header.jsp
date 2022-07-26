@@ -17,7 +17,7 @@
 						<a href="${pageContext.request.contextPath }/nouvelleVente">Enchères</a>
 					</div>
 					<div class="col">
-						<a href="${pageContext.request.contextPath }/afficherProfil">Mon profil</a>
+						<a href="${pageContext.request.contextPath }/afficherProfil?id=${UtilisateurConnecte.getNoUtilisateur()}">Mon profil</a>
 					</div>
 					<div class="col">
 						<a href="${pageContext.request.contextPath }/deconnexion">Se déconnecter</a>
