@@ -8,20 +8,16 @@
 			</div>
 			<c:choose>
 				<c:when test="${!connecte }">
-					<div class="col">
+					<div class="col text-right">
 						<a href="${pageContext.request.contextPath }/authentification">S'inscrire - Se connecter</a>
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="col">
-						<a href="${pageContext.request.contextPath }/nouvelleVente">Enchères</a>
-					</div>
-					<div class="col">
-						<a href="${pageContext.request.contextPath }/afficherProfil?id=${UtilisateurConnecte.getNoUtilisateur()}">Mon profil</a>
-					</div>
-					<div class="col">
-						<a href="${pageContext.request.contextPath }/deconnexion">Se déconnecter</a>
-					</div>
+					<ul class="list-inline text-center">
+		              	<li class="list-inline-item"><a href="${pageContext.request.contextPath }/nouvelleVente">Enchères</a></li>
+		              	<li class="list-inline-item"><a href="${pageContext.request.contextPath }/afficherProfil?id=${UtilisateurConnecte.getNoUtilisateur()}">Mon profil</a></li>
+		              	<li class="list-inline-item"><a href="${pageContext.request.contextPath }/deconnexion">Se déconnecter</a></li>
+		            </ul>
 				</c:otherwise>
 			</c:choose>
 		</div>
