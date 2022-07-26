@@ -45,7 +45,14 @@
 								<c:if test="${!empty listeCategories }">
 									<option value="toutes">Toutes</option>
 									<c:forEach var="cat" items="${listeCategories }">
-										<option value="${cat.getNoCategorie() }">${cat.getLibelle()}</option>
+										<c:choose>
+											<c:when test="${categorieSelectionnee != null && categorieSelectionnee == cat.getNoCategorie()}">
+												<option value="${cat.getNoCategorie() }" selected>${cat.getLibelle()}</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${cat.getNoCategorie() }">${cat.getLibelle()}</option>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 								</c:if>
 							</select>

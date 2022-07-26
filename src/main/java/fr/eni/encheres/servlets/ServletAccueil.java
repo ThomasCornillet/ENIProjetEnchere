@@ -89,6 +89,7 @@ public class ServletAccueil extends HttpServlet {
 				}
 			} else if (request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) {
 				// si pas de filtre sur le nom, on ne gère que le filtre sur la catégorie
+				request.setAttribute("categorieSelectionnee", request.getParameter("categorie"));
 				filtrerCategorie(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
 			} else if (request.getParameter("categorie").equals("toutes")) {
 				// si pas de filtre sur la catégorie, on ne gere que le nom
