@@ -117,7 +117,6 @@
 								<div class="card-body">
 									<h5 class="card-title"><a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a></h5>
 									<div class="card-test">
-										<a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
 										<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 										<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
 										<a href="${pageContext.request.contextPath }/afficherProfil?id=${article.getNo_utilisateur()}">Vendeur : ${article.getPseudoUtilisateur() }</a>
