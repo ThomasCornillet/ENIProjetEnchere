@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.bo.Articles;
+import fr.eni.encheres.bo.Encheres;
 import fr.eni.encheres.dal.ArticlesDAO;
 import fr.eni.encheres.dal.CodesResultatDAL;
 import fr.eni.encheres.exceptions.BusinessException;
+import java.time.LocalDate;
 
 public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 //	private static final String SELECT_ALL = "SELECT * FROM ARTICLES ORDER BY date_fin_encheres DESC";
@@ -47,12 +49,21 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																	+"INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
 																	+"WHERE u.no_utilisateur =?";
 	
-	private static final String SELECT_BY_NO_ARTICLE = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+	private static final String SELECT_BY_NO_ARTICLE = "SELECT a.no_article,a.nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,vendu,a.no_utilisateur,u.pseudo, c.no_categorie, c.libelle, "
+															+ "r.rue, r.code_postal, r.ville "
 															+ "FROM ARTICLES a "
 																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
 																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
-																+ "WHERE no_article = ?";;
+																+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article "
+																+ "WHERE a.no_article =?";
 				
+	private static final String SELECT_ENCHERES_BY_NO_ARTICLE = "SELECT e.no_enchere, u.pseudo AS encherisseur, e.date_enchere, e.montant_enchere, e.no_utilisateur, r.rue,r.code_postal,r.ville "
+															+ "FROM ENCHERES e "
+																+ "INNER JOIN UTILISATEURS u ON e.no_utilisateur = u.no_utilisateur "
+																+ "INNER JOIN ARTICLES a ON a.no_article = e.no_article "
+																+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article "
+																+ "WHERE a.no_article =? ORDER BY montant_enchere DESC";
+	
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -166,12 +177,39 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
 			pstmt.setInt(1, noArticle);
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
+				
+				if(retour == null) {
 				retour = creerArticle(rs);
-			} else {
-				BusinessException businessException = new BusinessException();
-				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLE_BY_NO_ARTICLE_VIDE); //ici pas seulement connexion echec mais echec de la sélection
-				throw businessException;
+				}
+				retour.setRue(rs.getString("rue"));
+				retour.setCodePostal(rs.getInt("code_postal"));
+				retour.setVille(rs.getString("ville"));
+				 
+				try{
+					PreparedStatement pstmt2 = cnx.prepareStatement(SELECT_ENCHERES_BY_NO_ARTICLE);
+					pstmt2.setInt(1, noArticle);
+					ResultSet rs2 = pstmt2.executeQuery();
+					if (rs2.next()) {
+					int noEnchere = rs2.getInt("no_enchere");
+					String encherisseur = rs2.getString("encherisseur");
+					LocalDate dateEnchere = rs2.getDate("date_enchere").toLocalDate();
+					int montantEnchere = rs2.getInt("montant_enchere");
+					int noUtilisateur = rs2.getInt("no_utilisateur");
+					String rue =rs2.getString("rue");
+					int codePostal= rs2.getInt("code_postal");
+					String ville = rs2.getString("ville");
+					List<Encheres> encheres = new ArrayList<>();
+					Encheres enchere = new Encheres(noEnchere, encherisseur, dateEnchere, montantEnchere, noUtilisateur, rue, codePostal, ville);
+					encheres.add(enchere);
+					retour.setListeEncheres(encheres);
+					}
+				}catch (SQLException e){
+					e.printStackTrace();
+					BusinessException businessException = new BusinessException();
+					businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_CONNEXION_ECHEC);
+					throw businessException;
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -179,7 +217,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
 		}
-		return retour;
+	return retour;
 	}
 	
 	private Articles creerArticle(ResultSet rs) throws SQLException {
