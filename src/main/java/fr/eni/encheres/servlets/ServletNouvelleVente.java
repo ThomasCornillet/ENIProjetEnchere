@@ -1,6 +1,8 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.encheres.bll.CategoriesManager;
+import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
+import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -57,7 +61,48 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Articles article = new Articles();
+		
+		//FAIRE tout le traitement du formulaire 
+		
+		
+		//Récupérer tout ce qui est not null dans la base de données afin de traites les infos dans la servlet.
+		
+		
+		
+		//nom article
+		article.setNomArticle(request.getParameter("nom"));
+
+		
+		
 	
+		//description 
+		article.setDescription(request.getParameter("description"));
+		
+		//date debut enchere
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		String date1 = request.getParameter("date_debut_encheres");
+		article.setDate_debut_enchere(LocalDate.parse(date1,dtf));
+		
+		//fin date enchere 
+		
+		String date2 = request.getParameter("date_fin_encheres");
+		article.setDate_fin_enchere(LocalDate.parse(date2,dtf));
+		
+		//prix initial
+		article.setPrix_initial(Integer.valueOf(request.getParameter("prix")));
+		
+		//numero utilisateur 
+		String numeroUtilisateur = (String) request.getSession().getAttribute("UtilisateurConnecte");
+		article.setNo_utilisateur(Integer.valueOf(numeroUtilisateur));
+		//numero categorie 
+		article.setNo_categorie(Integer.valueOf(request.getParameter("categorie")));
+		
+		//numero variable vendu 0 equivaut à false, 1 équivaut à true
+		article.setVendu(false);
+		
+		//à partir de la servlet, on doit enregistrer l'article dans la base de donnée.
+		
 	}	
 	
 	

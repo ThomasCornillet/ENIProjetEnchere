@@ -58,8 +58,8 @@
           	</div>
           	
           	<div class="form-group row">
-          		<label class="col col-form-label" for="UPLOADER">Mise à prix :</label>
-          		 <input class="input" type="number" name="Prix" id="Prix" required> 
+          		<label class="col col-form-label" for="prix">Mise à prix :</label>
+          		 <input class="input" type="number" name="prix" id="prix" value="150" required> 
             </div>
             
             <div class="form-group row">
