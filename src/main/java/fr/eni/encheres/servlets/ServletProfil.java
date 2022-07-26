@@ -50,7 +50,7 @@ public class ServletProfil extends HttpServlet {
 				request.setAttribute("utilisateur", vendeur);
 				
 				HttpSession session = request.getSession();
-				session.setAttribute("connecte", true); // voir si la session est avec un utilisateur connecté
+				session.setAttribute("connecte", true);
 				session.getAttribute("UtilisateurConnecte");
 			
 			} catch (BusinessException e) {

@@ -19,6 +19,7 @@ public class Articles implements Serializable {
 	private boolean vendu;
 	private String vendeur;
 	private LocalDate date_enchere;
+	private int montant_enchere;
 	
 	public int getNoArticle() {
 		return noArticle;
