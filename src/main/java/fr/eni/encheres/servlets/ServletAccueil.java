@@ -74,7 +74,16 @@ public class ServletAccueil extends HttpServlet {
 			if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes") 
 					&& ((request.getSession().getAttribute("connecte")) == null || ( (Boolean)request.getSession().getAttribute("connecte")) == false )) {
 				// si pas de filtre et pas connecté, on affiche tout avec doGet
-				listearticlesPremierFiltre = articlesMngr.selectAll();
+				try {
+					listearticlesPremierFiltre = articlesMngr.selectAll();
+				} catch (BusinessException e) {
+					e.printStackTrace();
+					if (e.hasErreurs()) {
+						for (int code : e.getListeCodesErreur()) {
+							listeCodesErreur.add(code);
+						}
+					}
+				}
 				doGet(request, response);
 			} else {
 				// on met un paramètre comme quoi il y a un filtre (afin de savoir si on affiche tout ou juste ce qui est filtré dans la jsp
@@ -169,7 +178,13 @@ public class ServletAccueil extends HttpServlet {
 					} else {
 						// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
 						// TODO liste suivante à décommenté quand on aura régler le retour de la méthode selectArticleByNoUtilisateur
-						List<Articles> mesVentes = new ArrayList<>(); // = articlesMngr.selectArticleByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"));
+						List<Articles> mesVentes = new ArrayList<>();
+						try {
+							mesVentes = articlesMngr.selectArticleByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"));
+						} catch (BusinessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						if (request.getParameter("ventesEnCours") != null) {
 							// mes ventes en cours
 							try {
