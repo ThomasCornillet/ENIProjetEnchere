@@ -29,7 +29,7 @@
 		<div class="form-group row">
 			<h1 class="col-12 col-form-title row justify-content-center" >Mon profil</h1> <!-- TODO Centrer -->
 				</div>
-					<form method="post"	action="${pageContext.request.contextPath }/modificationProfile?id=${utilisateur.getNoUtilisateur()}">
+					<form method="post"	action="${pageContext.request.contextPath }/modificationProfil?id=${UtilisateurConnecte.getNoUtilisateur()}">
 						<div class="form-group row">			
 								<label class="col-2 col-form-label" for="pseudo">Pseudo : </label> 
 								<input class="form-control col-4"  type="text" id="pseudo" name="pseudo" />
@@ -103,7 +103,6 @@
 							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
 									<input type="hidden" name="noUtilisateur" value="${UtilisateurConnecte.getNoUtilisateur()}"/>
 									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao et bon dev !</button>
-									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
 								</form>	 	   
 						    </div>
 						  </div>

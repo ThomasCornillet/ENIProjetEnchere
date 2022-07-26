@@ -2,6 +2,7 @@ package fr.eni.encheres.bo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Articles implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +20,18 @@ public class Articles implements Serializable {
 	private boolean vendu;
 	private String vendeur;
 	private LocalDate date_enchere;
+	private int montant_enchere;
+	private List<Encheres> listeEncheres;
 	
+	public String getVendeur() {
+		return vendeur;
+	}
+	public LocalDate getDate_enchere() {
+		return date_enchere;
+	}
+	public int getMontant_enchere() {
+		return montant_enchere;
+	}
 	public int getNoArticle() {
 		return noArticle;
 	}
@@ -100,22 +112,24 @@ public class Articles implements Serializable {
 	public void setDate_enchere(LocalDate date_enchere) {
 		this.date_enchere = date_enchere;
 	}
-	
-	public Articles() {
+	public void setMontant_enchere(int montant_enchere) {
+		this.montant_enchere = montant_enchere;
 	}
+	public List<Encheres> getListeEncheres() {
+		return listeEncheres;
+	}
+	public void setListeEncheres(List<Encheres> listeEncheres) {
+		this.listeEncheres = listeEncheres;
+	}
+	
 	@Override
 	public String toString() {
 		return "Articles [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", date_debut_enchere=" + date_debut_enchere + ", date_fin_enchere=" + date_fin_enchere
 				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
-				+ ", no_categorie=" + no_categorie + ", vendu=" + vendu + "]";
+				+ ", pseudoUtilisateur=" + pseudoUtilisateur + ", no_categorie=" + no_categorie + ", libelleCatagorie="
+				+ libelleCatagorie + ", vendu=" + vendu + ", vendeur=" + vendeur + ", listeEncheres=" + listeEncheres
+				+ ", date_enchere=" + date_enchere + ", montant_enchere=" + montant_enchere + "]";
 	}
-	public void setMontant_enchere(int int1) {
-		this.montant_enchere = montant_enchere;
-	}
-
-
 	
-	
-
 }

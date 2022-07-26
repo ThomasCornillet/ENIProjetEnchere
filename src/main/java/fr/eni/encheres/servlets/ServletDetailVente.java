@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticlesManager;
-import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Articles;
-import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -39,24 +37,27 @@ public class ServletDetailVente extends HttpServlet {
 		
 		
 		ArticlesManager articleMngr = ArticlesManager.getInstance();
-		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+		
 		try {
 			HttpSession session = request.getSession();
-			String pseudo = (String) session.getAttribute("pseudo");
-			Utilisateurs utilisateur = utilisateurMngr.selectByPseudo("del");	
-			int noUtilisateur = utilisateur.getNoUtilisateur();
-			request.setAttribute("utilisateur", utilisateur);
-			request.setAttribute("noUtilisateur", noUtilisateur);
 			
-			Articles article = articleMngr.selectArticleByNoUtilisateur(noUtilisateur);
+			int noArticle = Integer.parseInt(request.getParameter("id"));
+			
+			request.setAttribute("noArticle", noArticle);
+			
+			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
 			request.setAttribute("article", article);
 			
-			System.out.println(pseudo); // TODO delete
 			System.out.println(article.toString()); // TODO delete
 			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
+			
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			for (int code : e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+		}
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
 		
 	}

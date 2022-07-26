@@ -50,7 +50,7 @@ public class ServletProfil extends HttpServlet {
 				request.setAttribute("utilisateur", vendeur);
 				
 				HttpSession session = request.getSession();
-				session.setAttribute("connecte", true); // voir si la session est avec un utilisateur connecté
+				session.setAttribute("connecte", true);
 				session.getAttribute("UtilisateurConnecte");
 			
 			} catch (BusinessException e) {
@@ -172,6 +172,8 @@ public class ServletProfil extends HttpServlet {
 			
 			try {
 				utilisateurMngr.update(utilisateur);
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+				rd.forward(request, response);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 				for(Integer code: e.getListeCodesErreur()) {
