@@ -183,7 +183,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 
 	@Override
 	public Utilisateurs selectById(int noUtilisateur) throws BusinessException {
-		Utilisateurs retour = null;
+		Utilisateurs retour = new Utilisateurs();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_ID);
 			pstmt.setInt(1, noUtilisateur);
