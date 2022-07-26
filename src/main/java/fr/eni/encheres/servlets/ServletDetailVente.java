@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bo.Articles;
+import fr.eni.encheres.bo.Encheres;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -46,9 +47,19 @@ public class ServletDetailVente extends HttpServlet {
 			request.setAttribute("noArticle", noArticle);
 			
 			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
-			request.setAttribute("article", article);
 			
+			List<Encheres> encheres = new ArrayList<>();
+			if(article != null){
+			encheres = article.getListeEncheres();
 			System.out.println(article.toString()); // TODO delete
+			Encheres enchere = new Encheres();
+				if(encheres != null) {			
+				enchere = encheres.get(0);
+				}
+				request.setAttribute("article", article);
+				request.setAttribute("enchere", enchere);
+			}
+			
 			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
 			
 		} catch (BusinessException e) {

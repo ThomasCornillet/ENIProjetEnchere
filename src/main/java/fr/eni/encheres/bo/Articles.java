@@ -18,14 +18,13 @@ public class Articles implements Serializable {
 	private int no_categorie;
 	private String libelleCatagorie;
 	private boolean vendu;
-	private String vendeur;
 	private LocalDate date_enchere;
 	private int montant_enchere;
 	private List<Encheres> listeEncheres;
+	private String rue;
+	private int codePostal;
+	private String ville;
 	
-	public String getVendeur() {
-		return vendeur;
-	}
 	public LocalDate getDate_enchere() {
 		return date_enchere;
 	}
@@ -105,15 +104,29 @@ public class Articles implements Serializable {
 		this.libelleCatagorie = libelleCatagorie;
 	}
 	
-	public void setVendeur(String vendeur) {
-		this.vendeur = vendeur;
-	}
-	
 	public void setDate_enchere(LocalDate date_enchere) {
 		this.date_enchere = date_enchere;
 	}
 	public void setMontant_enchere(int montant_enchere) {
 		this.montant_enchere = montant_enchere;
+	}
+	public String getRue() {
+		return rue;
+	}
+	public void setRue(String rue) {
+		this.rue = rue;
+	}
+	public int getCodePostal() {
+		return codePostal;
+	}
+	public void setCodePostal(int codePostal) {
+		this.codePostal = codePostal;
+	}
+	public String getVille() {
+		return ville;
+	}
+	public void setVille(String ville) {
+		this.ville = ville;
 	}
 	public List<Encheres> getListeEncheres() {
 		return listeEncheres;
@@ -121,15 +134,17 @@ public class Articles implements Serializable {
 	public void setListeEncheres(List<Encheres> listeEncheres) {
 		this.listeEncheres = listeEncheres;
 	}
-	
 	@Override
 	public String toString() {
 		return "Articles [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", date_debut_enchere=" + date_debut_enchere + ", date_fin_enchere=" + date_fin_enchere
 				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
 				+ ", pseudoUtilisateur=" + pseudoUtilisateur + ", no_categorie=" + no_categorie + ", libelleCatagorie="
-				+ libelleCatagorie + ", vendu=" + vendu + ", vendeur=" + vendeur + ", listeEncheres=" + listeEncheres
-				+ ", date_enchere=" + date_enchere + ", montant_enchere=" + montant_enchere + "]";
+				+ libelleCatagorie + ", vendu=" + vendu + ", date_enchere=" + date_enchere + ", montant_enchere="
+				+ montant_enchere + ", listeEncheres=" + listeEncheres + ", rue=" + rue + ", codePostal=" + codePostal
+				+ ", ville=" + ville + "]";
 	}
+	
+
 	
 }
