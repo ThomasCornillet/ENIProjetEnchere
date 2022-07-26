@@ -172,6 +172,8 @@ public class ServletProfil extends HttpServlet {
 			
 			try {
 				utilisateurMngr.update(utilisateur);
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+				rd.forward(request, response);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 				for(Integer code: e.getListeCodesErreur()) {

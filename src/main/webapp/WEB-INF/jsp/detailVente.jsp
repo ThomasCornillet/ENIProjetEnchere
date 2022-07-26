@@ -46,16 +46,16 @@
 		         		<p>Description : ${article.getDescription()}</p> 
 					</li>
 		         	<li class="d-flex justify-content-between align-items-center">
-		         		<p>Catégorie : ${artcile.getLibelleCatagorie()}</p> 
+		         		<p>Catégorie : ${article.getLibelleCatagorie()}</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Meilleure offre : ${encherisseur.getDerniereEnchere()} pts par ${encherisseur.getPseudo()}</p> 
+		         		<p>Meilleure offre : ${article.getMontant_enchere()} pts par ${article.getNo_utilisateur()}</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Mise à prix : ${artcile.getPrix_initial()}</p> 
+		         		<p>Mise à prix : ${article.getPrix_initial()}</p> 
 					</li>
 					<li class=" d-flex justify-content-between align-items-center">
-		         		<p>Fin de l'enchère: ${artcile.getDate_fin_enchere()}</p> 
+		         		<p>Fin de l'enchère: ${article.getDate_fin_enchere()}</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
 		         		<p>Retrait : ${retrait.toString()}</p>

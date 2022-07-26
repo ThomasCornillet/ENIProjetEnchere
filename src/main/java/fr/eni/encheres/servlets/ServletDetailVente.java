@@ -40,7 +40,8 @@ public class ServletDetailVente extends HttpServlet {
 		
 		try {
 			HttpSession session = request.getSession();
-			int noArticle = (int) session.getAttribute("id");
+			
+			int noArticle = Integer.parseInt(request.getParameter("id"));
 			
 			request.setAttribute("noArticle", noArticle);
 			
@@ -49,9 +50,14 @@ public class ServletDetailVente extends HttpServlet {
 			
 			System.out.println(article.toString()); // TODO delete
 			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
+			
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			for (int code : e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+		}
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
 		
 	}
