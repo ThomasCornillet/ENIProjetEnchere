@@ -13,13 +13,14 @@ import fr.eni.encheres.dal.EncheresDAO;
 import fr.eni.encheres.exceptions.BusinessException;
 
 public class EncheresDAOJdbcImpl implements EncheresDAO {
-	private static final String SELECT_BY_NU_UTILISATEUR = "SELECT * FROM ENCHERES WHERE no_utilisateur = ?";
+	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT * FROM ENCHERES WHERE no_utilisateur = ?";
+	private static final String SELECT_BY_NO_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? ORDER BY montant_enchere DESC";
 
 	@Override
 	public List<Encheres> selectByNoUtilisateur(int noUtilisateur) throws BusinessException {
 		List<Encheres> retour = new ArrayList<>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NU_UTILISATEUR);
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_UTILISATEUR);
 			pstmt.setInt(1, noUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -35,6 +36,50 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_UTILISATEUR_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	@Override
+	public List<Encheres> selectByNoArticle(int noArticle) throws BusinessException {
+		List<Encheres> retour = new ArrayList<>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Encheres enchere = creerEncheres(rs);
+				retour.add(enchere);
+			}
+			if (retour.isEmpty()) {
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_RESULT); //ici pas seulement connexion echec mais echec de la sélection
+				throw businessException;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		
+		return retour;
+	}
+	
+	@Override
+	public Encheres selectEnchereGagnateByNoArticle(int noArticle) throws BusinessException {
+		Encheres retour = new Encheres();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			retour = creerEncheres(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_GAGNANTE_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
 		}
 		return retour;

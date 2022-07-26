@@ -43,7 +43,7 @@
 								<c:if test="${!empty listeCategories }">
 									<option value="toutes">Toutes</option>
 									<c:forEach var="cat" items="${listeCategories }">
-										<option value="${cat.getLibelle() }">${cat.getLibelle()}</option>
+										<option value="${cat.getNoCategorie() }">${cat.getLibelle()}</option>
 									</c:forEach>
 								</c:if>
 							</select>
@@ -59,11 +59,11 @@
 								<!-- filtre achat -->
 									<div class="container">
 										<div class="row">
-											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked>
+											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats">
 											<label class="form-check-label" for="filtreConnecte">Achats</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="encheresOuvertes" value="encheresOuvertes" id="encheresOuvertes" checked>
+											<input class="form-check-input" type="checkbox" name="encheresOuvertes" value="encheresOuvertes" id="encheresOuvertes">
 											<label class="form-check-label" for="encheresOuvertes">enchères ouvertes</label>
 										</div>
 										<div class="form-check row">
@@ -117,7 +117,6 @@
 								<div class="card-body">
 									<h5 class="card-title"><a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a></h5>
 									<div class="card-test">
-										<a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
 										<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
 										<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
 										<a href="${pageContext.request.contextPath }/afficherProfil?id=${article.getNo_utilisateur()}">Vendeur : ${article.getPseudoUtilisateur() }</a>

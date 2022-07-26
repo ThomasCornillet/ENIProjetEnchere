@@ -17,6 +17,8 @@ public class Articles implements Serializable {
 	private int no_categorie;
 	private String libelleCatagorie;
 	private boolean vendu;
+	private String vendeur;
+	private LocalDate date_enchere;
 	
 	public int getNoArticle() {
 		return noArticle;
@@ -91,6 +93,14 @@ public class Articles implements Serializable {
 		this.libelleCatagorie = libelleCatagorie;
 	}
 	
+	public void setVendeur(String vendeur) {
+		this.vendeur = vendeur;
+	}
+	
+	public void setDate_enchere(LocalDate date_enchere) {
+		this.date_enchere = date_enchere;
+	}
+	
 	public Articles() {
 	}
 	@Override
@@ -100,6 +110,11 @@ public class Articles implements Serializable {
 				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
 				+ ", no_categorie=" + no_categorie + ", vendu=" + vendu + "]";
 	}
+	public void setMontant_enchere(int int1) {
+		this.montant_enchere = montant_enchere;
+	}
+
+
 	
 	
 

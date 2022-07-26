@@ -25,6 +25,9 @@ public abstract class CodesResultatBLL {
 	public static final int SELECT_BY_ID_ID_NEGATIVE = 21015;
 	public static final int SELECT_ENCHERES_BY_NO_UTILISATEUR_NO_NEGATIF = 21016;
 	public static final int NO_ARTICLE_NEGATIF = 21017;
+	public static final int SELECT_ARTICLE_BY_NO_UTILISATEUR_NO_NEGATIF = 21018;
+	public static final int SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF = 21019;
+	public static final int NO_CATEGORIE_NEGATIF = 21020;
 	
 	// Codes naoufel (22***)
 	

@@ -41,12 +41,11 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																+ "WHERE nom_article LIKE ? "
 																+ "ORDER BY date_fin_encheres DESC";
 
-	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT a.no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle" 
-															+ "FROM ARTICLES a"
-																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur"
-																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie"
-																+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
-																+ "WHERE u.no_utilisateur =7";
+	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+																+"FROM ARTICLES a "
+																	+"INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+																	+"INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+																	+"WHERE u.no_utilisateur =?";
 	
 	private static final String SELECT_BY_NO_ARTICLE = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
 															+ "FROM ARTICLES a "
@@ -137,29 +136,19 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	}
 	
 	@Override
-	public Articles selectArticleByNoUtilisateur(int noUtilisateur) throws BusinessException {
-		Articles retour = new Articles();
+	public List<Articles> selectArticleByNoUtilisateur(int noUtilisateur) throws BusinessException {
+		List<Articles> retour = new ArrayList<>();
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_UTILISATEUR);
 			pstmt.setInt(1, noUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				retour.setNoArticle(rs.getInt("no_article"));
-				retour.setNomArticle(rs.getString("nom_article"));
-				retour.setDescription(rs.getString("description"));
-				retour.setDate_debut_enchere(rs.getDate("date_debut_encheres").toLocalDate());
-				retour.setDate_fin_enchere(rs.getDate("date_fin_encheres").toLocalDate());
-				retour.setPrix_initial(rs.getInt("prix_initial"));
-				retour.setPrix_vente(rs.getInt("prix_vente"));
-				retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				retour.setNo_categorie(rs.getInt("no_categorie"));
-				retour.setVendu(rs.getBoolean("vendu"));
-				retour.setLibelleCatagorie(rs.getString("libelle"));
-				retour.setLibelleCatagorie(rs.getString("libelle"));
-			} else {
+			while (rs.next()) {
+				Articles articles = creerArticle(rs);
+				retour.add(articles);
+			}
+			if (retour.isEmpty()) {
 				BusinessException businessException = new BusinessException();
-				businessException.ajouterErreur(CodesResultatDAL.NO_UTILISATEUR_INEXISTANT); //ici pas seulement connexion echec mais echec de la sélection
-				throw businessException;
+				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLES_BY_NO_UTILISATEUR_LISTE_VIDE);
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();

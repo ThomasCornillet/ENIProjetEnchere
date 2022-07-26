@@ -30,5 +30,23 @@ public class EncheresManager {
 		}
 		return encheresDAO.selectByNoUtilisateur(noUtilisateur);
 	}
+	
+	public List<Encheres> selectByNoArticle(int noArticle) throws BusinessException {
+		if (noArticle <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF);
+			throw be;
+		}
+		return encheresDAO.selectByNoArticle(noArticle);
+	}
+	
+	public Encheres selectEnchereGagnateByNoArticle(int noArticle) throws BusinessException {
+		if (noArticle <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF);
+			throw be;
+		}
+		return encheresDAO.selectEnchereGagnateByNoArticle(noArticle);
+	}
 
 }
