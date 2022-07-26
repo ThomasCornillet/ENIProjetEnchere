@@ -69,13 +69,14 @@ public class ServletAccueil extends HttpServlet {
 		List<Integer> listeCodesErreur = new ArrayList<>();
 		// url /accueilfiltre
 		if(request.getServletPath().equals("/accueilfiltre")) {
+			ArticlesManager articlesMngr = ArticlesManager.getInstance();
+			List<Articles> listearticlesPremierFiltre = new ArrayList<>();
 			if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes") 
 					&& ((request.getSession().getAttribute("connecte")) == null || ( (Boolean)request.getSession().getAttribute("connecte")) == false )) {
 				// si pas de filtre et pas connecté, on affiche tout avec doGet
+				listearticlesPremierFiltre = articlesMngr.selectAll();
 				doGet(request, response);
 			} else {
-				ArticlesManager articlesMngr = ArticlesManager.getInstance();
-				List<Articles> listearticlesPremierFiltre = new ArrayList<>();
 				// on met un paramètre comme quoi il y a un filtre (afin de savoir si on affiche tout ou juste ce qui est filtré dans la jsp
 					// TODO pas sur que ce soit nécessaire
 				request.setAttribute("filtre", true);
@@ -143,13 +144,14 @@ public class ServletAccueil extends HttpServlet {
 								}
 							}
 						}
-						if (request.getParameter("") != null) {
+						if (request.getParameter("encheresEnCours") != null) {
 							// mes enchères en cours
-							List<Encheres> encheresUtilisateurEnCours = new ArrayList<>();
 							try {
-								for (Encheres e : encheresMnger.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
-									if (listearticlesPremierFiltre.contains(articlesMngr.selectArticleByNoArticle(e.getNoArticle()))) {
-										
+								for (Articles a : listearticlesPremierFiltre) {
+									for (Encheres e : encheresMnger.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
+										if (a.getNoArticle() == e.getNoArticle()) {
+											listeArticlesSecondFiltre.add(a);
+										}
 									}
 								}
 							} catch (BusinessException e) {
@@ -160,29 +162,37 @@ public class ServletAccueil extends HttpServlet {
 									}
 								}
 							}
-							for (Articles a : listearticlesPremierFiltre) {
-								
-							}
 						}
-						if (request.getParameter("") != null) {
-							// mes enchères remportées
+						if (request.getParameter("encheresRemportees") != null) {
+							// TODO mes enchères remportées
 						}
 					} else {
 						// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
-						if (request.getParameter("") != null) {
+						// TODO liste suivante à décommenté quand on aura régler le retour de la méthode selectArticleByNoUtilisateur
+						List<Articles> mesVentes = new ArrayList<>(); // = articlesMngr.selectArticleByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"));
+						if (request.getParameter("ventesEnCours") != null) {
 							// mes ventes en cours
+							try {
+								for (Articles a : listearticlesPremierFiltre) {
+									if (mesVentes.contains(a)) {
+										listeArticlesSecondFiltre.add(a);
+									}
+								}
+							} catch (NullPointerException e) {
+								e.printStackTrace();
+								BusinessException be = new BusinessException();
+								be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
+							}
 						}
-						if (request.getParameter("") != null) {
-							// mes ventes non débutées
+						if (request.getParameter("ventesNonDebutees") != null) {
+							// TODO mes ventes non débutées
 						}
-						if (request.getParameter("") != null) {
-							// mes ventes terminées
+						if (request.getParameter("ventesTerminees") != null) {
+							// TODO mes ventes terminées
 						}
 					}
+					request.setAttribute("listeArticles", listeArticlesSecondFiltre);
 				}
-				
-				
-				// TODO ne pas oublié l'attribue de requête "listeArticles" quand les filtres connectés seront terminés
 				
 				// on recharge la liste des catégories pour l'affichage dans le menu déroulant
 				CategoriesManager categoriesMnger = CategoriesManager.getInstance();
