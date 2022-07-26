@@ -24,6 +24,10 @@ public abstract class CodesResultatDAL {
 	public static final int SELECTION_ALL_CONNEXION_ECHEC = 11009;
 	public static final int SELECT_BY_ID_EMPTY = 11010;
 	public static final int SELECT_BY_ID_CONNECTION_ERROR = 11011;
+	public static final int SELECT_ENCHERES_BY_NO_UTILISATEUR_CONNEXION_ECHEC = 11012;
+	public static final int SELECT_ENCHERES_BY_NO_UTILISATEUR_NO_RESULT = 11013;
+	public static final int SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC = 11014;
+	public static final int SELECT_ARTICLE_BY_NO_ARTICLE_VIDE = 11015;
 
 	
 	// Codes naoufel (12***)

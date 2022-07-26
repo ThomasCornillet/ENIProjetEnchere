@@ -108,36 +108,38 @@
 	</div>
 	
 	<div class="container">
-		<c:choose>
-			<c:when test="${!empty listeArticles }">
-				<c:forEach var="article" items="${listeArticles }">
-					<div class="col-12 col-md-6">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title"><a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a></h5>
-								<div class="card-test">
-									<a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
-									<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
-									<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
-									<a href="${pageContext.request.contextPath }/afficherProfil?id=${article.getNo_utilisateur()}">Vendeur : ${article.getPseudoUtilisateur() }</a>
+		<div class="row">
+			<c:choose>
+				<c:when test="${!empty listeArticles }">
+					<c:forEach var="article" items="${listeArticles }">
+						<div class="col-12 col-lg-6">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title"><a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a></h5>
+									<div class="card-test">
+										<a href="${pageContext.request.contextPath }/detailVente?id=${article.getNo_utilisateur()}">${article.getNomArticle()}</a>
+										<p class="card-text">Prix : ${article.getPrix_initial() } points</p>
+										<p class="card-text">Fin de l'enchère : ${article.getDate_fin_enchere() }</p>
+										<a href="${pageContext.request.contextPath }/afficherProfil?id=${article.getNo_utilisateur()}">Vendeur : ${article.getPseudoUtilisateur() }</a>
+									</div>
 								</div>
 							</div>
 						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="container">
+						<div class="row">
+				        	<div class="col">
+				          		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				          			Il n'y a pas encore d'articles en vente.
+				          		</div>
+				         	</div>
+					     </div>
 					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<div class="container">
-					<div class="row">
-			        	<div class="col">
-			          		<div class="alert alert-warning alert-dismissible fade show" role="alert">
-			          			Il n'y a pas encore d'articles en vente.
-			          		</div>
-			         	</div>
-				     </div>
-				</div>
-			</c:otherwise>
-		</c:choose>
+				</c:otherwise>
+			</c:choose>
+		</div>
 	</div>
 
 	<!-- import javascript pour Boostrap -->

@@ -48,6 +48,13 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 														+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
 														+ "WHERE u.no_utilisateur =?";
 	
+	private static final String SELECT_BY_NO_ARTICLE = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+															+ "FROM ARTICLES a "
+																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+																+ "WHERE no_article = ?";;
+				
+	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
 		List<Articles> retour = new ArrayList<>();
@@ -147,6 +154,29 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_UTILISATEUR_ECHEC); //ici pas seulement connexion echec mais echec de la sélection
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	@Override
+	public Articles selectArticleByNoArticle(int noArticle) throws BusinessException {
+		Articles retour = null;
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				retour = creerArticle(rs);
+			} else {
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLE_BY_NO_ARTICLE_VIDE); //ici pas seulement connexion echec mais echec de la sélection
+				throw businessException;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
 		}
 		return retour;
