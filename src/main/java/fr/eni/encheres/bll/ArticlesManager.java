@@ -88,4 +88,14 @@ public class ArticlesManager {
 		}
 		return articlesDAO.selectArticleByNoArticle(noArticle);
 	}
+	
+	public List<Articles> selectByNoCategorie(int noCategorie) throws BusinessException {
+		if (noCategorie <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.NO_CATEGORIE_NEGATIF);
+			throw be;
+		}
+		return articlesDAO.selectByCategorie(noCategorie);
+	}
+	
 }
