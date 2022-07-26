@@ -37,7 +37,7 @@
 	</div>
 	<div class="container">
 		<c:choose>
-    		 <c:when test="${!empty article ||!empty sessionScope }">
+    		 <c:when test="${!empty article ||connecte }">
 		        <ul class="list-group col col-lg-4">
 		         	<li class=" d-flex justify-content-between align-items-center">
 		         		<p>${article.getNomArticle()}</p> 
@@ -48,20 +48,25 @@
 		         	<li class="d-flex justify-content-between align-items-center">
 		         		<p>Catégorie : ${article.getLibelleCatagorie()}</p> 
 					</li>
+					<c:if test="${!empty enchere }">
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Meilleure offre : ${article.getMontant_enchere()} pts par ${article.getNo_utilisateur()}</p> 
+		         		<p>Meilleure offre : ${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </p> 
+					</li>
+					</c:if>
+					<li class="d-flex justify-content-between align-items-center">
+		         		<p class="font-weight-bold">Meilleure offre : vous êtes le premier enchérisseur</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Mise à prix : ${article.getPrix_initial()}</p> 
+		         		<p>Mise à prix : ${article.getPrix_initial()} pts</p> 
 					</li>
 					<li class=" d-flex justify-content-between align-items-center">
 		         		<p>Fin de l'enchère: ${article.getDate_fin_enchere()}</p> 
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Retrait : ${retrait.toString()}</p>
+		         		<p>Retrait : ${article.getRue()}, ${article.getCodePostal()}, ${article.getVille()}</p>
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Vendeur : ${utilisateur.getPseudo()}</p> 
+		         		<p>Vendeur : ${article.getPseudoUtilisateur()}</p> 
 					</li>
 				 </ul>
 				 <form method="post" action="${pageContext.request.contextPath }/detailVente">
