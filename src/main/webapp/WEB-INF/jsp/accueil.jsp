@@ -141,6 +141,9 @@
 			</c:choose>
 		</div>
 	</div>
+	
+	
+	
 
 	<!-- import javascript pour Boostrap -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
