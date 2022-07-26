@@ -18,6 +18,8 @@ import fr.eni.encheres.bll.EncheresManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
 import fr.eni.encheres.bo.Encheres;
+import fr.eni.encheres.bo.Utilisateurs;
+import fr.eni.encheres.dal.EncheresDAO;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -70,12 +72,12 @@ public class ServletAccueil extends HttpServlet {
 		// url /accueilfiltre
 		if(request.getServletPath().equals("/accueilfiltre")) {
 			ArticlesManager articlesMngr = ArticlesManager.getInstance();
-			List<Articles> listearticlesPremierFiltre = new ArrayList<>();
+			List<Articles> listeArticlesPremierFiltre = new ArrayList<>();
 			if ((request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) && request.getParameter("categorie").equals("toutes") 
 					&& ((request.getSession().getAttribute("connecte")) == null || ( (Boolean)request.getSession().getAttribute("connecte")) == false )) {
 				// si pas de filtre et pas connecté, on affiche tout avec doGet
 				try {
-					listearticlesPremierFiltre = articlesMngr.selectAll();
+					listeArticlesPremierFiltre = articlesMngr.selectAll();
 				} catch (BusinessException e) {
 					e.printStackTrace();
 					if (e.hasErreurs()) {
@@ -92,7 +94,7 @@ public class ServletAccueil extends HttpServlet {
 				if (request.getParameter("portionNom").isBlank() || request.getParameter("portionNom") == null) {
 					// si pas de filtre sur le nom, on ne gère que le filtre sur la catégorie
 					try {
-						listearticlesPremierFiltre = articlesMngr.selectByCategorie(request.getParameter("categorie"));
+						listeArticlesPremierFiltre = articlesMngr.selectByCategorie(request.getParameter("categorie"));
 //						request.setAttribute("listeArticles", articlesMngr.selectByCategorie(request.getParameter("categorie")));
 					} catch (BusinessException e) {
 						e.printStackTrace();
@@ -105,7 +107,7 @@ public class ServletAccueil extends HttpServlet {
 				} else if (request.getParameter("categorie").equals("toutes")) {
 					// si pas de filtre sur la catégorie, on ne gere que le nom
 					try {
-						listearticlesPremierFiltre = articlesMngr.selectByPortionNom(request.getParameter("portionNom"));
+						listeArticlesPremierFiltre = articlesMngr.selectByPortionNom(request.getParameter("portionNom"));
 //						request.setAttribute("listeArticles", articlesMngr.selectByPortionNom(request.getParameter("portionNom")));
 					} catch (BusinessException e) {
 						e.printStackTrace();
@@ -120,10 +122,10 @@ public class ServletAccueil extends HttpServlet {
 //					List<Articles> listeArticles = new ArrayList<>();
 					try {
 						for (Articles a : articlesMngr.selectByCategorie(request.getParameter("categorie"))) {
-							listearticlesPremierFiltre.add(a);
+							listeArticlesPremierFiltre.add(a);
 						}
 						for (Articles a : articlesMngr.selectByPortionNom(request.getParameter("portionNom"))) {
-							listearticlesPremierFiltre.add(a);
+							listeArticlesPremierFiltre.add(a);
 						}
 					} catch (BusinessException e) {
 						e.printStackTrace();
@@ -138,8 +140,9 @@ public class ServletAccueil extends HttpServlet {
 				// maintenant on gère les filtres avec utilisateur connecté
 				if ((request.getSession().getAttribute("connecte")) == null || ( (Boolean)request.getSession().getAttribute("connecte")) == false ) {
 					// pas connecté, on charge la liste des articles à base des premiers filtre
-					request.setAttribute("listeArticles", listearticlesPremierFiltre);
+					request.setAttribute("listeArticles", listeArticlesPremierFiltre);
 				} else {
+					Utilisateurs utilisateurConnecte = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
 					List<Articles> listeArticlesSecondFiltre = new ArrayList<>();
 					EncheresManager encheresMnger = EncheresManager.getInstance();
 					// un utilisateur est connecté, on attaque les nouveaux filtres
@@ -147,7 +150,7 @@ public class ServletAccueil extends HttpServlet {
 						// nous n'auront alors que les filtres sur toutes les articles
 						if (request.getParameter("encheresOuvertes") != null) {
 							// enchères ouvertes
-							for (Articles a : listearticlesPremierFiltre) {
+							for (Articles a : listeArticlesPremierFiltre) {
 								if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
 									listeArticlesSecondFiltre.add(a);
 								}
@@ -156,13 +159,17 @@ public class ServletAccueil extends HttpServlet {
 						if (request.getParameter("encheresEnCours") != null) {
 							// mes enchères en cours
 							try {
-								for (Articles a : listearticlesPremierFiltre) {
+								for (Articles a : listeArticlesPremierFiltre) {
 									for (Encheres e : encheresMnger.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
 										if (a.getNoArticle() == e.getNoArticle()) {
 											listeArticlesSecondFiltre.add(a);
 										}
 									}
 								}
+							} catch (NullPointerException e) {
+								e.printStackTrace();
+								BusinessException be = new BusinessException();
+								be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
 							} catch (BusinessException e) {
 								e.printStackTrace();
 								if (e.hasErreurs()) {
@@ -173,22 +180,50 @@ public class ServletAccueil extends HttpServlet {
 							}
 						}
 						if (request.getParameter("encheresRemportees") != null) {
-							// TODO mes enchères remportées
+							// mes enchères remportées
+							try {
+								for (Articles a : listeArticlesPremierFiltre) {
+									if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
+										for (Encheres e : encheresMnger.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
+											if (a.getNoArticle() == e.getNoArticle()) {
+												// il faut maintenant savoir si c'est l'enchere qui a remporté
+												if (e.getNoEnchere() == encheresMnger.selectEnchereGagnateByNoArticle(a.getNoArticle()).getNoEnchere()) {
+													listeArticlesSecondFiltre.add(a);
+												}
+											}
+										}
+									}
+								}
+							} catch (NullPointerException e) {
+								e.printStackTrace();
+								BusinessException be = new BusinessException();
+								be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
+							} catch (BusinessException e) {
+								e.printStackTrace();
+								if (e.hasErreurs()) {
+									for (int code : e.getListeCodesErreur()) {
+										listeCodesErreur.add(code);
+									}
+								}
+							}
 						}
 					} else {
 						// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
-						// TODO liste suivante à décommenté quand on aura régler le retour de la méthode selectArticleByNoUtilisateur
 						List<Articles> mesVentes = new ArrayList<>();
 						try {
-							mesVentes = articlesMngr.selectArticleByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"));
-						} catch (BusinessException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							mesVentes = articlesMngr.selectArticleByNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
+						} catch (BusinessException e) {
+							e.printStackTrace();
+							if (e.hasErreurs()) {
+								for (int code : e.getListeCodesErreur()) {
+									listeCodesErreur.add(code);
+								}
+							}
 						}
 						if (request.getParameter("ventesEnCours") != null) {
 							// mes ventes en cours
 							try {
-								for (Articles a : listearticlesPremierFiltre) {
+								for (Articles a : listeArticlesPremierFiltre) {
 									if (mesVentes.contains(a)) {
 										listeArticlesSecondFiltre.add(a);
 									}
@@ -200,10 +235,32 @@ public class ServletAccueil extends HttpServlet {
 							}
 						}
 						if (request.getParameter("ventesNonDebutees") != null) {
-							// TODO mes ventes non débutées
+							// mes ventes non débutées
+							try {
+								for (Articles a : listeArticlesPremierFiltre) {
+									if (a.getDate_debut_enchere().isAfter(LocalDate.now()) && mesVentes.contains(a)) {
+										listeArticlesSecondFiltre.add(a);
+									}
+								}
+							} catch (NullPointerException e) {
+								e.printStackTrace();
+								BusinessException be = new BusinessException();
+								be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
+							}
 						}
 						if (request.getParameter("ventesTerminees") != null) {
-							// TODO mes ventes terminées
+							// mes ventes terminées
+							try {
+								for (Articles a : listeArticlesPremierFiltre) {
+									if (a.getDate_fin_enchere().isAfter(LocalDate.now()) && mesVentes.contains(a)) {
+										listeArticlesSecondFiltre.add(a);
+									}
+								}
+							} catch (NullPointerException e) {
+								e.printStackTrace();
+								BusinessException be = new BusinessException();
+								be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
+							}
 						}
 					}
 					request.setAttribute("listeArticles", listeArticlesSecondFiltre);
