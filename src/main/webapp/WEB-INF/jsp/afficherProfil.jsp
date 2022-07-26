@@ -5,8 +5,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-<title>Affichage profil</title>
+<head>
+	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+	<title>Affichage profil</title>
+</head>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	<c:if test="${!empty listeCodesErreur}">
