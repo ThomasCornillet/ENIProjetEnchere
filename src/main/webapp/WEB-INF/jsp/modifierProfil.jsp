@@ -29,7 +29,7 @@
 		<div class="form-group row">
 			<h1 class="col-12 col-form-title row justify-content-center" >Mon profil</h1> <!-- TODO Centrer -->
 				</div>
-					<form method="post"	action="${pageContext.request.contextPath }/modificationProfile">
+					<form method="post"	action="${pageContext.request.contextPath }/modificationProfile?id=${utilisateur.getNoUtilisateur()}">
 						<div class="form-group row">			
 								<label class="col-2 col-form-label" for="pseudo">Pseudo : </label> 
 								<input class="form-control col-4"  type="text" id="pseudo" name="pseudo" />
@@ -96,12 +96,12 @@
 						        </button>
 						      </div>
 						      <div class="modal-body">
-								<form action="${pageContext.request.contextPath}/supprimerProfil" id="form" method="post">	      
+								<form action="${pageContext.request.contextPath}/supprimerProfil?id=${UtilisateurConnecte.getNoUtilisateur()}" id="form" method="post">	      
 						        
-							        <p class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte, ${sessionScope.pseudo} ${sessionScope.nom} ?</p>
+							        <p class="lead text-xs-center">Etes vous sûr.e.s de vouloir supprimer votre compte, ${UtilisateurConnecte.getPseudo()} ?</p>
 							      
 							        <button class="btn btn-primary " type="button" data-dismiss="modal" >Pas encore</button>
-									<input type="hidden" name="noUtilisateur" value="${sessionScope.nom}"/>
+									<input type="hidden" name="noUtilisateur" value="${UtilisateurConnecte.getNoUtilisateur()}"/>
 									<button class="btn btn-secondary btn-lg col-3 offset-1 " type="submit">Yep, ciao et bon dev !</button>
 									<!--  <a class="btn btn-secondary btn-lg col-3 offset-1 "  href="${pageContext.request.contextPath }/supprimerProfil"  role="button" aria-pressed="true">Yep, ciao les boloss !</a> -->
 								</form>	 	   
@@ -110,10 +110,13 @@
 						 </div>	
 			</div>
 	</div>
-	<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${!empty sessionScope}">
+		<%-- Vérification de la présence d'un objet utilisateur en session --%>
+		<c:if test="${connecte}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${utilisateur.getPseudo()}</p>
+			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()} ${UtilisateurConnecte.getNoUtilisateur()}</p>
+		</c:if>
+		<c:if test="${!connecte }">
+			<p>Personne n'est connecté</p>
 		</c:if>	
 
 <!-- import javascript pour Boostrap -->
