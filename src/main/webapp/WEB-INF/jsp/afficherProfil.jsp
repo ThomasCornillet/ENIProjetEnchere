@@ -45,7 +45,7 @@
 					<li class="d-flex justify-content-between align-items-center">
 		         		<p>Téléphone : </p> ${utilisateur.getTelephone()}
 					</li>
-					<li class=" d-flex justify-content-between align-items-center">
+					<li class="d-flex justify-content-between align-items-center">
 		         		<p>Rue : </p> ${utilisateur.getRue()}
 					</li>
 					<li class="d-flex justify-content-between align-items-center">
@@ -55,15 +55,13 @@
 		         		<p>Rue : </p> ${utilisateur.getVille()}
 					</li>
 				 </ul>
-				 <c:if test="${!empty sessionScope}">
+				 <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
 				 	<ul class="list-group col col-lg-4">
 					 	<li class="d-flex justify-content-between align-items-center">
 					 		<p>Crédit : </p> ${utilisateur.getCredit()}
 					 	</li>
 				 </ul>
 				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
-				 </c:if>
-				 <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
 				 	<a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Modifier</a>
 				 </c:if>
 	        </c:when>
@@ -76,7 +74,7 @@
 		<%-- Vérification de la présence d'un objet utilisateur en session --%>
 		<c:if test="${connecte}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()}</p>
+			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()} ${UtilisateurConnecte.getNoUtilisateur()}</p>
 		</c:if>
 		<c:if test="${!connecte }">
 			<p>Personne n'est connecté</p>
