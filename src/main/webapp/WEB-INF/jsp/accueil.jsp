@@ -59,19 +59,19 @@
 								<!-- filtre achat -->
 									<div class="container">
 										<div class="row">
-											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats">
+											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked>
 											<label class="form-check-label" for="filtreConnecte">Achats</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="encheresOuvertes" value="encheresOuvertes" id="encheresOuvertes">
+											<input class="form-check-input achats-ck" type="checkbox" name="encheresOuvertes" value="encheresOuvertes" id="encheresOuvertes">
 											<label class="form-check-label" for="encheresOuvertes">enchères ouvertes</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="encheresEnCours" value="encheresEnCours" id="encheresEnCours">
+											<input class="form-check-input achats-ck" type="checkbox" name="encheresEnCours" value="encheresEnCours" id="encheresEnCours">
 											<label class="form-check-label" for="encheresEnCours">mes enchères en cours</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="encheresRemportees" value="encheresRemportees" id="encheresRemportees">
+											<input class="form-check-input achats-ck" type="checkbox" name="encheresRemportees" value="encheresRemportees" id="encheresRemportees">
 											<label class="form-check-label" for="encheresRemportees">mes enchères remportés</label>
 										</div>
 									</div>
@@ -84,15 +84,15 @@
 											<label class="form-check-label" for="filtreConnecte">Mes ventes</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="ventesEnCours" value="ventesEnCours" id="ventesEnCours">
+											<input class="form-check-input ventes-ck" type="checkbox" name="ventesEnCours" value="ventesEnCours" id="ventesEnCours" disabled>
 											<label class="form-check-label" for="ventesEnCours">mes ventes en cours</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" id="ventesNonDebutees">
+											<input class="form-check-input ventes-ck" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" id="ventesNonDebutees" disabled>
 											<label class="form-check-label" for="ventesNonDebutees">mes ventes non débutées</label>
 										</div>
 										<div class="form-check row">
-											<input class="form-check-input" type="checkbox" name="ventesTerminees" value="ventesTerminees" id="ventesTerminees">
+											<input class="form-check-input ventes-ck" type="checkbox" name="ventesTerminees" value="ventesTerminees" id="ventesTerminees" disabled>
 											<label class="form-check-label" for="ventesTerminees">mes ventes terminées</label>
 										</div>
 									</div>
@@ -143,7 +143,7 @@
 	
 	
 	
-
+	<script type="text/javascript" src="${pageContext.request.contextPath }/js/filtres-accueil.js"></script>
 	<!-- import javascript pour Boostrap -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
