@@ -28,6 +28,7 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_ENCHERES_BY_NO_UTILISATEUR_NO_RESULT = 11013;
 	public static final int SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC = 11014;
 	public static final int SELECT_ARTICLE_BY_NO_ARTICLE_VIDE = 11015;
+	public static final int SELECT_ARTICLES_BY_NO_UTILISATEUR_LISTE_VIDE = 11016;
 
 	
 	// Codes naoufel (12***)
