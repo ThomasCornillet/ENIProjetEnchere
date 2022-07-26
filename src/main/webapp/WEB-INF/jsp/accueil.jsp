@@ -28,7 +28,7 @@
 		</div>
 	</c:if>
 	
-	<div class="container">
+	<div class="container jumbotron">
 		<div class="row">
 			<h1 class="col text-center">Liste des enchères</h1>
 		</div>
