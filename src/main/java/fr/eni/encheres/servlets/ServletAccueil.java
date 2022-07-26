@@ -85,7 +85,7 @@ public class ServletAccueil extends HttpServlet {
 						}
 					}
 				}
-			} else if (request.getParameter("portionNom").isBlank() || request.getParameter("portionNom") == null) {
+			} else if (request.getParameter("portionNom") == null || request.getParameter("portionNom").isBlank()) {
 				// si pas de filtre sur le nom, on ne gère que le filtre sur la catégorie
 				filtrerCategorie(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
 			} else if (request.getParameter("categorie").equals("toutes")) {
@@ -115,7 +115,6 @@ public class ServletAccueil extends HttpServlet {
 					request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
 				} else if (request.getParameter("mesVentes") != null) {
 					// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
-					
 					
 					
 					request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
