@@ -7,7 +7,7 @@
 				<!-- ici mettre logo? -->
 			</div>
 			<c:choose>
-				<c:when test="${empty sessionScope }">
+				<c:when test="${!connecte }">
 					<div class="col">
 						<a href="${pageContext.request.contextPath }/authentification">S'inscrire - Se connecter</a>
 					</div>

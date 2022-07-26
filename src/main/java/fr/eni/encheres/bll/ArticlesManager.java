@@ -72,4 +72,13 @@ public class ArticlesManager {
 		Articles retour = articlesDAO.selectArticleByNoUtilisateur(noUtilisateur);
 		return retour;
 	}
+	
+	public Articles selectArticleByNoArticle(int noArticle) throws BusinessException {
+		if (noArticle <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.NO_ARTICLE_NEGATIF);
+			throw be;
+		}
+		return articlesDAO.selectArticleByNoArticle(noArticle);
+	}
 }

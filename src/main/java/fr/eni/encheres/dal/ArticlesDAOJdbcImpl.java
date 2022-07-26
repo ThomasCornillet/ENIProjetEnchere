@@ -1,4 +1,4 @@
-package fr.eni.encheres.dal.jdbc;
+package fr.eni.encheres.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,17 +43,10 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 
 	private static final String SELECT_BY_NO_UTILISATEUR = "SELECT a.no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle" 
 															+ "FROM ARTICLES a"
-																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur"
-																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie"
-																+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
-																+ "WHERE u.no_utilisateur =7";
-	
-	private static final String SELECT_BY_NO_ARTICLE = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
-															+ "FROM ARTICLES a "
-																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
-																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
-																+ "WHERE no_article = ?";;
-				
+														+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur"
+														+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie"
+														+ "LEFT JOIN ENCHERES e ON a.no_article = e.no_article"
+														+ "WHERE u.no_utilisateur =?";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -144,18 +137,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			pstmt.setInt(1, noUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				retour.setNoArticle(rs.getInt("no_article"));
-				retour.setNomArticle(rs.getString("nom_article"));
-				retour.setDescription(rs.getString("description"));
-				retour.setDate_debut_enchere(rs.getDate("date_debut_encheres").toLocalDate());
-				retour.setDate_fin_enchere(rs.getDate("date_fin_encheres").toLocalDate());
-				retour.setPrix_initial(rs.getInt("prix_initial"));
-				retour.setPrix_vente(rs.getInt("prix_vente"));
-				retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
-				retour.setNo_categorie(rs.getInt("no_categorie"));
-				retour.setVendu(rs.getBoolean("vendu"));
-				retour.setLibelleCatagorie(rs.getString("libelle"));
-				retour.setLibelleCatagorie(rs.getString("libelle"));
+				retour = creerArticle(rs);
 			} else {
 				BusinessException businessException = new BusinessException();
 				businessException.ajouterErreur(CodesResultatDAL.NO_UTILISATEUR_INEXISTANT); //ici pas seulement connexion echec mais echec de la sélection
@@ -165,29 +147,6 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_UTILISATEUR_ECHEC); //ici pas seulement connexion echec mais echec de la sélection
-			throw businessException;
-		}
-		return retour;
-	}
-	
-	@Override
-	public Articles selectArticleByNoArticle(int noArticle) throws BusinessException {
-		Articles retour = null;
-		try(Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_NO_ARTICLE);
-			pstmt.setInt(1, noArticle);
-			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()) {
-				retour = creerArticle(rs);
-			} else {
-				BusinessException businessException = new BusinessException();
-				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLE_BY_NO_ARTICLE_VIDE); //ici pas seulement connexion echec mais echec de la sélection
-				throw businessException;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
 		}
 		return retour;
@@ -203,7 +162,6 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		retour.setPrix_initial(rs.getInt("prix_initial"));
 		retour.setPrix_vente(rs.getInt("prix_vente"));
 		retour.setNo_utilisateur(rs.getInt("no_utilisateur"));
-		retour.setPseudoUtilisateur(rs.getString("pseudo"));
 		retour.setNo_categorie(rs.getInt("no_categorie"));
 		retour.setLibelleCatagorie(rs.getString("libelle"));
 		retour.setVendu(rs.getBoolean("vendu"));
