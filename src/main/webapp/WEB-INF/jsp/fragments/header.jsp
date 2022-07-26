@@ -14,6 +14,12 @@
 				</c:when>
 				<c:otherwise>
 					<div class="col">
+						<a href="${pageContext.request.contextPath }/nouvelleVente">Enchères</a>
+					</div>
+					<div class="col">
+						<a href="${pageContext.request.contextPath }/afficherProfil">Mon profil</a>
+					</div>
+					<div class="col">
 						<a href="${pageContext.request.contextPath }/deconnexion">Se déconnecter</a>
 					</div>
 				</c:otherwise>

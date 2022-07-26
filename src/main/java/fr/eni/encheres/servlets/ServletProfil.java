@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ public class ServletProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String VUE_PROFILE = "/WEB-INF/jsp/afficherProfil.jsp";
 	public static final String VUE_MODIFIER_PROFILE = "/WEB-INF/jsp/modifierProfil.jsp";
+	public static final String VUE_ACCUEIL ="/WEB-INF/jsp/accueil.jsp";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -42,9 +44,15 @@ public class ServletProfil extends HttpServlet {
 		List<Integer> listeCodesErreur= new ArrayList<>();
 		if (request.getServletPath().equals("/afficherProfil")) {
 			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-			try {
-				Utilisateurs utilisateur = utilisateurMngr.selectById((Integer)request.getAttribute("id"));
-				request.setAttribute("utilisateur", utilisateur);
+			try {				
+				
+				Utilisateurs vendeur = utilisateurMngr.selectById(Integer.parseInt(request.getParameter("id")));
+				request.setAttribute("utilisateur", vendeur);
+				
+				HttpSession session = request.getSession();
+				session.setAttribute("connecte", true); // voir si la session est avec un utilisateur connecté
+				session.getAttribute("UtilisateurConnecte");
+			
 			} catch (BusinessException e) {
 				for (int code : e.getListeCodesErreur()) {
 					listeCodesErreur.add(code);
@@ -59,8 +67,24 @@ public class ServletProfil extends HttpServlet {
 		} else if (request.getServletPath().equals("/modificationProfil")) {
 			// TODO vérifier fonctionnement
 			this.getServletContext().getRequestDispatcher(VUE_MODIFIER_PROFILE).forward( request, response );
-		}  else if (request.getServletPath().equals("/supprimerProfil")) {
 			
+		}  else if (request.getServletPath().equals("/supprimerProfil")) {
+			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+			try {
+				utilisateurMngr.deleteById(Integer.parseInt(request.getParameter("id")));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BusinessException e) {
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+			}
+			if (!listeCodesErreur.isEmpty()) {
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
+			}
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL);
+			rd.forward(request, response);
 		}
 	}
 
@@ -70,20 +94,24 @@ public class ServletProfil extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 ////	HttpSession session = request.getSession();
 //	Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
+	List<Integer> listeCodesErreur= new ArrayList<>();
 	
 	if(request.getServletPath().equals("/modificationProfil")) {
 		
 		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 		Utilisateurs utilisateur = new Utilisateurs();
 		try {
-			utilisateur = utilisateurMngr.selectById((Integer)request.getAttribute("id"));
+			utilisateur = utilisateurMngr.selectById(Integer.parseInt(request.getParameter("id")));
 			request.setAttribute("utilisateur", utilisateur);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			for(Integer code: e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+			rd.forward(request, response);
 		}
-		
-		List<Integer> listeCodesErreur= new ArrayList<>();
 		
 		// test de quelle(s) modification(s) apportées dans le formulaire et donc à prendre en compte pour l'update
 		// TODO à terme, à mettre dans une méthode testsUpdate() séparé du doPost (plus facile à lire comme ça)
@@ -163,26 +191,25 @@ public class ServletProfil extends HttpServlet {
 	} else
 	
 	if(request.getServletPath().equals("/supprimerProfil")) {
+		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+		Utilisateurs utilisateur = new Utilisateurs();
 		try {
 			//deleteById()
 			HttpSession session = request.getSession();
 			session.getAttribute("UtilisateurConnecte");
-			int NoUtilisateur = (int)session.getAttribute("NoUtilisateur");
-			String pseudo = (String) session.getAttribute("pseudo");
-			
-			System.out.println(pseudo); // TODO delete
-			System.out.println(NoUtilisateur); // TODO delete
-			
-			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-			utilisateurMngr.deleteById(NoUtilisateur);
-			
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
+			request.setAttribute("UtilisateurConnecte", utilisateur);
+			utilisateurMngr.deleteById(Integer.parseInt(request.getParameter("id")));
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL);
 			rd.forward(request, response);
 			
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			for(Integer code: e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+			rd.forward(request, response);
 		}											
 	}
 	

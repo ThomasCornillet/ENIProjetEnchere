@@ -63,8 +63,8 @@
 				 </ul>
 				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
 				 </c:if>
-				 <c:if test="${sessionScope.noUtilisateur == id}">
-				 	<a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" type="button">Modifier</a>
+				 <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
+				 	<a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Modifier</a>
 				 </c:if>
 	        </c:when>
 	        <c:otherwise>
@@ -74,11 +74,13 @@
 	</div>
 
 		<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${!empty sessionScope}">
+		<c:if test="${connecte}">
 			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${utilisateur.getPseudo()} ${sessionScope.noUtilisateur}</p>
-			<a></a>
-		</c:if>		
+			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()}</p>
+		</c:if>
+		<c:if test="${!connecte }">
+			<p>Personne n'est connecté</p>
+		</c:if>	
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
