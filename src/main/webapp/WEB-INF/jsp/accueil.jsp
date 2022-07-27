@@ -28,6 +28,24 @@
 		</div>
 	</c:if>
 	
+		
+	<c:if test="${listeErreursEnchere != null}">
+		<div class="container">
+			<div class="row alert alert-warning alert-dismissible fade show" role="alert">
+				<h4 class="col alert-heading">Erreur</h4>
+				<ul>
+					<c:forEach var="code" items="${listeErreursEnchere }">
+						<li>${LecteurMessage.getMessageErreur(code)}</li>
+					</c:forEach>
+				</ul>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+   					 <span aria-hidden="true">&times;</span>
+ 				</button>
+			</div>
+		</div>
+	</c:if>
+	
+	
 	<div class="container jumbotron">
 		<div class="row">
 			<h1 class="col text-center">Liste des enchères</h1>

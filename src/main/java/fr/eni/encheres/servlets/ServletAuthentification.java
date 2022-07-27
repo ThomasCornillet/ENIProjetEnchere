@@ -36,6 +36,10 @@ public class ServletAuthentification extends HttpServlet {
 			session.setAttribute("UtilisateurConnecte", null);
 		}
 		
+		if (request.getParameter("filtreInterdit") != null) {
+			request.setAttribute("filtreInterdit", true);
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher(VUE_AUTHENTIFICATION);
 		rd.forward(request, response);
 		
