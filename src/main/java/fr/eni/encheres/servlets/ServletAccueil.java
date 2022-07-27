@@ -96,9 +96,8 @@ public class ServletAccueil extends HttpServlet {
 				filtrerPortionNom(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
 			} else {
 				// sinon, filtre sur le nom et la catégorie
-				// TODO à refaire
-				filtrerCategorie(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
-				filtrerPortionNom(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
+				request.setAttribute("categorieSelectionnee", request.getParameter("categorie"));
+				filtrerNomEtCategorie(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
 			}
 			if ( request.getSession().getAttribute("connecte") == null || !(boolean) request.getSession().getAttribute("connecte")) {
 				// si pas d'utilisateur connecté, on s'arrête ici et on passe la liste filtrée en attribut de requête
@@ -183,7 +182,7 @@ public class ServletAccueil extends HttpServlet {
 	private void filtrerCategorie(HttpServletRequest request, ArticlesManager articlesMngr, List<Articles> listesArticlesFiltres, List<Integer> listeCodesErreur) {
 		try {
 			for (Articles a : articlesMngr.selectByNoCategorie(Integer.valueOf(request.getParameter("categorie")))) {
-				if (!listesArticlesFiltres.contains(a))
+//				if (!listesArticlesFiltres.contains(a))
 					listesArticlesFiltres.add(a);
 			}
 		} catch (NumberFormatException e) {
@@ -202,9 +201,27 @@ public class ServletAccueil extends HttpServlet {
 	private void filtrerPortionNom(HttpServletRequest request, ArticlesManager articlesMngr, List<Articles> listesArticlesFiltres, List<Integer> listeCodesErreur) {
 		try {
 			for (Articles a : articlesMngr.selectByPortionNom(request.getParameter("portionNom"))) {
-				if (!listesArticlesFiltres.contains(a))
+//				if (!listesArticlesFiltres.contains(a))
 					listesArticlesFiltres.add(a);
 			}
+		} catch (BusinessException e) {
+			e.printStackTrace();
+			if (e.hasErreurs()) {
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+			}
+		}
+	}
+	
+	private void filtrerNomEtCategorie(HttpServletRequest request, ArticlesManager articlesMngr, List<Articles> listesArticlesFiltres, List<Integer> listeCodesErreur) {
+		try {
+			for (Articles a : articlesMngr.getInstance().selectByCategorieAndPortionNom(Integer.valueOf(request.getParameter("categorie")),request.getParameter("portionNom"))) {
+				listesArticlesFiltres.add(a);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			listeCodesErreur.add(CodesResultatServlet.FILTRE_CATEGORIE_ERREUR);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			if (e.hasErreurs()) {

@@ -64,6 +64,14 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article "
 																+ "WHERE a.no_article =? ORDER BY montant_enchere DESC";
 	
+//	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
+	private static final String SELECT_BY_CATEGORIE_AND_PORTION_NOM = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+														+ "FROM ARTICLES a "
+															+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
+															+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
+															+ "WHERE a.no_categorie = ? AND nom_article LIKE ? "
+															+ "ORDER BY date_fin_encheres DESC";
+	
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -160,6 +168,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			if (retour.isEmpty()) {
 				BusinessException businessException = new BusinessException();
 				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLES_BY_NO_UTILISATEUR_LISTE_VIDE);
+				throw businessException;
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -218,6 +227,32 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			throw businessException;
 		}
 	return retour;
+	}
+	
+	@Override
+	public List<Articles> selectByCategorieAndPortionNom(int noCategorie, String portionNom) throws BusinessException {
+		List<Articles> retour = new ArrayList<>();
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_CATEGORIE_AND_PORTION_NOM);
+			pstmt.setInt(1, noCategorie);
+			pstmt.setString(2, "%" + portionNom + "%");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Articles article = creerArticle(rs);
+				retour.add(article);
+			}
+			if (retour.isEmpty()) {
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLES_BY_CAT_AND_POTION_NOM_LISTE_VIDE);
+				throw businessException;
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ARTICLES_BY_CAT_AND_POTION_NOM_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
 	}
 	
 	private Articles creerArticle(ResultSet rs) throws SQLException {

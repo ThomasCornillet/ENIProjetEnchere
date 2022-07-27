@@ -12,6 +12,7 @@ public interface ArticlesDAO {
 	public Articles selectByNom(String nom) throws BusinessException;
 	public List<Articles> selectByPortionNom(String portionNom) throws BusinessException;
 	public List<Articles> selectArticleByNoUtilisateur(int noUtilisateur) throws BusinessException;
-	public Articles selectArticleByNoArticle(int noArticle) throws BusinessException; 
+	public Articles selectArticleByNoArticle(int noArticle) throws BusinessException;
+	List<Articles> selectByCategorieAndPortionNom(int noCategorie, String portionNom) throws BusinessException; 
 
 }
