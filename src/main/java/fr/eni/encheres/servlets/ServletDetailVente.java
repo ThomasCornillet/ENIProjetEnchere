@@ -109,7 +109,8 @@ public class ServletDetailVente extends HttpServlet {
 		Encheres enchere = new Encheres(dateEnchere, montantEnchere, noArticle, noUtilisateur);
 		try {
 			EncheresManager encheresMngr = EncheresManager.getInstance();
-			encheresMngr.insert(enchere);
+			List<Integer> listeErreursEnchere = new ArrayList<>(); // TODO ne pas oublier de la gérer
+			boolean insertOk = encheresMngr.insert(enchere, listeErreursEnchere); // mettre en place un boolean pour voir si ça respecte les règles et que l'enchèe s'est bien produite
 		}catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
