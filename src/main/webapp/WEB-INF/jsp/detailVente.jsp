@@ -83,8 +83,11 @@
 						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts</td>
 						     	 	</c:if>
 						     	 </c:if>
-						     	 <c:if test="${empty encheres }">
+						     	 <c:if test="${empty encheres && !article.isVendu()}">
 						     	 	<td class="text-center">vous êtes le premier enchérisseur </td>
+						     	 </c:if>
+						     	 <c:if test="${empty encheres && article.isVendu()}">
+						     	 	<td class="text-center">La vente s'est terminée sans encherisseur... </td>
 						     	 </c:if>
 						    </tr>
 						    <tr>
