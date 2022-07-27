@@ -30,6 +30,18 @@
 		     </div>
 		</div>
 	</c:if>
+	${filtreInterdit != null}
+	<c:if test="${filtreInterdit != null}">
+		<div class="container">
+			<div class="row alert alert-warning alert-dismissible fade show" role="alert">
+				<h4 class="col alert-heading">Vous devez être connecté(e) pour accéder à la page demandée</h4>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+   					 <span aria-hidden="true">&times;</span>
+ 				</button>
+			</div>
+		</div>
+	</c:if>
+	
 	
 	<div class="container">
 		<form method="post" action="${pageContext.request.contextPath }/authentification">
