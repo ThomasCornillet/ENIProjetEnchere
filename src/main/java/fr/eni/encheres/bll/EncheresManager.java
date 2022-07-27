@@ -52,49 +52,41 @@ public class EncheresManager {
 		return selectEnchereGagnateByNoArticle(noArticle);
 	}
 
-	public boolean insert(Encheres enchere, List<Integer> listeErreursEnchere, int noVendeur) throws BusinessException{
+	public boolean insert(Encheres enchere, List<Integer> listeErreursEnchere) throws BusinessException{
 		boolean retourOk = false;
 		// TODO faire des tests de validité ici
 		ArticlesManager articlesMngr = ArticlesManager.getInstance(); // TODO est-ce que besoin de passer par un autre manager ou c'est ok d'aller directement à articledao ?
 		UtilisateursManager utilisateursMngr = UtilisateursManager.getInstance();
 		Articles article = articlesMngr.selectArticleByNoArticle(enchere.getNoArticle());
+		Utilisateurs encherisseur = utilisateursMngr.selectById(enchere.getNoUtilisateur());
 		// vente pas commencée
-		if (article.getDate_debut_enchere().isBefore(LocalDate.now())) {
-			retourOk = true;	// TODO revoir l'enchainement des true pas bon
-		} else {
+		if (article.getDate_debut_enchere().isAfter(LocalDate.now())) {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_VENTE_NON_COMMENCEE);
 		}
 		// vente terminée
 		if (article.getDate_fin_enchere().isBefore(LocalDate.now())) {
-			retourOk = true;
-		} else {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_VENTE_TERMINEE);
 		}
 		// sa propre vente
-		if (article.getNo_utilisateur() == noVendeur) {
-			retourOk = true;
-		} else {
+		if (article.getNo_utilisateur() == encherisseur.getNoUtilisateur()) {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_VENDEUR);
 		}
 		// pas assez de crédit
-		Utilisateurs encherisseur = utilisateursMngr.selectById(enchere.getNoUtilisateur());
-		if (encherisseur.getCredit() > enchere.getMontantEnchere()) {
-			retourOk = true;
-		} else {
-			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_VENDEUR);
+		if (encherisseur.getCredit() < enchere.getMontantEnchere()) {
+			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_CREDIT_INSUFFISANT);
 		}
 		
 		if (listeErreursEnchere.isEmpty()) {
 			encheresDAO.insert(enchere);
 			retourOk = true;
 		} else {
+			BusinessException be = new BusinessException();
+			for (int code : listeErreursEnchere) {
+				be.ajouterErreur(code);
+			}
 			retourOk = false;
+			throw be;
 		}
-		
-		
-		
-		
-		
 		return retourOk;
 	}
 

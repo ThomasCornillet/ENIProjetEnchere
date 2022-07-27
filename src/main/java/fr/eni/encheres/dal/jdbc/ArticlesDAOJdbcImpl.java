@@ -90,11 +90,11 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			while (rs.next()) {
 				Articles article = creerArticle(rs);
 				
-				Encheres enchere = selectEnchereGagnateByNoArticle(rs.getInt("no_article"));
-				List<Encheres> listeEncheres = new ArrayList<>();
-				listeEncheres.add(enchere);
-				article.setListeEncheres(listeEncheres);
-				article.setMontant_enchere(enchere.getMontantEnchere());
+//				Encheres enchere = selectEnchereGagnateByNoArticle(rs.getInt("no_article"));
+////				List<Encheres> listeEncheres = new ArrayList<>();
+////				listeEncheres.add(enchere);
+////				article.setListeEncheres(listeEncheres);
+//				article.setMontant_enchere(enchere.getMontantEnchere());
 				retour.add(article);
 			}
 		} catch (SQLException e) {

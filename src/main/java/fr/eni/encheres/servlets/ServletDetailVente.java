@@ -107,10 +107,12 @@ public class ServletDetailVente extends HttpServlet {
 		int noUtilisateur = utilisateur.getNoUtilisateur();
 		dateEnchere = LocalDate.now();
 		Encheres enchere = new Encheres(dateEnchere, montantEnchere, noArticle, noUtilisateur);
+		boolean insertOk = false;
+		List<Integer> listeErreursEnchere = new ArrayList<>();
 		try {
 			EncheresManager encheresMngr = EncheresManager.getInstance();
-			List<Integer> listeErreursEnchere = new ArrayList<>(); // TODO ne pas oublier de la gérer
-			boolean insertOk = encheresMngr.insert(enchere, listeErreursEnchere); // mettre en place un boolean pour voir si ça respecte les règles et que l'enchèe s'est bien produite
+			 // TODO ne pas oublier de la gérer
+			insertOk = encheresMngr.insert(enchere, listeErreursEnchere); // mettre en place un boolean pour voir si ça respecte les règles et que l'enchèe s'est bien produite
 		}catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -119,6 +121,17 @@ public class ServletDetailVente extends HttpServlet {
 		if (!listeCodesErreur.isEmpty()) {
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
+		
+//		if (insertOk == false && !listeErreursEnchere.isEmpty()) {
+//			request.setAttribute("listeErreursEnchere", listeErreursEnchere);
+////			Utilisateurs utilisateurConnecte = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
+//			request.setAttribute("id", request.getParameter("noArticle"));
+//			doGet(request,response);
+//		} else {
+//			RequestDispatcher rd = request.getRequestDispatcher("/accueil"); // TODO renvoyer vers détail de l'enchère
+//			rd.forward(request, response);
+//		}
+		request.setAttribute("listeErreursEnchere", listeErreursEnchere);
 		RequestDispatcher rd = request.getRequestDispatcher("/accueil"); // TODO renvoyer vers détail de l'enchère
 		rd.forward(request, response);
 	}

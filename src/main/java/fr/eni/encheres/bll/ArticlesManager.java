@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
+import fr.eni.encheres.bo.Encheres;
 import fr.eni.encheres.dal.ArticlesDAO;
 import fr.eni.encheres.dal.CategoriesDAO;
 import fr.eni.encheres.dal.DAOFactory;
@@ -28,7 +29,17 @@ public class ArticlesManager {
 	}
 	
 	public List<Articles> selectAll() throws BusinessException {
-		return articlesDAO.selectAll(); // j'ai décidé de renvoyer l'erreur et non de la traiter ici parce que la traiter consisterait en la renvoyer en tant que BLL exception
+		List<Articles> retour = articlesDAO.selectAll();
+		System.out.println(retour);
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		for (Articles a : retour) {
+			List<Encheres> listeEncheres = encheresMngr.selectByNoArticle(a.getNoArticle());
+			a.setListeEncheres(listeEncheres);
+			if (!listeEncheres.isEmpty()) {
+				a.setMontant_enchere(listeEncheres.get(0).getMontantEnchere());
+			}
+		}
+		return retour;
 	}
 	
 	public List<Articles> selectByCategorie(String categorie) throws BusinessException {

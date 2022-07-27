@@ -29,6 +29,8 @@
 		     </div>
 		</div>
 	</c:if>
+
+	
 	<div class="container">
 	  <div class="row">
 	    <div class="col-3 align-self-start">

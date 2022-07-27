@@ -35,5 +35,13 @@ public abstract class CodesResultatBLL {
 	public static final int INSERT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF = 22000;
 	
 	// Codes johanna (23***)
+	
+	
+	// Codes vérification insert enchères (25***)
+
+	public static final int VERIF_ENCHERE_VENTE_NON_COMMENCEE = 25000;
+	public static final int VERIF_ENCHERE_VENTE_TERMINEE = 25001;
+	public static final int VERIF_ENCHERE_VENDEUR = 25002;
+	public static final int VERIF_ENCHERE_CREDIT_INSUFFISANT = 25003;
 
 }
