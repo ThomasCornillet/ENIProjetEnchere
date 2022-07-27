@@ -29,8 +29,6 @@
 		     </div>
 		</div>
 	</c:if>
-
-	
 	<div class="container">
 	  <div class="row">
 	    <div class="col-3 align-self-start">
@@ -75,9 +73,8 @@
 							      <td class="text-center">${article.getLibelleCatagorie()}</td>
 						      </c:if>
 						    </tr>
-						      <tr>
-						      
-						      	 <th scope="row">Meilleure offre : </th>
+						    <tr>
+						      <th scope="row">Meilleure offre : </th>
 						      	 <c:if test="${!empty encheres }">
 						      	 	<c:if test="${!article.isVendu() or article.isVendu()}"> 
 						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
@@ -89,7 +86,7 @@
 						     	 <c:if test="${empty encheres }">
 						     	 	<td class="text-center">vous êtes le premier enchérisseur </td>
 						     	 </c:if>
-						   	  </tr>
+						    </tr>
 						    <tr>
 						      <th scope="row">Mise à prix : </th>
 						      <td class="text-center">${article.getPrix_initial()} pts</td>
@@ -117,73 +114,70 @@
    						    <tr>
 						      <th scope="row"> Vendeur : </th>
 						      <td class="text-center">${article.getPseudoUtilisateur()}</td>
-						      <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu() }">
-							    <tr>
-							      <th scope="row"> Tel : </th>
-							      <td class="text-center">${article.getPseudoUtilisateur()}</td>
-							    </tr>
-						      </c:if>
+							      <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu() }">
+								    <tr>
+								      <th scope="row"> Tel : </th>
+								      <td class="text-center">${article.getPseudoUtilisateur()}</td>
+								    </tr>
+							      </c:if>
 						    </tr>
 						    <tr>
-						      <th></th>
-						      <td>
-						      	 <c:if test="${!article.isVendu()}">
-							       	 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-									   <div class="modal-dialog" role="document">
-									     <div class="modal-content">
-									      <div class="modal-header">
-									        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									          <span aria-hidden="true">&times;</span>
-									        </button>
-									      </div>
-										      <div class="modal-body">
-												 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
-												 <p class="lead text-xs-center">Veuillez confirmer votre enchère, ${UtilisateurConnecte.getPseudo()} ?</p>
-									         		<c:if test="${!empty encheres }">
-									         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
-									         		</c:if>
-									         		<c:if test="${empty encheres }">
-									         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
-									         		</c:if>
-									         		<div class="modal-footer">
-										         		<button data-toggle="modal" type="submit">Shut up and take my money!</button>
-										         		<button class="btn btn-primary " type="button" data-dismiss="modal" >Non</button>
-									         		</div>
+					      	 <c:if test="${!article.isVendu()}">
+						       	 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+								   <div class="modal-dialog" role="document">
+								     <div class="modal-content">
+								      <div class="modal-header">
+								        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								          <span aria-hidden="true">&times;</span>
+								        </button>
+								      </div>
+									      <div class="modal-body">
+											 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
+											 <p class="lead text-xs-center">Veuillez confirmer votre enchère, ${UtilisateurConnecte.getPseudo()} ?</p>
+								         		<c:if test="${!empty encheres }">
+								         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+								         		</c:if>
+								         		<c:if test="${empty encheres }">
+								         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+								         		</c:if>
+								         		<div class="modal-footer">
+									         		<button data-toggle="modal" type="submit">Shut up and take my money!</button>
+									         		<button class="btn btn-primary " type="button" data-dismiss="modal" >Non</button>
+								         		</div>
 												 </form>	 	   
-										     </div>
 									     </div>
-									   </div>	
-							       	 </div>
-							      <tr> 	  
-							      <th scope="row"> Ma proposition : </th>
-							      <td class="text-center">
-							   
-							       	 <form method="post" action="#">
-						         		<c:if test="${!empty encheres }">
-						         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
-						         		</c:if>
-						         		<c:if test="${empty encheres }">
-						         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
-						         		</c:if>
-							         </form>
-
-   							       	 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
-										Enchérir
-									</button></td>
-									
-							         </tr>  
-						         </c:if>
-						         <c:if test="">
-						         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Back</button></a>
-						         </c:if>
-						         <c:if test="${article.isVendu()}">
-						         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Retrait effectué</button></a>
-						         </c:if> 	
-						      </td>
-						    </tr>
- 						  </tbody>
-					</table>
-				</div> 	
+								     </div>
+								   </div>	
+						       	 </div>
+					      <th scope="row"> Ma proposition : </th>
+					      <td class="text-center">
+					       	 <form method="post" action="#">
+				         		<c:if test="${!empty encheres }">
+				         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+				         		</c:if>
+				         		<c:if test="${empty encheres }">
+				         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+				         		</c:if>
+					         </form>
+						    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+								Enchérir
+							</button>
+						</td> 	
+				         </c:if>
+				          <th scope="row"></th>
+				         <td class="text-center">		
+					         <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
+					         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Back</button></a>
+					         </c:if>
+					        
+					         <c:if test="${article.isVendu() && UtilisateurConnecte.getNoUtilisateur() != enchere.getNoUtilisateur()}">
+					         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Retrait effectué</button></a>
+					         </c:if>
+				         </td>
+					    </tr>
+				  </tbody>
+			</table>
+		</div> 	
 				 
 				 
 				 
