@@ -91,7 +91,6 @@
 					         		<c:if test="${empty encheres }">
 					         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
 					         		</c:if>
-					         		<input type="hidden" id="date" name="date" value="">
 					         		<button data-toggle="modal" type="submit">Enchérir</button>
 						         </form>
 						      </td>
