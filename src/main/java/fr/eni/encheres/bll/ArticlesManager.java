@@ -98,4 +98,18 @@ public class ArticlesManager {
 		return articlesDAO.selectByCategorie(noCategorie);
 	}
 	
+	public List<Articles> selectByCategorieAndPortionNom(int noCategorie, String portionNom) throws BusinessException {
+		if (noCategorie <= 0) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.NO_CATEGORIE_NEGATIF);
+			throw be;
+		}
+		if (portionNom == null || portionNom.isBlank()) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.PORTION_NOM_VIDE);
+			throw be;
+		}
+		return articlesDAO.selectByCategorieAndPortionNom(noCategorie, portionNom);
+	}
+	
 }

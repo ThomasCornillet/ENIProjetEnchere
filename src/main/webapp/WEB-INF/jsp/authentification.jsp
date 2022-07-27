@@ -5,8 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-<title>Authentification</title>
+<head>
+	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+	<title>Authentification</title>
+</head>
 </head>
 <body>
 

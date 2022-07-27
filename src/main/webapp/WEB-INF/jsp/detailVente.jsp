@@ -7,8 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-<title>Affichage détails vente - enchérir</title>
+	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+	<title>Affichage détails vente - enchérir</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
