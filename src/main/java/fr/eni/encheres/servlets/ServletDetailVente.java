@@ -84,7 +84,7 @@ public class ServletDetailVente extends HttpServlet {
 		HttpSession session = request.getSession();
 		Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilsiateurConnecte");
 		
-		int noArticle = Integer.parseInt(request.getParameter("id"));
+		int noArticle = Integer.parseInt(request.getParameter("noArticle"));
 		LocalDate dateEnchere = null;
 		int montantEnchere = Integer.parseInt(request.getParameter("encherir"));
 		int noUtilisateur = utilisateur.getNoUtilisateur();

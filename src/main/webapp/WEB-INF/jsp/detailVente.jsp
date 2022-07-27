@@ -90,7 +90,7 @@
 						    <tr>
 						      <th></th>
 						      <td>
-						       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?id=${article.getNoArticle()}">
+						       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
 					         		<c:if test="${!empty encheres }">
 					         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
 					         		</c:if>
