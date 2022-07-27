@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Encheres;
 import fr.eni.encheres.bo.Retraits;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 
 public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 //	private static final String SELECT_ALL = "SELECT * FROM ARTICLES ORDER BY date_fin_encheres DESC";
-	private static final String SELECT_ALL = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
+	private static final String SELECT_ALL = "SELECT no_article, nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
 												+ "FROM ARTICLES a "
 													+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
 													+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
@@ -78,6 +79,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 															+ "WHERE a.no_categorie = ? AND nom_article LIKE ? "
 															+ "ORDER BY date_fin_encheres DESC";
 	
+	private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? ORDER BY montant_enchere DESC";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -88,6 +90,11 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			while (rs.next()) {
 				Articles article = creerArticle(rs);
 				
+				Encheres enchere = selectEnchereGagnateByNoArticle(rs.getInt("no_article"));
+				List<Encheres> listeEncheres = new ArrayList<>();
+				listeEncheres.add(enchere);
+				article.setListeEncheres(listeEncheres);
+				article.setMontant_enchere(enchere.getMontantEnchere());
 				retour.add(article);
 			}
 		} catch (SQLException e) {
@@ -301,6 +308,33 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		}
 		return retourEnchere;
 		
+	}
+	
+	public Encheres selectEnchereGagnateByNoArticle(int noArticle) throws BusinessException {
+		Encheres retour = new Encheres();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERE_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			retour = creerEncheres(rs);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_GAGNANTE_BY_NO_ARTICLE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
+	}
+	
+	private Encheres creerEncheres(ResultSet rs) throws SQLException {
+		Encheres retour = new Encheres();
+		retour.setNoEnchere(rs.getInt("no_enchere"));
+		retour.setDateEnchere(rs.getDate("date_enchere").toLocalDate());
+		retour.setMontantEnchere(rs.getInt("montant_enchere"));
+		retour.setNoArticle(rs.getInt("no_article"));
+		retour.setNoUtilisateur(rs.getInt("no_utilisateur"));
+		return retour;
 	}
 
 }
