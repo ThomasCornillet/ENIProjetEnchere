@@ -38,44 +38,70 @@
 	<div class="container">
 		<c:choose>
     		 <c:when test="${!empty article ||connecte }">
-		        <ul class="list-group col col-lg-4">
-		         	<li class=" d-flex justify-content-between align-items-center">
-		         		<p>${article.getNomArticle()}</p> 
-					</li>
-		         	<li class=" d-flex justify-content-between align-items-center">
-		         		<p>Description : ${article.getDescription()}</p> 
-					</li>
-		         	<li class="d-flex justify-content-between align-items-center">
-		         		<p>Catégorie : ${article.getLibelleCatagorie()}</p> 
-					</li>
-					<c:if test="${!empty enchere }">
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Meilleure offre : ${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </p> 
-					</li>
-					</c:if>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p class="font-weight-bold">Meilleure offre : vous êtes le premier enchérisseur</p> 
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Mise à prix : ${article.getPrix_initial()} pts</p> 
-					</li>
-					<li class=" d-flex justify-content-between align-items-center">
-		         		<p>Fin de l'enchère: ${article.getDate_fin_enchere()}</p> 
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Retrait : ${article.getRue()}, ${article.getCodePostal()}, ${article.getVille()}</p>
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Vendeur : ${article.getPseudoUtilisateur()}</p> 
-					</li>
-				 </ul>
-				 <form method="post" action="${pageContext.request.contextPath }/detailVente">
-	         		<input type="number" min="0" max="1000" step="5" value="50"/>
-	         		<input class="btn btn-primary btn-lg col-3 " type="submit" value="Enchérir"/>
-		         </form>
 				 <c:if test="">
 				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
 				 </c:if>
+				 <div class="col-12">
+					 <table class="table table-responsive-xl table-hover">
+						  <tbody>
+						    <tr>
+						      <td >${article.getNomArticle()}</td>
+						      <td></td>
+						    </tr>
+						     <tr>
+						      <th scope="row">Description : </th>
+						      <td class="text-center">${article.getDescription()}</td>
+						    </tr>
+						     <tr>
+						      <th scope="row">Catégorie : </th>
+						      <td class="text-center">${article.getLibelleCatagorie()}</td>
+						    </tr>
+						      <tr>
+						      	 <th scope="row">Meilleure offre : </th>
+						      	 <c:if test="${!empty encheres }">
+						     	 	<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
+						     	 </c:if>
+						     	 <c:if test="${empty encheres }">
+						     	 	<td class="text-center">vous êtes le premier enchérisseur </td>
+						     	 </c:if>
+						   	  </tr>
+						    <tr>
+						      <th scope="row">Mise à prix : </th>
+						      <td class="text-center">${article.getPrix_initial()} pts</td>
+						    </tr>
+   						    <tr>
+						      <th scope="row">Fin de l'enchère: </th>
+						      <td class="text-center">${article.getDate_fin_enchere()}</td>
+						    </tr>
+   						    <tr>
+						      <th scope="row">Retrait : </th>
+						      <td class="text-center">${retrait.getRue()}, ${retrait.getCodePostal()}, ${retrait.getVille()}</td>
+						    </tr>
+   						    <tr>
+						      <th scope="row"> Vendeur : </th>
+						      <td class="text-center">${article.getPseudoUtilisateur()}</td>
+						    </tr>
+						    <tr>
+						      <th></th>
+						      <td>
+						       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?id=${article.getNoArticle()}">
+					         		<c:if test="${!empty encheres }">
+					         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+					         		</c:if>
+					         		<c:if test="${empty encheres }">
+					         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+					         		</c:if>
+					         		<input type="hidden" id="date" name="date" value="">
+					         		<button data-toggle="modal" type="submit">Enchérir</button>
+						         </form>
+						      </td>
+						    </tr>
+ 						  </tbody>
+					</table>
+				</div> 	
+				 
+				 
+				 
 	        </c:when> 
 	        <c:otherwise>
 	        	<p class="alert alert-danger alert-dismissible fade show" role="alert">Vous devez être connecté pour enchérir<p>

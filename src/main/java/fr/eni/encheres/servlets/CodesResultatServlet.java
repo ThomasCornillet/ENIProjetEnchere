@@ -13,5 +13,6 @@ public abstract class CodesResultatServlet {
 	public static final int MOT_DE_PASSE_NON_IDENTIQUES = 32001;
 	public static final int MOT_DE_PASSE_NON_CONFROME = 32002;
 	public static final int UTILISATEUR_INEXISTANT = 32003;
+	public static final int FORMAT_DATE_ENCHERE_ERREUR = 32004;
 
 }

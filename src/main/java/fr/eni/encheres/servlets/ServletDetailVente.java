@@ -1,9 +1,13 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticlesManager;
+import fr.eni.encheres.bll.EncheresManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Encheres;
+import fr.eni.encheres.bo.Retraits;
+import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
 
 /**
@@ -45,19 +52,18 @@ public class ServletDetailVente extends HttpServlet {
 			int noArticle = Integer.parseInt(request.getParameter("id"));
 			
 			request.setAttribute("noArticle", noArticle);
-			
 			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
-			
-			List<Encheres> encheres = new ArrayList<>();
 			if(article != null){
-			encheres = article.getListeEncheres();
+			List<Encheres> encheres  = article.getListeEncheres();
+			Retraits retrait = article.getRetrait();
 			System.out.println(article.toString()); // TODO delete
-			Encheres enchere = new Encheres();
-				if(encheres != null) {			
-				enchere = encheres.get(0);
+				if(encheres.size()>0) {
+					Encheres enchere = encheres.get(0);
+					request.setAttribute("enchere", enchere);
 				}
 				request.setAttribute("article", article);
-				request.setAttribute("enchere", enchere);
+				request.setAttribute("encheres", encheres);
+				request.setAttribute("retrait", retrait);
 			}
 			
 			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
@@ -70,7 +76,8 @@ public class ServletDetailVente extends HttpServlet {
 		if (!listeCodesErreur.isEmpty()) {
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
-		
+		RequestDispatcher rd = request.getRequestDispatcher(VUE_DETAIL_VENTE);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -78,8 +85,35 @@ public class ServletDetailVente extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		List<Integer> listeCodesErreur= new ArrayList<>();
+		HttpSession session = request.getSession();
+		Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilsiateurConnecte");
+		
+		int noArticle = Integer.parseInt(request.getParameter("id"));
+		LocalDate dateEnchere = null;
+		int montantEnchere = Integer.parseInt(request.getParameter("encherir"));
+		int noUtilisateur = utilisateur.getNoUtilisateur();
+		try {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		dateEnchere = LocalDate.parse(request.getParameter("dateEnchere"), dtf);
+		} catch (DateTimeParseException e) {
+			e.printStackTrace();
+			listeCodesErreur.add(CodesResultatServlet.FORMAT_DATE_ENCHERE_ERREUR);
+		}
+		Encheres enchere = new Encheres(dateEnchere, montantEnchere, noArticle, noUtilisateur);
+		try {
+			EncheresManager encheresMngr = EncheresManager.getInstance();
+			encheresMngr.insert(enchere);
+		}catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+		}
+		RequestDispatcher rd = request.getRequestDispatcher(VUE_DETAIL_VENTE);
+		rd.forward(request, response);
 	}
 
 }
