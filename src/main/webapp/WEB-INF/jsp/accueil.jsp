@@ -68,7 +68,18 @@
 								<!-- filtre achat -->
 									<div class="container">
 										<div class="row">
-											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked>
+											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked> 
+											<!-- <input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" ${BtnRadioSelectionne == 'achats'?'checked':''}> -->
+											<!-- 
+											<c:choose>
+												<c:when test="${BtnRadioSelectionne == 'achats'}">
+													<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" checked>
+												</c:when>
+												<c:otherwise>
+													<input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats">
+												</c:otherwise>
+											</c:choose>
+											-->
 											<label class="form-check-label" for="filtreConnecte">Achats</label>
 										</div>
 										<div class="form-check row">
@@ -90,6 +101,17 @@
 									<div class="container">
 										<div class="row">
 											<input class="form-check-input" type="radio" name="filtreConnecte" id="radioMesVentes" value="mesVentes">
+											<!-- <input class="form-check-input" type="radio" name="filtreConnecte" id="radioAchat" value="achats" ${BtnRadioSelectionne == 'mesVentes'?'checked':''}>  -->
+											<!-- 
+											<c:choose>
+												<c:when test="${BtnRadioSelectionne == 'mesVentes'}">
+													<input class="form-check-input" type="radio" name="filtreConnecte" id="radioMesVentes" value="mesVentes" checked>
+												</c:when>
+												<c:otherwise>
+													<input class="form-check-input" type="radio" name="filtreConnecte" id="radioMesVentes" value="mesVentes">
+												</c:otherwise>
+											</c:choose>
+											 -->
 											<label class="form-check-label" for="filtreConnecte">Mes ventes</label>
 										</div>
 										<div class="form-check row">

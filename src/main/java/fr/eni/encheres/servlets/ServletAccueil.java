@@ -55,6 +55,10 @@ public class ServletAccueil extends HttpServlet {
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
 		
+		
+		request.setAttribute("BtnRadioSelectionne", "achats");
+		
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/jsp/accueil.jsp");
 		rd.forward(request, response);
 	}
@@ -103,7 +107,8 @@ public class ServletAccueil extends HttpServlet {
 				// on crée une nouvelle liste d'articles pour le filtre
 				List<Articles> listesArticlesFiltresConnecte = new ArrayList<>();
 				if (request.getParameter("filtreConnecte") != null && request.getParameter("filtreConnecte").equals("achats")) {
-					// nous n'auront alors que les filtres sur toutes les articles
+					// nous n'auront alors que les filtres sur tous les articles
+					request.setAttribute("BtnRadioSelectionne", "achats");
 					if (request.getParameter("encheresOuvertes") != null) {
 						// enchères ouvertes
 						filtrerEncheresOuvertes(request, articlesMngr, listesArticlesFiltres, listesArticlesFiltresConnecte, listeCodesErreur);
@@ -123,6 +128,7 @@ public class ServletAccueil extends HttpServlet {
 					}
 				} else if (request.getParameter("filtreConnecte") != null && request.getParameter("filtreConnecte").equals("mesVentes")) {
 					// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
+					request.setAttribute("BtnRadioSelectionne", "mesVentes");
 					List<Articles> mesVentes = new ArrayList<>();
 					try {
 						mesVentes = articlesMngr.selectArticleByNoUtilisateur(((Utilisateurs)request.getSession().getAttribute("UtilisateurConnecte")).getNoUtilisateur());
@@ -274,7 +280,7 @@ public class ServletAccueil extends HttpServlet {
 			Utilisateurs utilisateurConnecte = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
 			List<Encheres> encheresUtilisateur = encheresMngr.selectByNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
 			for (Articles a : listesArticlesFiltres) {
-				if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
+				if (a.getDate_fin_enchere().isBefore(LocalDate.now())) {
 					for (Encheres e : encheresUtilisateur) {
 						if (a.getNoArticle() == e.getNoArticle()) {
 							Encheres enchereGagnante = encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle());
