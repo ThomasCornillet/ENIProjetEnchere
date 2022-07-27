@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class Retraits implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	private int noArticle;
 	private String rue;
 	private int codePostal;
 	private String ville;
+	
 	public int getNoArticle() {
 		return noArticle;
 	}

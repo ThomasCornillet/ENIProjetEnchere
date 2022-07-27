@@ -17,6 +17,8 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bll.EncheresManager;
+import fr.eni.encheres.bll.RetraitsManager;
+import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Encheres;
 import fr.eni.encheres.bo.Retraits;
@@ -42,9 +44,10 @@ public class ServletDetailVente extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Integer> listeCodesErreur= new ArrayList<>();
-		
-		
 		ArticlesManager articleMngr = ArticlesManager.getInstance();
+		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		RetraitsManager retraitsMngr = RetraitsManager.getInstance();
 		
 		try {
 			HttpSession session = request.getSession();
@@ -54,17 +57,31 @@ public class ServletDetailVente extends HttpServlet {
 			request.setAttribute("noArticle", noArticle);
 			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
 			if(article != null){
-			List<Encheres> encheres  = article.getListeEncheres();
-			Retraits retrait = article.getRetrait();
-			System.out.println(article.toString()); // TODO delete
+				Utilisateurs vendeur = utilisateurMngr.selectById(article.getNo_utilisateur());
+				List<Encheres> encheres = encheresMngr.selectByNoArticle(article.getNoArticle());
 				if(encheres.size()>0) {
-					Encheres enchere = encheres.get(0);
-					request.setAttribute("enchere", enchere);
+					Encheres meilleureEnchere = encheres.get(0);
+					request.setAttribute("enchere", meilleureEnchere);
 				}
+				Retraits retrait = retraitsMngr.selectByNoArticle(article.getNoArticle());
 				request.setAttribute("article", article);
 				request.setAttribute("encheres", encheres);
 				request.setAttribute("retrait", retrait);
 			}
+			
+			
+//			if(article != null){
+//				List<Encheres> encheres  = article.getListeEncheres();	// TODO à revoir, faire un select encheres by article dans enchere BLL et DAL
+//				Retraits retrait = article.getRetrait();	// TODO IDEM
+//				System.out.println(article.toString()); // TODO delete
+//				if(encheres.size()>0) {
+//					Encheres enchere = encheres.get(0);
+//					request.setAttribute("enchere", enchere);
+//				}
+//				request.setAttribute("article", article);
+//				request.setAttribute("encheres", encheres);
+//				request.setAttribute("retrait", retrait);
+//			}
 			
 			this.getServletContext().getRequestDispatcher( VUE_DETAIL_VENTE ).forward( request, response );
 			
@@ -82,7 +99,7 @@ public class ServletDetailVente extends HttpServlet {
 		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 		List<Integer> listeCodesErreur= new ArrayList<>();
 		HttpSession session = request.getSession();
-		Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilsiateurConnecte");
+		Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
 		
 		int noArticle = Integer.parseInt(request.getParameter("noArticle"));
 		LocalDate dateEnchere = null;
@@ -101,7 +118,7 @@ public class ServletDetailVente extends HttpServlet {
 		if (!listeCodesErreur.isEmpty()) {
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		}
-		RequestDispatcher rd = request.getRequestDispatcher(VUE_DETAIL_VENTE);
+		RequestDispatcher rd = request.getRequestDispatcher("/accueil"); // TODO renvoyer vers détail de l'enchère
 		rd.forward(request, response);
 	}
 

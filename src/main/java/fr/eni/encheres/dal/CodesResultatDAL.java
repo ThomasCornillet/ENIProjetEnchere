@@ -34,8 +34,9 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_ENCHERE_GAGNANTE_BY_NO_ARTICLE_CONNEXION_ECHEC = 11019;
 	public static final int SELECT_ARTICLES_BY_CAT_AND_POTION_NOM_LISTE_VIDE = 11020;
 	public static final int SELECT_ARTICLES_BY_CAT_AND_POTION_NOM_CONNEXION_ECHEC = 11021;
-
+	public static final int SELECT_RETRAIT_BY_NO_ARTICLE_CONNEXTION_ERROR = 11022;
 	
+
 	// Codes naoufel (12***)
 	public static final int NO_UTILISATEUR_INEXISTANT = 12000;
     public static final int SELECT_BY_NO_UTILISATEUR_ECHEC = 12001;
