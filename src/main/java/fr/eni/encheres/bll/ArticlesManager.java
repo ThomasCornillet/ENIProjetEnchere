@@ -122,5 +122,21 @@ public class ArticlesManager {
 		}
 		return articlesDAO.selectByCategorieAndPortionNom(noCategorie, portionNom);
 	}
+
+	public List<Articles> selectAllArticlesEnCours() throws BusinessException {
+		List<Articles> retour = null;
+		retour = articlesDAO.selectAllArticlesEnCours();
+		return retour;
+	}
+
+	public void updateVenteTerminee(Articles article) throws BusinessException {
+		if (article == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.UPDATE_ARTICLE_ARTICLE_NULL);
+			throw be;
+		}
+		// TODO check métier à faire, mais pour l'isntant vu l'utilisation pas besoin (et pas le temps)
+		articlesDAO.updateVenteTerminee(article);
+	}
 	
 }

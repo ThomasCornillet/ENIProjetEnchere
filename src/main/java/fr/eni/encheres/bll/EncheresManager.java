@@ -44,6 +44,8 @@ public class EncheresManager {
 	}
 	
 	public Encheres selectEnchereGagnateByNoArticle(int noArticle) throws BusinessException {
+		// TODO méthode qui ne fonctionne pas (là DAO en totu cas)
+			// renvoie stack over flow
 		if (noArticle <= 0) {
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatBLL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF);

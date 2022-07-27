@@ -81,6 +81,11 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	
 	private static final String SELECT_ENCHERE_BY_NO_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? ORDER BY montant_enchere DESC";
 	
+	
+	private static final String SELECT_ALL_ARTICLES_EN_COURS = "SELECT * FROM ARTICLES WHERE date_fin_encheres <= ?";
+	
+	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET vendu = 1 WHERE no_article = ?";
+	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
 		List<Articles> retour = new ArrayList<>();
@@ -323,7 +328,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERE_GAGNANTE_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
-		}
+		} 
 		return retour;
 	}
 	
@@ -336,5 +341,55 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		retour.setNoUtilisateur(rs.getInt("no_utilisateur"));
 		return retour;
 	}
+
+	@Override
+	public List<Articles> selectAllArticlesEnCours() throws BusinessException {
+		List<Articles> retour = new ArrayList<>();
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_ARTICLES_EN_COURS);
+			LocalDate today = LocalDate.now();
+			pstmt.setDate(1, java.sql.Date.valueOf(today));
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Articles article = creerArticle(rs);
+				retour.add(article);
+			}
+			if (retour.isEmpty()) {
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.SELECT_ALL_ARTICLES_EN_COURS_VIDE);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retour;
+	}
+
+	@Override
+	public void updateVenteTerminee(Articles article) throws BusinessException {
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_ARTICLE_VENTE_TERMINEE);
+				pstmt.setInt(1, article.getNoArticle());
+				pstmt.executeUpdate();
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.UPDATE_ERREUR_INCONNUE);
+				throw businessException;
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC);
+			throw businessException;
+		}
+	}
+
 
 }
