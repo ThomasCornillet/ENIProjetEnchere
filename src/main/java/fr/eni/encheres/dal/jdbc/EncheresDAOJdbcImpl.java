@@ -53,11 +53,11 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 				Encheres enchere = creerEncheres(rs);
 				retour.add(enchere);
 			}
-			if (retour.isEmpty()) {
-				BusinessException businessException = new BusinessException();
-				businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_RESULT); //ici pas seulement connexion echec mais echec de la sélection
-				throw businessException;
-			}
+//			if (retour.isEmpty()) {
+//				BusinessException businessException = new BusinessException();
+//				businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_RESULT); //ici pas seulement connexion echec mais echec de la sélection
+//				throw businessException;
+//			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
@@ -94,6 +94,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			pstmt.setInt(2, enchere.getMontantEnchere());
 			pstmt.setInt(3, enchere.getNoArticle());
 			pstmt.setInt(4, enchere.getNoUtilisateur());
+			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if(rs.next()) {
 				enchere.setNoEnchere(1);

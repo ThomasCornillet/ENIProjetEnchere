@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Articles implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	private int noArticle;
 	private String nomArticle;
 	private String description;
@@ -14,10 +15,12 @@ public class Articles implements Serializable {
 	private int prix_initial;
 	private int prix_vente;
 	private int no_utilisateur;
-	private String pseudoUtilisateur;
 	private int no_categorie;
-	private String libelleCatagorie;
 	private boolean vendu;
+
+	private String pseudoUtilisateur;
+	private String libelleCatagorie;
+	
 	private LocalDate date_enchere;
 	private int montant_enchere;
 	private List<Encheres> listeEncheres;

@@ -195,7 +195,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			while (rs.next()) {
 				if(retour == null) {
 					retour = creerArticle(rs);
-					retour.setRue(rs.getString("rue"));
+					retour.setRue(rs.getString("rue"));				// TODO est-ce qu'il y a besoin de ça ? et des deux lignes en dessous ?
 					retour.setCodePostal(rs.getInt("code_postal"));
 					retour.setVille(rs.getString("ville"));
 					}
