@@ -29,18 +29,33 @@
 		     </div>
 		</div>
 	</c:if>
-	
 	<div class="container">
-		<div class="row">
-			<h1 class="col">Détail vente</h1>
-		</div>
+	  <div class="row">
+	    <div class="col-3 align-self-start">
+
+	    </div>
+	    <div class="colalign-self-center">
+     	      <c:choose>
+	     	      <c:when test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
+		     		 <h1>Vous avez remporté la vente</h1>
+		     	 </c:when>
+		     	 <c:when test="${!article.isVendu()}  ">
+		     	 	<h1 >Détail vente </h1>
+		     	 </c:when>
+	 		     <c:when test="${article.isVendu()}  ">
+		     	 	<h1 >enchere.getEncherisseur() a remporté la vente</h1>
+		     	 </c:when>
+
+	    	 </c:choose>
+	    </div>
+	    <div class="col-3 align-self-end">
+	    
+	    </div>
+	  </div>
 	</div>
 	<div class="container">
 		<c:choose>
     		 <c:when test="${!empty article ||connecte }">
-				 <c:if test="">
-				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
-				 </c:if>
 				 <div class="col-12">
 					 <table class="table table-responsive-xl table-hover">
 						  <tbody>
@@ -53,13 +68,21 @@
 						      <td class="text-center">${article.getDescription()}</td>
 						    </tr>
 						     <tr>
-						      <th scope="row">Catégorie : </th>
-						      <td class="text-center">${article.getLibelleCatagorie()}</td>
+						      <c:if test="${!article.isVendu()}"> 
+							      <th scope="row">Catégorie : </th>
+							      <td class="text-center">${article.getLibelleCatagorie()}</td>
+						      </c:if>
 						    </tr>
 						      <tr>
+						      
 						      	 <th scope="row">Meilleure offre : </th>
 						      	 <c:if test="${!empty encheres }">
-						     	 	<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
+						      	 	<c:if test="${!article.isVendu() or article.isVendu()}"> 
+						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
+						     	 	</c:if>
+						     	 	<c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && !article.isVendu()}"> 
+						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts</td>
+						     	 	</c:if>
 						     	 </c:if>
 						     	 <c:if test="${empty encheres }">
 						     	 	<td class="text-center">vous êtes le premier enchérisseur </td>
@@ -70,8 +93,14 @@
 						      <td class="text-center">${article.getPrix_initial()} pts</td>
 						    </tr>
    						    <tr>
-						      <th scope="row">Fin de l'enchère: </th>
-						      <td class="text-center">${article.getDate_fin_enchere()}</td>
+   						     <c:if test="${!article.isVendu()}">
+							      <th scope="row">Fin de l'enchère: </th>
+							      <td class="text-center">${article.getDate_fin_enchere()}</td>
+						     </c:if>
+						     <c:if test="${article.isVendu()}">
+							      <th scope="row">Fin de l'enchère: </th>
+							      <td class="text-center">${article.getDate_fin_enchere()}</td>
+						     </c:if>
 						    </tr>
    						    <tr>
 						      <c:if test="${!empty retrait }">
@@ -86,19 +115,33 @@
    						    <tr>
 						      <th scope="row"> Vendeur : </th>
 						      <td class="text-center">${article.getPseudoUtilisateur()}</td>
+						      <c:if test="${!article.isVendu()}">
+							    <tr>
+							      <th scope="row"> Tel : </th>
+							      <td class="text-center">${article.getPseudoUtilisateur()}</td>
+							    </tr>
+						      </c:if>
 						    </tr>
 						    <tr>
 						      <th></th>
 						      <td>
-						       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
-					         		<c:if test="${!empty encheres }">
-					         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
-					         		</c:if>
-					         		<c:if test="${empty encheres }">
-					         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
-					         		</c:if>
-					         		<button data-toggle="modal" type="submit">Enchérir</button>
-						         </form>
+						      	 <c:if test="${!article.isVendu()}">
+							       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
+						         		<c:if test="${!empty encheres }">
+						         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+						         		</c:if>
+						         		<c:if test="${empty encheres }">
+						         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+						         		</c:if>
+						         		<button data-toggle="modal" type="submit">Enchérir</button>
+							         </form>
+						         </c:if>
+						         <c:if test="">
+						         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Back</button></a>
+						         </c:if>
+						         <c:if test="${article.isVendu()}">
+						         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Retrait effectué</button></a>
+						         </c:if> 	
 						      </td>
 						    </tr>
  						  </tbody>
