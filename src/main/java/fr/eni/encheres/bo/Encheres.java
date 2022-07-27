@@ -51,11 +51,12 @@ public class Encheres implements Serializable {
 	
 	public Encheres() {}
 	
-	public Encheres(LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur) {
+	public Encheres(String encherisseur, LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur) {
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
 		this.noUtilisateur = noUtilisateur;
 		this.noArticle = noArticle;
+		this.encherisseur = encherisseur;
 	}
 	
 	
@@ -67,6 +68,13 @@ public class Encheres implements Serializable {
 		this.noArticle = noArticle;
 		this.noUtilisateur = noUtilisateur;
 		this.encherisseur = encherisseur;
+	}
+	public Encheres(LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur) {
+		this.noEnchere = noEnchere;
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+		this.noArticle = noArticle;
+		this.noUtilisateur = noUtilisateur;
 	}
 	@Override
 	public String toString() {

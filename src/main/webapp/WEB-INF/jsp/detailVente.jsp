@@ -74,8 +74,14 @@
 						      <td class="text-center">${article.getDate_fin_enchere()}</td>
 						    </tr>
    						    <tr>
-						      <th scope="row">Retrait : </th>
-						      <td class="text-center">${retrait.getRue()}, ${retrait.getCodePostal()}, ${retrait.getVille()}</td>
+						      <c:if test="${!empty retrait }">
+							      <th scope="row">Retrait : </th>
+							      <td class="text-center">${retrait.getRue()}, ${retrait.getCodePostal()}, ${retrait.getVille()}</td>
+						      </c:if>
+						      <c:if test="${empty retrait }">
+							      <th scope="row">Retrait : </th>
+							      <td class="text-center">${article.getRue()}, ${article.getCodePostal()}, ${article.getVille()}</td>
+						      </c:if>
 						    </tr>
    						    <tr>
 						      <th scope="row"> Vendeur : </th>

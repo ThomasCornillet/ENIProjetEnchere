@@ -73,11 +73,6 @@ public class ServletDetailVente extends HttpServlet {
 				listeCodesErreur.add(code);
 			}
 		}
-		if (!listeCodesErreur.isEmpty()) {
-			request.setAttribute("listeCodesErreur", listeCodesErreur);
-		}
-		RequestDispatcher rd = request.getRequestDispatcher(VUE_DETAIL_VENTE);
-		rd.forward(request, response);
 	}
 
 	/**
@@ -93,13 +88,7 @@ public class ServletDetailVente extends HttpServlet {
 		LocalDate dateEnchere = null;
 		int montantEnchere = Integer.parseInt(request.getParameter("encherir"));
 		int noUtilisateur = utilisateur.getNoUtilisateur();
-		try {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		dateEnchere = LocalDate.parse(request.getParameter("dateEnchere"), dtf);
-		} catch (DateTimeParseException e) {
-			e.printStackTrace();
-			listeCodesErreur.add(CodesResultatServlet.FORMAT_DATE_ENCHERE_ERREUR);
-		}
+		dateEnchere = LocalDate.now();
 		Encheres enchere = new Encheres(dateEnchere, montantEnchere, noArticle, noUtilisateur);
 		try {
 			EncheresManager encheresMngr = EncheresManager.getInstance();

@@ -141,8 +141,6 @@ public class Articles implements Serializable {
 	public void setRetrait(Retraits retrait) {
 		this.retrait = retrait;
 	}
-	
-	
 	@Override
 	public String toString() {
 		return "Articles [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
@@ -150,9 +148,9 @@ public class Articles implements Serializable {
 				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
 				+ ", pseudoUtilisateur=" + pseudoUtilisateur + ", no_categorie=" + no_categorie + ", libelleCatagorie="
 				+ libelleCatagorie + ", vendu=" + vendu + ", date_enchere=" + date_enchere + ", montant_enchere="
-				+ montant_enchere + ", listeEncheres=" + listeEncheres + "]";
+				+ montant_enchere + ", listeEncheres=" + listeEncheres + ", retrait=" + retrait + ", rue=" + rue
+				+ ", codePostal=" + codePostal + ", ville=" + ville + "]";
 	}
-	
 
 	
 }

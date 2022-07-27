@@ -51,11 +51,10 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																	+"WHERE u.no_utilisateur =?";
 	
 	private static final String SELECT_BY_NO_ARTICLE = "SELECT a.no_article,a.nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,vendu,a.no_utilisateur,u.pseudo, c.no_categorie, c.libelle, "
-															+ "r.rue, r.code_postal, r.ville "
+															+ "u.rue, u.code_postal, u.ville "
 															+ "FROM ARTICLES a "
 																+ "INNER JOIN UTILISATEURS u ON a.no_utilisateur = u.no_utilisateur "
 																+ "INNER JOIN CATEGORIES c ON a.no_categorie = c.no_categorie "
-																+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article "
 																+ "WHERE a.no_article =?";
 				
 	private static final String SELECT_ENCHERES_BY_NO_ARTICLE = "SELECT e.no_enchere, u.pseudo AS encherisseur, e.date_enchere, e.montant_enchere, e.no_utilisateur, r.rue,r.code_postal,r.ville "
@@ -196,6 +195,9 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			while (rs.next()) {
 				if(retour == null) {
 					retour = creerArticle(rs);
+					retour.setRue(rs.getString("rue"));
+					retour.setCodePostal(rs.getInt("code_postal"));
+					retour.setVille(rs.getString("ville"));
 					}
 				Retraits retrait = selectRetraitByNoArticle(noArticle);
 				retour.setRetrait(retrait);
@@ -284,10 +286,11 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
 				int noEnchere = rs.getInt("no_enchere");
+				String encherisseur = rs.getString("encherisseur");
 				LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
 				int montantEnchere = rs.getInt("montant_enchere");
 				int noUtilisateur = rs.getInt("no_utilisateur");
-				Encheres enchere = new Encheres(dateEnchere, noEnchere, montantEnchere, noUtilisateur);
+				Encheres enchere = new Encheres(encherisseur, dateEnchere, noEnchere, montantEnchere, noUtilisateur);
 				retourEnchere.add(enchere);
 			}
 		} catch (SQLException e) {
