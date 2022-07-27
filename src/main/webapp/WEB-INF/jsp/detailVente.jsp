@@ -39,11 +39,11 @@
 	     	      <c:when test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
 		     		 <h1>Vous avez remporté la vente</h1>
 		     	 </c:when>
-		     	 <c:when test="${!article.isVendu()}  ">
-		     	 	<h1 >Détail vente </h1>
+		     	 <c:when test="${!article.isVendu()}">
+		     	 	<h1>Détail vente</h1>
 		     	 </c:when>
-	 		     <c:when test="${article.isVendu()}  ">
-		     	 	<h1 >enchere.getEncherisseur() a remporté la vente</h1>
+	 		     <c:when test="${article.isVendu()}">
+		     	 	<h1>${enchere.getEncherisseur()} a remporté la vente</h1>
 		     	 </c:when>
 
 	    	 </c:choose>
@@ -80,7 +80,7 @@
 						      	 	<c:if test="${!article.isVendu() or article.isVendu()}"> 
 						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
 						     	 	</c:if>
-						     	 	<c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && !article.isVendu()}"> 
+						     	 	<c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu() }  "> 
 						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts</td>
 						     	 	</c:if>
 						     	 </c:if>

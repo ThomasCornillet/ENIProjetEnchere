@@ -38,10 +38,13 @@ public class ServletAccueil extends HttpServlet {
 		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 		CategoriesManager categoriesMnger = CategoriesManager.getInstance();
 		ArticlesManager articlesMnger = ArticlesManager.getInstance();
+		
 		List<Integer> listeCodesErreur = new ArrayList<>();
 		try {
 			request.setAttribute("listeCategories", categoriesMnger.selectAll());
 			request.setAttribute("listeArticles", articlesMnger.selectAll());
+				
+			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 			if (e.hasErreurs()) {
