@@ -28,14 +28,6 @@ public class ServletProfil extends HttpServlet {
 	public static final String VUE_PROFILE = "/WEB-INF/jsp/afficherProfil.jsp";
 	public static final String VUE_MODIFIER_PROFILE = "/WEB-INF/jsp/modifierProfil.jsp";
 	public static final String VUE_ACCUEIL ="/WEB-INF/jsp/accueil.jsp";
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletProfil() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

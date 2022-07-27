@@ -24,14 +24,6 @@ public class ServletInscription extends HttpServlet {
 	public static final String VUE_INSCRIPTION = "/WEB-INF/jsp/inscription.jsp";
 	public static final String VUE_ACCUEIL = "/WEB-INF/jsp/accueil.jsp";
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletInscription() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

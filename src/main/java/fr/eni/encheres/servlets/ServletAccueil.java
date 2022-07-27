@@ -28,14 +28,6 @@ import fr.eni.encheres.exceptions.BusinessException;
 @WebServlet(urlPatterns = {"/accueil", "/accueilfiltre"})
 public class ServletAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletAccueil() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -99,6 +91,7 @@ public class ServletAccueil extends HttpServlet {
 				request.setAttribute("categorieSelectionnee", request.getParameter("categorie"));
 				filtrerNomEtCategorie(request, articlesMngr, listesArticlesFiltres, listeCodesErreur);
 			}
+			// fin des trois premiers filtres non connecté
 			if ( request.getSession().getAttribute("connecte") == null || !(boolean) request.getSession().getAttribute("connecte")) {
 				// si pas d'utilisateur connecté, on s'arrête ici et on passe la liste filtrée en attribut de requête
 				request.setAttribute("listeArticles", listesArticlesFiltres);
@@ -106,7 +99,7 @@ public class ServletAccueil extends HttpServlet {
 				// si un utilisateur est connecté, on ajoute des "filtres" à la liste des premiers filtres qui sont toujours valide
 				// on crée une nouvelle liste d'articles pour le filtre
 				List<Articles> listesArticlesFiltresConnecte = new ArrayList<>();
-				if (request.getParameter("achats") != null) {
+				if (request.getParameter("filtreConnecte") != null && request.getParameter("filtreConnecte").equals("achats")) {
 					// nous n'auront alors que les filtres sur toutes les articles
 					if (request.getParameter("encheresOuvertes") != null) {
 						// enchères ouvertes
@@ -120,8 +113,12 @@ public class ServletAccueil extends HttpServlet {
 						// mes enchères remportées
 						filtrerMesEncheresRemportes(request, encheresMngr, listesArticlesFiltres, listesArticlesFiltresConnecte, listeCodesErreur);
 					}
-					request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
-				} else if (request.getParameter("mesVentes") != null) {
+					if (request.getParameter("encheresOuvertes") == null && request.getParameter("encheresEnCours") == null && request.getParameter("encheresRemportees") == null) {
+						request.setAttribute("listeArticles", listesArticlesFiltres);
+					} else {
+						request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
+					}
+				} else if (request.getParameter("filtreConnecte") != null && request.getParameter("filtreConnecte").equals("mesVentes")) {
 					// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
 					List<Articles> mesVentes = new ArrayList<>();
 					try {
@@ -149,6 +146,7 @@ public class ServletAccueil extends HttpServlet {
 					request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
 				} else {
 					// pas de filtres connecté de sélectionné (TODO ce qui ne devrait pas arrivé quand on aura revu la jsp accueil)
+
 					request.setAttribute("listeArticles", listesArticlesFiltres);
 				}
 			}
@@ -235,10 +233,19 @@ public class ServletAccueil extends HttpServlet {
 	private void filtrerEncheresOuvertes(HttpServletRequest request, ArticlesManager articlesMngr, List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Integer> listeCodesErreur) {
 		for (Articles a : listesArticlesFiltres) {
 			if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
-				if (!listesArticlesFiltresConnecte.contains(a))
+				if (!listesArticlesFiltresConnecte.contains(a)) {
 					listesArticlesFiltresConnecte.add(a);
+				}
 			}
 		}
+		
+		
+//		for (Articles a : listesArticlesFiltres) {
+//			if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
+//				if (!listesArticlesFiltresConnecte.contains(a))
+//					listesArticlesFiltresConnecte.add(a);
+//			}
+//		}
 	}
 	
 	private void filtrerMesEncheresEnCours(HttpServletRequest request, EncheresManager encheresMngr, List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Integer> listeCodesErreur) {
