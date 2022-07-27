@@ -49,6 +49,8 @@ public class Encheres implements Serializable {
 		this.noUtilisateur = noUtilisateur;
 	}
 	
+	public Encheres() {}
+	
 	public Encheres(LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur) {
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
