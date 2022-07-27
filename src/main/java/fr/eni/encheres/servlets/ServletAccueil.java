@@ -11,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bll.CategoriesManager;
@@ -61,6 +63,7 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 		List<Integer> listeCodesErreur = new ArrayList<>();
 		ArticlesManager articlesMngr = ArticlesManager.getInstance();
 		EncheresManager encheresMngr = EncheresManager.getInstance();
@@ -122,7 +125,7 @@ public class ServletAccueil extends HttpServlet {
 					// nous n'auront alors que les filtres sur les ventes de l'utilisateur connecté
 					List<Articles> mesVentes = new ArrayList<>();
 					try {
-						mesVentes = articlesMngr.selectArticleByNoUtilisateur(((Utilisateurs)request.getSession().getAttribute("utilisateurConnecte")).getNoUtilisateur());
+						mesVentes = articlesMngr.selectArticleByNoUtilisateur(((Utilisateurs)request.getSession().getAttribute("UtilisateurConnecte")).getNoUtilisateur());
 					} catch (BusinessException e) {
 						e.printStackTrace();
 						if (e.hasErreurs()) {
@@ -143,7 +146,11 @@ public class ServletAccueil extends HttpServlet {
 						// mes ventes terminées
 						filtrerMesVentesTerminees(listesArticlesFiltres, listesArticlesFiltresConnecte, mesVentes, listeCodesErreur);
 					}
-					request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
+					if (request.getParameter("ventesEnCours") == null && request.getParameter("ventesNonDebutees") == null && request.getParameter("ventesTerminees") == null) {
+						request.setAttribute("listeArticles", listesArticlesFiltres);
+					} else {
+						request.setAttribute("listeArticles", listesArticlesFiltresConnecte);
+					}
 				} else {
 					// pas de filtres connecté de sélectionné (TODO ce qui ne devrait pas arrivé quand on aura revu la jsp accueil)
 
@@ -238,29 +245,19 @@ public class ServletAccueil extends HttpServlet {
 				}
 			}
 		}
-		
-		
-//		for (Articles a : listesArticlesFiltres) {
-//			if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
-//				if (!listesArticlesFiltresConnecte.contains(a))
-//					listesArticlesFiltresConnecte.add(a);
-//			}
-//		}
 	}
 	
 	private void filtrerMesEncheresEnCours(HttpServletRequest request, EncheresManager encheresMngr, List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Integer> listeCodesErreur) {
+		Utilisateurs utilisateurConnecte = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
 		for (Articles a : listesArticlesFiltres) {
 			try {
-				for (Encheres e : encheresMngr.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
-					if (a.getNoArticle() == e.getNoArticle()) {
-						if (!listesArticlesFiltresConnecte.contains(a))
+				for (Encheres e : encheresMngr.selectByNoUtilisateur(utilisateurConnecte.getNoUtilisateur())) {
+					if ((a.getNoArticle() == e.getNoArticle()) && a.getDate_fin_enchere().isAfter(LocalDate.now())) {
+						if (!listesArticlesFiltresConnecte.contains(a)) {
 							listesArticlesFiltresConnecte.add(a);
+						}
 					}
 				}
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-				BusinessException be = new BusinessException();
-				be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 				if (e.hasErreurs()) {
@@ -274,12 +271,14 @@ public class ServletAccueil extends HttpServlet {
 	
 	private void filtrerMesEncheresRemportes(HttpServletRequest request, EncheresManager encheresMngr, List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Integer> listeCodesErreur) {
 		try {
+			Utilisateurs utilisateurConnecte = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
+			List<Encheres> encheresUtilisateur = encheresMngr.selectByNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
 			for (Articles a : listesArticlesFiltres) {
 				if (a.getDate_fin_enchere().isAfter(LocalDate.now())) {
-					for (Encheres e : encheresMngr.selectByNoUtilisateur((Integer)request.getSession().getAttribute("utilisateurConnecte"))) {
+					for (Encheres e : encheresUtilisateur) {
 						if (a.getNoArticle() == e.getNoArticle()) {
-							// il faut maintenant savoir si c'est l'enchere qui a remporté
-							if (e.getNoEnchere() == encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle()).getNoEnchere()) {
+							Encheres enchereGagnante = encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle());
+							if (e.getNoEnchere() == enchereGagnante.getNoEnchere()) {
 								if (!listesArticlesFiltresConnecte.contains(a))
 									listesArticlesFiltresConnecte.add(a);
 							}
@@ -319,7 +318,7 @@ public class ServletAccueil extends HttpServlet {
 	private void filtrerMesVentesNonDebutees(List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Articles> mesVentes, List<Integer> listeCodesErreur) {
 		try {
 			for (Articles a : listesArticlesFiltres) {
-				if (a.getDate_debut_enchere().isAfter(LocalDate.now()) && mesVentes.contains(a)) {
+				if (a.getDate_debut_enchere().isAfter(LocalDate.now()) && articleDansMesVentes(a,mesVentes)) {
 					if (!listesArticlesFiltresConnecte.contains(a))
 						listesArticlesFiltresConnecte.add(a);
 				}
@@ -334,7 +333,7 @@ public class ServletAccueil extends HttpServlet {
 	private void filtrerMesVentesTerminees(List<Articles> listesArticlesFiltres, List<Articles> listesArticlesFiltresConnecte, List<Articles> mesVentes, List<Integer> listeCodesErreur) {
 		try {
 			for (Articles a : listesArticlesFiltres) {
-				if (a.getDate_fin_enchere().isAfter(LocalDate.now()) && mesVentes.contains(a)) {
+				if (a.getDate_fin_enchere().isBefore(LocalDate.now()) && articleDansMesVentes(a,mesVentes)) {
 					if (!listesArticlesFiltresConnecte.contains(a))
 						listesArticlesFiltresConnecte.add(a);
 				}
@@ -344,6 +343,17 @@ public class ServletAccueil extends HttpServlet {
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatServlet.LISTE_ARTICLE_PREMIER_FILTRE_VIDE);
 		}
+	}
+
+	private boolean articleDansMesVentes(Articles a, List<Articles> mesVentes) {
+		boolean retour = false;
+		for (Articles article : mesVentes) {
+			if (a.getNoArticle() == article.getNoArticle()) {
+				retour = true;
+			}
+		}
+		
+		return retour;
 	}
 
 }
