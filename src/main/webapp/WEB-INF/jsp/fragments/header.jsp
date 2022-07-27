@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="row ">
 			<div class="col ">
-				<a href="${pageContext.request.contextPath }/accueilfiltre?id=${UtilisateurConnecte.getNoUtilisateur()}">ENI-Encheres</a>
+				<a href="${pageContext.request.contextPath }/accueil">ENI-Encheres</a>
 				<!-- ici mettre logo? -->
 			</div>
 			<c:choose>
