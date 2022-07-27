@@ -37,7 +37,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategoriesManager categoriesMnger = CategoriesManager.getInstance();
 		List<Categories> listeCategories = new ArrayList<>();//instanciation d'une liste de catégories, on déclare l'objet de type 'List' contenant des objets de type 'Categories' (nom de ma class java) avec un type specifique de List ArrayList.
 		try {

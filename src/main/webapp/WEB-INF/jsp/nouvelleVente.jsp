@@ -22,7 +22,7 @@
 	
 	<div class="container">
 		<div class="row">
-			<h1 class="col">Nouvelle vente</h1>
+			<h1 class="col">Nouvelle Vente</h1>
 		</div>
 	</div>
 	
