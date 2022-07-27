@@ -54,16 +54,14 @@ public class FiltreRessourcesInterdites extends HttpFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpSession session = httpRequest.getSession();
 		if (session.getAttribute("connecte") != null && (boolean)session.getAttribute("connecte") == true) {
-			httpRequest.setAttribute("filtreInterdit", false);
+			httpRequest.removeAttribute("filtreInterdit");
 			chain.doFilter(request, response);
 		} else {
-//			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpRequest.setAttribute("filtreInterdit", true);
-//			httpResponse.sendRedirect(session.getServletContext().getContextPath() + "/authentification"); 
-			RequestDispatcher rd = request.getRequestDispatcher("/authentification");
-			rd.forward(request, response);	// un response.sendRedirect() ne serait pas mieux ? mais au moins là j'ai l'affichage du message sur la page d'authentification
+			httpResponse.sendRedirect(session.getServletContext().getContextPath() + "/authentification?filtreInterdit=true"); 
+			}
 		}
-	}
 
 	/**
 	 * @see Filter#init(FilterConfig)
