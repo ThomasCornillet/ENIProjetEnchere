@@ -31,41 +31,54 @@
 	<div class="container">
 		<c:choose>
     		<c:when test="${!empty utilisateur}">
-		        <ul class="list-group col col-lg-4">
-		         	<li class=" d-flex justify-content-between align-items-center">
-		         		<p>Pseudo : </p> ${utilisateur.getPseudo()}
-					</li>
-		         	<li class=" d-flex justify-content-between align-items-center">
-		         		<p>Nom : </p> ${utilisateur.getNom()}
-					</li>
-		         	<li class="d-flex justify-content-between align-items-center">
-		         		<p>Prénom : </p> ${utilisateur.getPrenom()}
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Email : </p> ${utilisateur.getEmail()}
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Téléphone : </p> ${utilisateur.getTelephone()}
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Rue : </p> ${utilisateur.getRue()}
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Rue : </p> ${utilisateur.getCodePostal()}
-					</li>
-					<li class="d-flex justify-content-between align-items-center">
-		         		<p>Rue : </p> ${utilisateur.getVille()}
-					</li>
-				 </ul>
-				 <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
-				 	<ul class="list-group col col-lg-4">
-					 	<li class="d-flex justify-content-between align-items-center">
-					 		<p>Crédit : </p> ${utilisateur.getCredit()}
-					 	</li>
-				 </ul>
-				 <!-- Test connexion session pour afficher infos crédits et afficher le bouton modifier sont profile-->
-				 	<a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Modifier</a>
-				 </c:if>
+				<div class="col-12">
+					 <table class="table table-responsive-xl table-hover">
+						  <tbody>
+						    <tr>
+						      <th scope="row">Pseudo : </th>
+						      <td class="text-center">${utilisateur.getPseudo()}</td>
+						    </tr>
+						    <tr>
+						      <th scope="row">Nom : </th>
+						      <td class="text-center">${utilisateur.getNom()}</td>
+						    </tr>
+						    <tr>
+						      <th scope="row">Prénom : </th>
+						      <td class="text-center">${utilisateur.getPrenom()}</td>
+						    </tr>
+	   					    <tr>
+						      <th scope="row">Email : </th>
+						      <td class="text-center">${utilisateur.getEmail()}</td>
+						    </tr>
+	     					<tr>
+						      <th scope="row">Téléphone : </th>
+						      <td class="text-center">${utilisateur.getTelephone()}</td>
+						    </tr>
+	    					<tr>
+						      <th scope="row">Rue : </th>
+						      <td class="text-center">${retrait.getRue()}</td>
+						    </tr>
+	       					<tr>
+						      <th scope="row">Code postal : </th>
+						      <td class="text-center">${retrait.getCodePostal()}</td>
+						    </tr>
+	       					<tr>
+						      <th scope="row">Ville : </th>
+						      <td class="text-center">${retrait.getVille()}</td>
+						    </tr>
+						    <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
+						 		<tr>
+							      <th scope="row">Crédit :</th>
+							      <td class="text-center">${utilisateur.getCredit()}</td>
+							    </tr>
+							    <tr>
+								  <th></th>
+								  	<td><a href="${pageContext.request.contextPath }/modificationProfil?id=${utilisateur.getNoUtilisateur()}" class="btn btn-secondary col-3 offset-1 "  role="button" aria-pressed="true">Modifier</a></td>
+					 			</tr>
+					 		</c:if>
+						  </tbody>
+						</table>
+				</div> 	
 	        </c:when>
 	        <c:otherwise>
 	        	<p class="alert alert-danger alert-dismissible fade show" role="alert">Pas de profile à afficher<p>

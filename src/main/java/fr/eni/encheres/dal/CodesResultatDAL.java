@@ -39,6 +39,8 @@ public abstract class CodesResultatDAL {
 	// Codes naoufel (12***)
 	public static final int NO_UTILISATEUR_INEXISTANT = 12000;
     public static final int SELECT_BY_NO_UTILISATEUR_ECHEC = 12001;
+	public static final int RETRAIT_INEXISTANT = 12002;
+	public static final int INSERT_ENCHERE_CONNEXION_ECHEC = 12003;
 
 	// Codes johanna (13***)
 

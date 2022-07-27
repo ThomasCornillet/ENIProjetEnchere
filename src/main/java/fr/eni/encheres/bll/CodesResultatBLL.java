@@ -29,7 +29,9 @@ public abstract class CodesResultatBLL {
 	public static final int SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF = 21019;
 	public static final int NO_CATEGORIE_NEGATIF = 21020;
 	
+	
 	// Codes naoufel (22***)
+	public static final int INSERT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF = 22000;
 	
 	// Codes johanna (23***)
 

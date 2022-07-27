@@ -46,7 +46,11 @@ public class EncheresManager {
 			be.ajouterErreur(CodesResultatBLL.SELECT_ENCHERES_BY_NO_ARTICLE_NO_NEGATIF);
 			throw be;
 		}
-		return encheresDAO.selectEnchereGagnateByNoArticle(noArticle);
+		return selectEnchereGagnateByNoArticle(noArticle);
+	}
+
+	public void insert(Encheres enchere) throws BusinessException{
+		encheresDAO.insert(enchere);
 	}
 
 }

@@ -21,6 +21,7 @@ public class Articles implements Serializable {
 	private LocalDate date_enchere;
 	private int montant_enchere;
 	private List<Encheres> listeEncheres;
+	private Retraits retrait;
 	private String rue;
 	private int codePostal;
 	private String ville;
@@ -134,6 +135,14 @@ public class Articles implements Serializable {
 	public void setListeEncheres(List<Encheres> listeEncheres) {
 		this.listeEncheres = listeEncheres;
 	}
+	public Retraits getRetrait() {
+		return retrait;
+	}
+	public void setRetrait(Retraits retrait) {
+		this.retrait = retrait;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Articles [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
@@ -141,8 +150,7 @@ public class Articles implements Serializable {
 				+ ", prix_initial=" + prix_initial + ", prix_vente=" + prix_vente + ", no_utilisateur=" + no_utilisateur
 				+ ", pseudoUtilisateur=" + pseudoUtilisateur + ", no_categorie=" + no_categorie + ", libelleCatagorie="
 				+ libelleCatagorie + ", vendu=" + vendu + ", date_enchere=" + date_enchere + ", montant_enchere="
-				+ montant_enchere + ", listeEncheres=" + listeEncheres + ", rue=" + rue + ", codePostal=" + codePostal
-				+ ", ville=" + ville + "]";
+				+ montant_enchere + ", listeEncheres=" + listeEncheres + "]";
 	}
 	
 

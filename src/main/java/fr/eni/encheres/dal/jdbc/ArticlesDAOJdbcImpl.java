@@ -10,6 +10,7 @@ import java.util.List;
 
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Encheres;
+import fr.eni.encheres.bo.Retraits;
 import fr.eni.encheres.dal.ArticlesDAO;
 import fr.eni.encheres.dal.CodesResultatDAL;
 import fr.eni.encheres.exceptions.BusinessException;
@@ -63,6 +64,12 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 																+ "INNER JOIN ARTICLES a ON a.no_article = e.no_article "
 																+ "LEFT JOIN RETRAITS r ON a.no_article = r.no_article "
 																+ "WHERE a.no_article =? ORDER BY montant_enchere DESC";
+	
+	private static final String SELECT_RETRAIT_BY_NO_ARTICLE = "SELECT r.no_article, rue, code_postal, ville "
+																+ "FROM RETRAITS r "
+																+ "INNER JOIN ARTICLES a ON a.no_article = r.no_article "
+																+ "WHERE a.no_article = ?";
+			
 	
 //	private static final String SELECT_BY_CATEGORIE = "SELECT * FROM ARTICLES WHERE no_categorie = ? ORDER BY date_fin_encheres DESC";
 	private static final String SELECT_BY_CATEGORIE_AND_PORTION_NOM = "SELECT no_article,nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,a.no_utilisateur,a.no_categorie,vendu,u.pseudo,c.libelle "
@@ -187,46 +194,21 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			pstmt.setInt(1, noArticle);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				
 				if(retour == null) {
-				retour = creerArticle(rs);
-				}
-				retour.setRue(rs.getString("rue"));
-				retour.setCodePostal(rs.getInt("code_postal"));
-				retour.setVille(rs.getString("ville"));
-				 
-				try{
-					PreparedStatement pstmt2 = cnx.prepareStatement(SELECT_ENCHERES_BY_NO_ARTICLE);
-					pstmt2.setInt(1, noArticle);
-					ResultSet rs2 = pstmt2.executeQuery();
-					if (rs2.next()) {
-					int noEnchere = rs2.getInt("no_enchere");
-					String encherisseur = rs2.getString("encherisseur");
-					LocalDate dateEnchere = rs2.getDate("date_enchere").toLocalDate();
-					int montantEnchere = rs2.getInt("montant_enchere");
-					int noUtilisateur = rs2.getInt("no_utilisateur");
-					String rue =rs2.getString("rue");
-					int codePostal= rs2.getInt("code_postal");
-					String ville = rs2.getString("ville");
-					List<Encheres> encheres = new ArrayList<>();
-					Encheres enchere = new Encheres(noEnchere, encherisseur, dateEnchere, montantEnchere, noUtilisateur, rue, codePostal, ville);
-					encheres.add(enchere);
-					retour.setListeEncheres(encheres);
+					retour = creerArticle(rs);
 					}
-				}catch (SQLException e){
-					e.printStackTrace();
-					BusinessException businessException = new BusinessException();
-					businessException.ajouterErreur(CodesResultatDAL.SELECT_ENCHERES_BY_NO_ARTICLE_CONNEXION_ECHEC);
-					throw businessException;
-				}
+				Retraits retrait = selectRetraitByNoArticle(noArticle);
+				retour.setRetrait(retrait);
+				List<Encheres> encheres = selectEnchereByNoArticle(noArticle);
+				retour.setListeEncheres(encheres);
 			}
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
 			throw businessException;
 		}
-	return retour;
+		return retour;
 	}
 	
 	@Override
@@ -271,6 +253,51 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		retour.setVendu(rs.getBoolean("vendu"));
 		return retour;
 	}
+	
+	public Retraits selectRetraitByNoArticle(int noArticle) throws BusinessException {
+		Retraits retourRetrait = null;
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_RETRAIT_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				String rue = rs.getString("rue");
+				int codePostal= rs.getInt("code_postal");
+				String ville = rs.getString("ville");
+				retourRetrait = new Retraits(rue, codePostal, ville);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retourRetrait;
+		
+	}
 
+	public List<Encheres> selectEnchereByNoArticle(int noArticle) throws BusinessException {
+		List<Encheres> retourEnchere = new ArrayList<>();
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_ENCHERES_BY_NO_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				int noEnchere = rs.getInt("no_enchere");
+				LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
+				int montantEnchere = rs.getInt("montant_enchere");
+				int noUtilisateur = rs.getInt("no_utilisateur");
+				Encheres enchere = new Encheres(dateEnchere, noEnchere, montantEnchere, noUtilisateur);
+				retourEnchere.add(enchere);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.SELECT_BY_NO_ARTICLE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+		return retourEnchere;
+		
+	}
 
 }

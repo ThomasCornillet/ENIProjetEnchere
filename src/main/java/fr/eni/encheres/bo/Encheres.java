@@ -11,9 +11,6 @@ public class Encheres implements Serializable {
 	private int noArticle;
 	private int noUtilisateur;
 	private String encherisseur;
-	private String rue;
-	private int codePostal;
-	private String ville;
 	
 	public String getEncherisseur() {
 		return encherisseur;
@@ -52,43 +49,28 @@ public class Encheres implements Serializable {
 		this.noUtilisateur = noUtilisateur;
 	}
 	
-	public String getRue() {
-		return rue;
-	}
-	public void setRue(String rue) {
-		this.rue = rue;
-	}
-	public int getCodePostal() {
-		return codePostal;
-	}
-	public void setCodePostal(int codePostal) {
-		this.codePostal = codePostal;
-	}
-	public String getVille() {
-		return ville;
-	}
-	public void setVille(String ville) {
-		this.ville = ville;
-	}
-	public Encheres() {}
-	
-	public Encheres(int noEnchere, String encherisseur, LocalDate dateEnchere, int montantEnchere, int noUtilisateur, String rue, int codePostal, String ville) {
-		this();
-		this.noEnchere = noEnchere;
+	public Encheres(LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur) {
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
 		this.noUtilisateur = noUtilisateur;
-		this.encherisseur= encherisseur;
-		this.rue = rue;
-		this.codePostal = codePostal;
-		this.ville = ville;
-			
+		this.noArticle = noArticle;
+	}
+	
+	
+	public Encheres(int noEnchere, LocalDate dateEnchere, int montantEnchere, int noArticle, int noUtilisateur,
+			String encherisseur) {
+		this.noEnchere = noEnchere;
+		this.dateEnchere = dateEnchere;
+		this.montantEnchere = montantEnchere;
+		this.noArticle = noArticle;
+		this.noUtilisateur = noUtilisateur;
+		this.encherisseur = encherisseur;
 	}
 	@Override
 	public String toString() {
 		return "Encheres [noEnchere=" + noEnchere + ", dateEnchere=" + dateEnchere + ", montantEnchere="
 				+ montantEnchere + ", noArticle=" + noArticle + ", noUtilisateur=" + noUtilisateur + ", encherisseur="
-				+ encherisseur + ", rue=" + rue + ", codePostal=" + codePostal + ", ville=" + ville + "]";
+				+ encherisseur + "]";
 	}
 
 	
