@@ -30,7 +30,6 @@
 		     </div>
 		</div>
 	</c:if>
-	${filtreInterdit != null}
 	<c:if test="${filtreInterdit != null}">
 		<div class="container">
 			<div class="row alert alert-warning alert-dismissible fade show" role="alert">
@@ -72,16 +71,6 @@
 				
 		
 	</div>
-	<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${connecte}">
-			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'adresse : ${UtilisateurConnecte.getPseudo()}</p>
-		</c:if>
-		<c:if test="${!connecte }">
-			<p>Personne n'est connecté</p>
-		</c:if>
-		
-
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

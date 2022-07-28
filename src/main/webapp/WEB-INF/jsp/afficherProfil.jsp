@@ -56,15 +56,15 @@
 						    </tr>
 	    					<tr>
 						      <th scope="row">Rue : </th>
-						      <td class="text-center">${retrait.getRue()}</td>
+						      <td class="text-center">${utilisateur.getRue()}</td>
 						    </tr>
 	       					<tr>
 						      <th scope="row">Code postal : </th>
-						      <td class="text-center">${retrait.getCodePostal()}</td>
+						      <td class="text-center">${utilisateur.getCodePostal()}</td>
 						    </tr>
 	       					<tr>
 						      <th scope="row">Ville : </th>
-						      <td class="text-center">${retrait.getVille()}</td>
+						      <td class="text-center">${utilisateur.getVille()}</td>
 						    </tr>
 						    <c:if test="${UtilisateurConnecte.getNoUtilisateur() == utilisateur.getNoUtilisateur()}" >
 						 		<tr>
@@ -85,15 +85,6 @@
 	        </c:otherwise>
         </c:choose>
 	</div>
-
-		<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${connecte}">
-			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()} ${UtilisateurConnecte.getNoUtilisateur()}</p>
-		</c:if>
-		<c:if test="${!connecte }">
-			<p>Personne n'est connecté</p>
-		</c:if>	
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

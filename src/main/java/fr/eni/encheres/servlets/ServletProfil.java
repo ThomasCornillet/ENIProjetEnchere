@@ -149,21 +149,25 @@ public class ServletProfil extends HttpServlet {
 				utilisateur.setCodePostal(request.getParameter("codePostal"));
 			}
 		}
-	
+						
+		if(request.getParameter("nouveauMotdepasse") != null){
+			if(!request.getParameter("nouveauMotdepasse").isBlank()) {
+				String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
+				String nouveauMotdepasse = request.getParameter("nouveauMotdepasse");
+				if(motDePasseConfirmation == nouveauMotdepasse) {
+					HashMotDePasse hashMdp = HashMotDePasse.getInstance();
+					utilisateur.setMotDePasse(hashMdp.shaHash(request.getParameter("nouveauMotdepasse")));
+				}else {
+					listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+					request.setAttribute("listeCodesErreur", listeCodesErreur);
+					RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+					rd.forward(request, response);
+				}
+			}
 			
-			// Avant ça 2 vliadations:
-			// Entrez le bon mot de passe
-			// Vérifier que nouveauMotdepasse == nouveauMotdepasseConfirmation
-		
-		// TODO modification mot de passe à faire
-		//	
-		//	if(request.getParameter("nouveauMotdepasse") != null){
-		//		if(!request.getParameter("nouveauMotdepasse").isBlank()) {
-		//			utilisateur.setMotDePasse(request.getParameter("nouveauMotdepasse"));
-		//		}
-		//	}
-		//	String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
-		
+		}
+			
+//		 utilisateur.getMotDePasse().equals(request.getParameter("motDePasseActuel")) ||
 		// hash du mot de passe
 		HashMotDePasse hashMdp = HashMotDePasse.getInstance();
 		if(utilisateur.getMotDePasse().equals(hashMdp.shaHash(request.getParameter("motDePasseActuel")))) {

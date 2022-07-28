@@ -137,33 +137,33 @@
 								      </div>
 									      <div class="modal-body">
 											 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
-											 <p class="lead text-xs-center">Veuillez confirmer votre enchère, ${UtilisateurConnecte.getPseudo()} ?</p>
-								         		<c:if test="${!empty encheres }">
-								         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
-								         		</c:if>
-								         		<c:if test="${empty encheres }">
-								         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
-								         		</c:if>
-								         		<div class="modal-footer">
-									         		<button data-toggle="modal" type="submit">Shut up and take my money!</button>
-									         		<button class="btn btn-primary " type="button" data-dismiss="modal" >Non</button>
-								         		</div>
-												 </form>	 	   
+												 <p class="lead text-xs-center">Veuillez confirmer votre enchère, ${UtilisateurConnecte.getPseudo()} ?</p>
+									         		<c:if test="${!empty encheres }">
+									         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+									         		</c:if>
+									         		<c:if test="${empty encheres }">
+									         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+									         		</c:if>
+									         		<div class="modal-footer">
+										         		<button data-toggle="modal">Shut up and take my money!</button>
+										         		<button class="btn btn-primary " type="button" data-dismiss="modal" >Non</button>
+									         		</div>
+												</form>	   
 									     </div>
 								     </div>
 								   </div>	
 						       	 </div>
 					      <th scope="row"> Ma proposition : </th>
 					      <td class="text-center">
-					       	 <form method="post" action="#">
+					       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}" >
 				         		<c:if test="${!empty encheres }">
-				         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
+				         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" id="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
 				         		</c:if>
 				         		<c:if test="${empty encheres }">
-				         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
+				         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" id="encherir" step="5" value="${article.getPrix_initial()}"/>
 				         		</c:if>
 					         </form>
-						    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+						    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" onclick="confirmerEnchere()">
 								Enchérir
 							</button>
 						</td> 	
@@ -181,10 +181,10 @@
 					    </tr>
 				  </tbody>
 			</table>
-		</div> 	
-				 
-				 
-				 
+		</div>
+
+
+		 
 	        </c:when> 
 	        <c:otherwise>
 	        	<p class="alert alert-danger alert-dismissible fade show" role="alert">Vous devez être connecté pour enchérir<p>
@@ -192,6 +192,7 @@
         </c:choose>
 	</div>
 
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/encherir.js"></script>
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

@@ -111,14 +111,6 @@
 						 </div>	
 			</div>
 	</div>
-		<%-- Vérification de la présence d'un objet utilisateur en session --%>
-		<c:if test="${connecte}">
-			<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
-			<p class="succes">Vous êtes connecté.e avec l'identifiant : ${UtilisateurConnecte.getPseudo()} ${UtilisateurConnecte.getNoUtilisateur()}</p>
-		</c:if>
-		<c:if test="${!connecte }">
-			<p>Personne n'est connecté</p>
-		</c:if>	
 
 <!-- import javascript pour Boostrap -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
