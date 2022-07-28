@@ -37,6 +37,8 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_RETRAIT_BY_NO_ARTICLE_CONNEXTION_ERROR = 11022;
 	public static final int SELECT_ALL_ARTICLES_EN_COURS_VIDE = 11023;
 	public static final int SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC = 11024;
+	public static final int UPDATE_VENTE_ERREUR_INCONNUE = 11025;
+	public static final int UPDATE_VENTE_CONNEXION_ECHEC = 11026;
 	
 
 	// Codes naoufel (12***)

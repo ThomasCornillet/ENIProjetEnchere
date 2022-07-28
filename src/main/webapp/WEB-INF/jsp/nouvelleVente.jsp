@@ -101,11 +101,28 @@
           		<label class="col col-form-label" for="ville">Ville :</label>
           		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain">
       		</div>
-      	
-      		<div class="form-group row">	
-			<button type="submit"  name="enregistrer">Enregistrer</button>	
-			<a href="#"><button type="submit" >Annuler</button></a>
-			</div>
+      		
+      		
+      		<c:choose>
+      			<c:when test="${VendeurVisiteur != null && VendeurVisiteru == true && connecte != null && connecte == true}">
+      				<div class="form-group row">
+      					<button type="submit"  name="modifier">Modifier</button>
+      					<a href="/modifierVente?idArticle=${articleModifie!=null?articleModifier.getNoArticle():null }">Remise à zéro</a>
+      				</div>
+      			</c:when>
+      			<c:otherwise>
+      				<div class="form-group row">	
+						<button type="submit"  name="enregistrer">Enregistrer</button>	
+						<a href="/accueil"><button type="submit" >Annuler</button></a>
+						<a href="/nouvelleVente">Remise à zéro</a>
+					</div>
+      			</c:otherwise>
+      		
+      		</c:choose>
+      		
+      		
+      		
+      		
 			
 	
 	

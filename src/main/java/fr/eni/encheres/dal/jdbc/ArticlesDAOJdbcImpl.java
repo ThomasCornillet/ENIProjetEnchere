@@ -88,6 +88,8 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie,vendu) "
 														+ "VALUES (?,?,?,?,?,?,?,?)";
+	private static final String UPDATE_VENTE = "UPDATE ARTICLES SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_utilisateur = ?, no_categorie"
+														+ "WHERE no_article = ?";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -439,6 +441,46 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 		pstmt.setInt(7, article.getNo_categorie());
 		pstmt.setBoolean(8, article.isVendu());	// attention ici, vue que c'est un boolean c'est pas get... mais is...
 
+	}
+
+	@Override
+	public void updateVente(Articles articleModifie) throws BusinessException {
+		if (articleModifie == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_VENTE);
+				preparationStatementUpdate(articleModifie,pstmt);
+				pstmt.executeUpdate();
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.UPDATE_VENTE_ERREUR_INCONNUE);
+				throw businessException;
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_VENTE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+	}
+
+	private void preparationStatementUpdate(Articles articleModifie, PreparedStatement pstmt) throws SQLException {
+		pstmt.setString(1, articleModifie.getNomArticle());
+		pstmt.setString(2, articleModifie.getDescription());
+		pstmt.setDate(3, java.sql.Date.valueOf(articleModifie.getDate_debut_enchere()));
+		pstmt.setDate(4, java.sql.Date.valueOf(articleModifie.getDate_fin_enchere()));
+		pstmt.setInt(5, articleModifie.getPrix_initial());
+		pstmt.setInt(6, articleModifie.getNo_utilisateur());
+		pstmt.setInt(7, articleModifie.getNo_categorie());
+		pstmt.setInt(8, articleModifie.getNo_utilisateur());
 	}
 
 
