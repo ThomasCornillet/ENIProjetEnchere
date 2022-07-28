@@ -20,12 +20,12 @@ import javax.servlet.http.HttpSession;
  * Servlet Filter implementation class FiltreRessourcesInterdites
  */
 @WebFilter(
-		urlPatterns= {"/detailVente",
-						"/ServletEncheres",
-						"/nouvelleVente",
-						"/modificationProfil",
-						"/supprimerProfil",
-						"/afficherProfil"}, // TODO faire la liste des urls concernées
+		urlPatterns= {"/detailVente*",
+						"/ServletEncheres*",
+						"/nouvelleVente*",
+						"/modificationProfil*",
+						"/supprimerProfil*",
+						"/afficherProfil*"}, // TODO faire la liste des urls concernées
 		dispatcherTypes = {DispatcherType.REQUEST,
 							DispatcherType.FORWARD
 							}
