@@ -97,7 +97,7 @@ public class EncheresDAOJdbcImpl implements EncheresDAO {
 			pstmt.executeUpdate();
 			ResultSet rs = pstmt.getGeneratedKeys();
 			if(rs.next()) {
-				enchere.setNoEnchere(1);
+				enchere.setNoEnchere(rs.getInt(1));
 			}
 		}	catch (SQLException e) {
 			e.printStackTrace();
