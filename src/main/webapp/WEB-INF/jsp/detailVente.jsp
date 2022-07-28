@@ -36,6 +36,9 @@
 	    </div>
 	    <div class="colalign-self-center">
      	      <c:choose>
+     	      	 <c:when test="${empty encheres && article.isVendu()}">
+		     		 <h1>Personne n'a remporté la vente :(</h1>
+		     	 </c:when>
 	     	      <c:when test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
 		     		 <h1>Vous avez remporté la vente</h1>
 		     	 </c:when>
@@ -127,7 +130,7 @@
 						    </tr>
 						    <tr>
 					      	 <c:if test="${!article.isVendu()}">
-						       	 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+						   <!--  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
 								   <div class="modal-dialog" role="document">
 								     <div class="modal-content">
 								      <div class="modal-header">
@@ -135,24 +138,24 @@
 								          <span aria-hidden="true">&times;</span>
 								        </button>
 								      </div>
-									      <div class="modal-body">
-											 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}">
+									   <div class="modal-body">
+											   <form >
 												 <p class="lead text-xs-center">Veuillez confirmer votre enchère, ${UtilisateurConnecte.getPseudo()} ?</p>
-									         		<c:if test="${!empty encheres }">
+									         		<!--  <c:if test="${!empty encheres }">
 									         			<input type="number" min="${enchere.getMontantEnchere()}" name ="encherir" step="5" value="${enchere.getMontantEnchere()}"/>
 									         		</c:if>
 									         		<c:if test="${empty encheres }">
 									         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" step="5" value="${article.getPrix_initial()}"/>
 									         		</c:if>
 									         		<div class="modal-footer">
-										         		<button data-toggle="modal">Shut up and take my money!</button>
+										         		<button id="encherir" type="submit" data-toggle="modal">Shut up and take my money!</button>
 										         		<button class="btn btn-primary " type="button" data-dismiss="modal" >Non</button>
 									         		</div>
-												</form>	   
+												</form> 
 									     </div>
 								     </div>
 								   </div>	
-						       	 </div>
+						       	 </div> -->
 					      <th scope="row"> Ma proposition : </th>
 					      <td class="text-center">
 					       	 <form method="post" action="${pageContext.request.contextPath }/detailVente?noArticle=${article.getNoArticle()}" >
@@ -162,10 +165,9 @@
 				         		<c:if test="${empty encheres }">
 				         			<input type="number" min="${article.getPrix_initial()}" name ="encherir" id="encherir" step="5" value="${article.getPrix_initial()}"/>
 				         		</c:if>
+					    	 <input type="submit" class="btn btn-secondary" value="Enchérir"/>
 					         </form>
-						    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" onclick="confirmerEnchere()">
-								Enchérir
-							</button>
+
 						</td> 	
 				         </c:if>
 				          <th scope="row"></th>
