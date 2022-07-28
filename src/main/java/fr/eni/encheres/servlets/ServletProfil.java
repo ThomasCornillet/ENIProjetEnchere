@@ -196,10 +196,14 @@ public class ServletProfil extends HttpServlet {
 		try {
 			//deleteById()
 			HttpSession session = request.getSession();
-			session.getAttribute("UtilisateurConnecte");
-			request.setAttribute("UtilisateurConnecte", utilisateur);
+			session.getAttribute("UtilisateurConnecte"); // pourquoi il y a besoin de ça ici ?
+			request.setAttribute("UtilisateurConnecte", utilisateur);	
 			utilisateurMngr.deleteById(Integer.parseInt(request.getParameter("id")));
-			RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL);
+			// déconnexion de la personne
+			session.removeAttribute("connecte");
+			session.removeAttribute("UtilisateurConnecte");
+			// TODO est-ce qu'on ajout un message comme quoi le compte est bien supprimé ?
+			RequestDispatcher rd = request.getRequestDispatcher("/accueil");
 			rd.forward(request, response);
 			
 		} catch (BusinessException e) {
