@@ -26,6 +26,25 @@
 		</div>
 	</div>
 	
+	
+	<c:if test="${!empty listeCodesErreur }">
+		<div class="container">
+			<div class="row">
+	        	<div class="col">
+	        		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	          			<h4 class="alert-heading">Au moins une erreur est survenue</h4>
+	          			<ul>
+	          			<c:forEach var="code" items="${listeCodesErreur}">
+	          				<li>${LecteurMessage.getMessageErreur(code)}</li>
+	          			</c:forEach>
+	          			</ul>
+	          		</div>
+	         	</div>
+	    	 </div>
+		</div>
+	</c:if>
+	
+	
 	<div class="container">
 		<form action="${pageContext.request.contextPath }/nouvelleVente" method="post">
 			<div class="form-group row">
@@ -68,8 +87,8 @@
         	</div>
         	
         	<div class="form-group row">
-            	<label class="col col-form-label" for="date_fin_encheres ">Fin de l'enchère :</label>
-            	<input class= "input" type="date" name="date_fin_encheres " id="date_fin_encheres " required> 
+            	<label class="col col-form-label" for="date_fin_encheres">Fin de l'enchère :</label>
+            	<input class= "input" type="date" name="date_fin_encheres" id="date_fin_encheres" required> 
         	</div>
         	
         	<div class="form-group row">

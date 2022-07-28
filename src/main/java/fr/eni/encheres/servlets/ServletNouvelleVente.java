@@ -81,7 +81,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		article.setDescription(request.getParameter("description"));
 		
 		//date debut enchere
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // modification format
 		String date1 = request.getParameter("date_debut_encheres");
 		article.setDate_debut_enchere(LocalDate.parse(date1,dtf));
 		
@@ -94,8 +94,10 @@ public class ServletNouvelleVente extends HttpServlet {
 		article.setPrix_initial(Integer.valueOf(request.getParameter("prix")));
 		
 		//numero utilisateur 
-		String numeroUtilisateur = (String) request.getSession().getAttribute("UtilisateurConnecte");
-		article.setNo_utilisateur(Integer.valueOf(numeroUtilisateur));
+//		String numeroUtilisateur = (String) request.getSession().getAttribute("UtilisateurConnecte"); // modification
+//		article.setNo_utilisateur(Integer.valueOf(numeroUtilisateur));
+		Utilisateurs vendeur = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
+		article.setNo_utilisateur(vendeur.getNoUtilisateur());
 		//numero categorie 
 		article.setNo_categorie(Integer.valueOf(request.getParameter("categorie")));
 		
