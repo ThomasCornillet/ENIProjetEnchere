@@ -53,7 +53,7 @@
 			
    			<div class="form-group row">	
             	<label class="col col-form-label" for="UPLOADER">Photo de l'article</label>
-           		<input type="file" name="uploader" id="uploader" placeholder="UPLOADER" required class="shadow-lg p-3 mb-5 bg-white"> 
+           		<input type="file" name="uploader" id="uploader" placeholder="UPLOADER" class="shadow-lg p-3 mb-5 bg-white"> 
            		           	
           	</div>
           	
@@ -79,17 +79,17 @@
         	
         	<div class="form-group row">
       			<label class="col col-form-label"for="rue">Rue :</label>
-          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes" required>
+          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes">
       		</div>
       		
       		<div class="form-group row">
           		<label class="col col-form-label" for="code_postal ">Code Postale :</label>
-         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800" required>
+         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800">
       		</div>
 
       		<div class="form-group row">
           		<label class="col col-form-label" for="ville">Ville :</label>
-          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain" required>
+          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain">
       		</div>
       	
       		<div class="form-group row">	
