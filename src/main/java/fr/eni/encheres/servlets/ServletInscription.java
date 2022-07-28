@@ -89,6 +89,19 @@ public class ServletInscription extends HttpServlet {
 						utilisateur.setMotDePasse(motDePasse);
 						utilisateur.setCredit(1000); //TODO où mettre l'attribution du crédit?
 						
+							try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+		
+								utilisateurMngr.insert(utilisateur);
+								HttpSession session = request.getSession();
+								session.setAttribute("UtilisateurConnecte", utilisateur);
+								session.setAttribute("connect", true);
+								RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
+								rd.forward(request, response);
+								} catch (BusinessException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+							}
+
 						try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 	
 							utilisateurMngr.insert(utilisateur);
