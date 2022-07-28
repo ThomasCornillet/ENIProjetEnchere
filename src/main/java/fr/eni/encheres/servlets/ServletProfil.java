@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.encheres.bll.HashMotDePasse;
 import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
@@ -86,24 +87,24 @@ public class ServletProfil extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 ////	HttpSession session = request.getSession();
-//	Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
-	List<Integer> listeCodesErreur= new ArrayList<>();
+//		Utilisateurs utilisateur = (Utilisateurs) session.getAttribute("UtilisateurConnecte");
+		List<Integer> listeCodesErreur= new ArrayList<>();
 	
-	if(request.getServletPath().equals("/modificationProfil")) {
+		if(request.getServletPath().equals("/modificationProfil")) {
 		
-		UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-		Utilisateurs utilisateur = new Utilisateurs();
-		try {
-			utilisateur = utilisateurMngr.selectById(Integer.parseInt(request.getParameter("id")));
-			request.setAttribute("utilisateur", utilisateur);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-			for(Integer code: e.getListeCodesErreur()) {
-				listeCodesErreur.add(code);
-			}
-			request.setAttribute("listeCodesErreur", listeCodesErreur);
-			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-			rd.forward(request, response);
+			UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+			Utilisateurs utilisateur = new Utilisateurs();
+			try {
+				utilisateur = utilisateurMngr.selectById(Integer.parseInt(request.getParameter("id")));
+				request.setAttribute("utilisateur", utilisateur);
+			} catch (BusinessException e) {
+				e.printStackTrace();
+				for(Integer code: e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+				rd.forward(request, response);
 		}
 		
 		// test de quelle(s) modification(s) apportées dans le formulaire et donc à prendre en compte pour l'update
@@ -153,6 +154,8 @@ public class ServletProfil extends HttpServlet {
 			// Avant ça 2 vliadations:
 			// Entrez le bon mot de passe
 			// Vérifier que nouveauMotdepasse == nouveauMotdepasseConfirmation
+		
+		// TODO modification mot de passe à faire
 		//	
 		//	if(request.getParameter("nouveauMotdepasse") != null){
 		//		if(!request.getParameter("nouveauMotdepasse").isBlank()) {
@@ -160,8 +163,10 @@ public class ServletProfil extends HttpServlet {
 		//		}
 		//	}
 		//	String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
-			
-		if(utilisateur.getMotDePasse().equals(request.getParameter("motDePasseActuel"))) {
+		
+		// hash du mot de passe
+		HashMotDePasse hashMdp = HashMotDePasse.getInstance();
+		if(utilisateur.getMotDePasse().equals(hashMdp.shaHash(request.getParameter("motDePasseActuel")))) {
 			
 			try {
 				utilisateurMngr.update(utilisateur);
