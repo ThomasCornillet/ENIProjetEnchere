@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -78,6 +79,14 @@ public class ServletModifierVente extends HttpServlet {
 			for (int code : e.getListeCodesErreur()) {
 				listeCodesErreur.add(code);
 			}
+		}
+		
+		if (!listeCodesErreur.isEmpty()) {
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+		} else {
+			request.setAttribute("modifVenteOk", true);
+			RequestDispatcher rd = request.getRequestDispatcher("/accueil"); // TODO vvoir pour renvoyer syr la modification de la vente avec les erreurs affichés
+			rd.forward(request, response);
 		}
 	}
 }
