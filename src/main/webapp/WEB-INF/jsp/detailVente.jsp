@@ -43,7 +43,7 @@
 		     	 	<h1>Détail vente</h1>
 		     	 </c:when>
 	 		     <c:when test="${article.isVendu()}">
-		     	 	<h1>${enchere.getEncherisseur()} a remporté la vente</h1>
+		     	 	<h1>${encherisseur.getPseudo()} a remporté la vente</h1>
 		     	 </c:when>
 
 	    	 </c:choose>
@@ -77,7 +77,7 @@
 						      <th scope="row">Meilleure offre : </th>
 						      	 <c:if test="${!empty encheres }">
 						      	 	<c:if test="${!article.isVendu() or article.isVendu()}"> 
-						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts par ${enchere.getEncherisseur()} </td>
+						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts par ${encherisseur.getPseudo()} </td>
 						     	 	</c:if>
 						     	 	<c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu() }  "> 
 						     	 		<td class="text-center">${enchere.getMontantEnchere()} pts</td>
@@ -119,8 +119,9 @@
 						      <td class="text-center">${article.getPseudoUtilisateur()}</td>
 							      <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu() }">
 								    <tr>
-								      <th scope="row"> Tel : </th>
-								      <td class="text-center">${article.getPseudoUtilisateur()}</td>
+								      <th scope="row"> Contact : </th>
+								      <td class="text-center">${vendeur.getEmail()}</td>
+								      <td class="text-center">${vendeur.getTelephone()}</td>
 								    </tr>
 							      </c:if>
 						    </tr>
