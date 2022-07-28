@@ -55,13 +55,18 @@ public class ServletDetailVente extends HttpServlet {
 			int noArticle = Integer.parseInt(request.getParameter("id"));
 			
 			request.setAttribute("noArticle", noArticle);
+			
 			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
+
 			if(article != null){
 				Utilisateurs vendeur = utilisateurMngr.selectById(article.getNo_utilisateur());
+				request.setAttribute("vendeur", vendeur);
 				List<Encheres> encheres = encheresMngr.selectByNoArticle(article.getNoArticle());
 				if(encheres.size()>0) {
 					Encheres meilleureEnchere = encheres.get(0);
 					request.setAttribute("enchere", meilleureEnchere);
+					Utilisateurs encherisseur = utilisateurMngr.selectById(meilleureEnchere.getNoUtilisateur());
+					request.setAttribute("encherisseur", encherisseur);
 				}
 				Retraits retrait = retraitsMngr.selectByNoArticle(article.getNoArticle());
 				request.setAttribute("article", article);
