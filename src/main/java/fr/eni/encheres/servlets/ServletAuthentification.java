@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.encheres.bll.HashMotDePasse;
 import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
@@ -54,7 +55,10 @@ public class ServletAuthentification extends HttpServlet {
 		List<Integer> listeCodesErreur=new ArrayList<>();
 		if(request.getServletPath().equals("/authentification")) {
 			String identifiant = request.getParameter("identifiant");
-			String motDePasse = request.getParameter("motdepasse");
+			
+			// ajout du hash du mdp
+			HashMotDePasse hashMdp = HashMotDePasse.getInstance();
+			String motDePasse = hashMdp.shaHash(request.getParameter("motdepasse"));
 			
 			// est-ce que l'identifiant est un mail ou un pseudo ?
 			utilisateur = mailOuPseudo(identifiant); // TODO revoir la méthode pour meilleur compréhension

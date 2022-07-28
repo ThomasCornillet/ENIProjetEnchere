@@ -194,8 +194,13 @@ public class UtilisateursManager {
 						|| !utilisateur.getMotDePasse().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{12,30}$")){
 			codesErreurs.add(CodesResultatBLL.FORMATAGE_MOT_DE_PASSE_ERREUR);
 		} else {
+			HashMotDePasse hashMdp = HashMotDePasse.getInstance();
+			String mdpNonHash = utilisateur.getMotDePasse();
+			String mdpHash = hashMdp.shaHash(mdpNonHash);
+			utilisateur.setMotDePasse(mdpHash);
 			retour = true;
 		}
+		
 		// credit
 		if (codesErreurs.size() > 0) {
 			retour = false;

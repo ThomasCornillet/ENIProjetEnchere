@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.encheres.bll.HashMotDePasse;
 import fr.eni.encheres.bll.UtilisateursManager;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
@@ -71,7 +72,11 @@ public class ServletInscription extends HttpServlet {
 						rd.forward(request, response);
 					} 
 					else {
-					
+						// hash mot de passe
+						// TODO pas le bon endroit pour le hash
+//						HashMotDePasse hashMdp = HashMotDePasse.getInstance();
+//						String mdpHash = hashMdp.shaHash(motDePasse);
+//						System.out.println(mdpHash);
 						
 						utilisateur.setPseudo(pseudo);
 						utilisateur.setNom(nom);
@@ -84,18 +89,19 @@ public class ServletInscription extends HttpServlet {
 						utilisateur.setMotDePasse(motDePasse);
 						utilisateur.setCredit(1000); //TODO où mettre l'attribution du crédit?
 						
-							try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-		
-								utilisateurMngr.insert(utilisateur);
-								HttpSession session = request.getSession();
-								session.setAttribute("UtilisateurConnecte", utilisateur);
-								RequestDispatcher rd = request.getRequestDispatcher(VUE_ACCUEIL); 
-								rd.forward(request, response);
-								} catch (BusinessException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-							}
+						try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
+	
+							utilisateurMngr.insert(utilisateur);
+							HttpSession session = request.getSession();
+							session.setAttribute("UtilisateurConnecte", utilisateur);
+							session.setAttribute("connecte", true);
+							RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
+							rd.forward(request, response);
+							} catch (BusinessException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 						}
+					}
 				}
 			}
 	}
