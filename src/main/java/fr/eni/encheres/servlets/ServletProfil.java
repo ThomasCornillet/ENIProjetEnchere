@@ -43,8 +43,8 @@ public class ServletProfil extends HttpServlet {
 				request.setAttribute("utilisateur", vendeur);
 				
 				HttpSession session = request.getSession();
-				session.setAttribute("connecte", true);
-				session.getAttribute("UtilisateurConnecte");
+//				session.setAttribute("connecte", true);
+//				session.getAttribute("UtilisateurConnecte");
 			
 			} catch (BusinessException e) {
 				for (int code : e.getListeCodesErreur()) {
@@ -150,10 +150,10 @@ public class ServletProfil extends HttpServlet {
 			}
 		}
 						
-		if(request.getParameter("nouveauMotdepasse") != null){
-			if(!request.getParameter("nouveauMotdepasse").isBlank()) {
+		if(request.getParameter("nouveauMotdepasse") != null && !request.getParameter("nouveauMotdepasse").isBlank()){
 				String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
 				String nouveauMotdepasse = request.getParameter("nouveauMotdepasse");
+				if(	formatMotDePasseValid(utilisateur, nouveauMotdepasse)) {
 				if(motDePasseConfirmation == nouveauMotdepasse) {
 					HashMotDePasse hashMdp = HashMotDePasse.getInstance();
 					utilisateur.setMotDePasse(hashMdp.shaHash(request.getParameter("nouveauMotdepasse")));
@@ -163,10 +163,15 @@ public class ServletProfil extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
 					rd.forward(request, response);
 				}
+			}else {
+				listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+				rd.forward(request, response);
 			}
 			
 		}
-			
+
 //		 utilisateur.getMotDePasse().equals(request.getParameter("motDePasseActuel")) ||
 		// hash du mot de passe
 		HashMotDePasse hashMdp = HashMotDePasse.getInstance();
@@ -222,5 +227,11 @@ public class ServletProfil extends HttpServlet {
 	}
 	
 	}
-
+	private boolean formatMotDePasseValid(Utilisateurs utilisateur, String motDePasse) {
+		boolean retour = false;
+		if (motDePasse.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{12,30}$")) {
+			retour = true;
+		}
+		return retour;
+	}
 }
