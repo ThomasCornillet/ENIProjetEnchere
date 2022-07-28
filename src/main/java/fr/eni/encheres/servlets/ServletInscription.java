@@ -51,72 +51,59 @@ public class ServletInscription extends HttpServlet {
 		String motDePasse = request.getParameter("motdepasse");
 		String motDePasseConfirmation = request.getParameter("motdepasseConfirmation");
 	
-	//Est-ce que le mot de passe remplit nos exigeances	
-	if(!formatMotDePasseValid(utilisateur, motDePasse)) {
-		listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CONFROME); // TODO re voir ce que client veut pour format mot de passe
-		request.setAttribute("listeCodesErreur", listeCodesErreur);
-		RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
-		rd.forward(request, response);
-			}else 
-				//Est-ce que le mot de passe et sa confirmation sont égaux?
-				{if(!motDePasse.contentEquals(motDePasseConfirmation)) {
-					listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_IDENTIQUES);
+		//Est-ce que le mot de passe remplit nos exigeances	
+		if(!formatMotDePasseValid(utilisateur, motDePasse)) {
+			listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CONFROME); // TODO re voir ce que client veut pour format mot de passe
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+			RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
+			rd.forward(request, response);
+		}else 
+			//Est-ce que le mot de passe et sa confirmation sont égaux?
+			{if(!motDePasse.contentEquals(motDePasseConfirmation)) {
+				listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_IDENTIQUES);
+				request.setAttribute("listeCodesErreur", listeCodesErreur);
+				RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
+				rd.forward(request, response);
+			}else {// est-ce que le pseudo existe déjà?
+				if(pseudoExists(utilisateur, pseudo)) {
+					listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_EXISTE_DEJA);
 					request.setAttribute("listeCodesErreur", listeCodesErreur);
 					RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
 					rd.forward(request, response);
-				}else {// est-ce que le pseudo existe déjà?
-					if(pseudoExists(utilisateur, pseudo)) {
-						listeCodesErreur.add(CodesResultatServlet.UTILISATEUR_EXISTE_DEJA);
-						request.setAttribute("listeCodesErreur", listeCodesErreur);
-						RequestDispatcher rd = request.getRequestDispatcher(VUE_INSCRIPTION);
-						rd.forward(request, response);
-					} 
-					else {
-						// hash mot de passe
-						// TODO pas le bon endroit pour le hash
+				} 
+				else {
+					// hash mot de passe
+					// TODO pas le bon endroit pour le hash
 //						HashMotDePasse hashMdp = HashMotDePasse.getInstance();
 //						String mdpHash = hashMdp.shaHash(motDePasse);
 //						System.out.println(mdpHash);
-						
-						utilisateur.setPseudo(pseudo);
-						utilisateur.setNom(nom);
-						utilisateur.setPrenom(prenom);
-						utilisateur.setEmail(email);
-						utilisateur.setTelephone(telephone);
-						utilisateur.setRue(rue);
-						utilisateur.setVille(ville);
-						utilisateur.setCodePostal(codePostal);
-						utilisateur.setMotDePasse(motDePasse);
-						utilisateur.setCredit(1000); //TODO où mettre l'attribution du crédit?
-						
-							try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-		
-								utilisateurMngr.insert(utilisateur);
-								HttpSession session = request.getSession();
-								session.setAttribute("UtilisateurConnecte", utilisateur);
-								session.setAttribute("connect", true);
-								RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
-								rd.forward(request, response);
-								} catch (BusinessException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-							}
+					
+					utilisateur.setPseudo(pseudo);
+					utilisateur.setNom(nom);
+					utilisateur.setPrenom(prenom);
+					utilisateur.setEmail(email);
+					utilisateur.setTelephone(telephone);
+					utilisateur.setRue(rue);
+					utilisateur.setVille(ville);
+					utilisateur.setCodePostal(codePostal);
+					utilisateur.setMotDePasse(motDePasse);
+					utilisateur.setCredit(1000); //TODO où mettre l'attribution du crédit?
+					
+					try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
 
-						try {UtilisateursManager utilisateurMngr = UtilisateursManager.getInstance();
-	
-							utilisateurMngr.insert(utilisateur);
-							HttpSession session = request.getSession();
-							session.setAttribute("UtilisateurConnecte", utilisateur);
-							session.setAttribute("connecte", true);
-							RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
-							rd.forward(request, response);
-							} catch (BusinessException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-						}
+						utilisateurMngr.insert(utilisateur);
+						HttpSession session = request.getSession();
+						session.setAttribute("UtilisateurConnecte", utilisateur);
+						session.setAttribute("connect", true);
+						RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
+						rd.forward(request, response);
+						} catch (BusinessException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 					}
 				}
 			}
+		}
 	}
 	
 	private boolean pseudoExists(Utilisateurs utilisateur, String pseudo) {
