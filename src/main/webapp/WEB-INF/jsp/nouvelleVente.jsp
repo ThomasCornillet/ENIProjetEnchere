@@ -86,6 +86,12 @@
         		<label class="col col-form-label" for="retrait">Retrait</label>
         	</div>
         	
+        	<div class="form-group row">
+        		<div class="form-check col">
+        			<input class="form-check-input" type="checkbox" name="retrait" id="radioRetrait" value="retrait">
+        			<label class="form-check-label" for="retrait">Point de retrait différent de l'adresse renseignée</label>
+        		</div>
+        	</div>
         	
         	<div class="form-group row">
       			<label class="col col-form-label"for="rue">Rue :</label>

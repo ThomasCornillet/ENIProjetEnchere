@@ -28,4 +28,13 @@ public class RetraitsManager {
 		}
 		return retraitsDAO.selectByNoArticle(noArticle);
 	}
+
+	public void insert(Retraits retrait) throws BusinessException {
+		if (retrait == null ) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.RETRAIT_NULL);
+			throw be;
+		}
+		retraitsDAO.insert(retrait);
+	}
 }

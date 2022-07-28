@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bll.CategoriesManager;
+import fr.eni.encheres.bll.RetraitsManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
+import fr.eni.encheres.bo.Retraits;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
 
@@ -64,6 +66,7 @@ public class ServletNouvelleVente extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 		Articles article = new Articles();
+		List<Integer> listeCodesErreur = new ArrayList<>();
 		
 		//FAIRE tout le traitement du formulaire 
 		
@@ -105,6 +108,24 @@ public class ServletNouvelleVente extends HttpServlet {
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
+		
+		if (request.getAttribute("retrait") != null && (boolean)request.getAttribute("retrait") == true) {
+			RetraitsManager retraitsMnger = RetraitsManager.getInstance();
+			Retraits retrait = new Retraits();
+			retrait.setRue(request.getParameter("rue"));
+			retrait.setCodePostal(Integer.valueOf(request.getParameter("code_postal")));
+			retrait.setVille(request.getParameter("ville"));
+			try {
+				retraitsMnger.insert(retrait);
+			} catch (BusinessException e) {
+				e.printStackTrace();
+				for (int code : e.getListeCodesErreur()) {
+					listeCodesErreur.add(code);
+				}
+			}
+		}
+		
+		
 		try {
 			ArticlesManager.getInstance().insertArticle(article);
 			response.sendRedirect("accueil");
@@ -112,6 +133,12 @@ public class ServletNouvelleVente extends HttpServlet {
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 			
 			e.printStackTrace();
+			
+			for (int code : e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+			
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
 		
 			request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
 		}

@@ -32,6 +32,7 @@ public abstract class CodesResultatBLL {
 	public static final int UPDATE_ARTICLE_ARTICLE_NULL = 21022;
 	public static final int HASH_MOT_DE_PASSE_ERREUR = 21023;
 	public static final int UPDATE_VENTE_ARTICLE_NULL = 21024;
+	public static final int RETRAIT_NULL = 21025;
 	
 	
 	// Codes naoufel (22***)
