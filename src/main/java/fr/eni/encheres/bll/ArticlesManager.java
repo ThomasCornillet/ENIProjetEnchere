@@ -139,4 +139,15 @@ public class ArticlesManager {
 		articlesDAO.updateVenteTerminee(article);
 	}
 	
+	public void insertArticle(Articles article) throws BusinessException {
+		if (article == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.INSERT_ARTICLE_ARTICLE_NULL);
+			throw be;
+		}
+		// TODO ajouter les vérifs métiers
+		
+		articlesDAO.insertArticle(article);
+	}
+	
 }
