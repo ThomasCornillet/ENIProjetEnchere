@@ -25,8 +25,7 @@
 		         </div>
 		     </div>
 		</div>
-	</c:if>
-	
+	</c:if>	
 	
 	<div class="container">
 		<div class="form-group row">
