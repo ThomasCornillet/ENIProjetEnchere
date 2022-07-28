@@ -164,20 +164,7 @@ public class UtilisateursManager {
 			codesErreurs.add(CodesResultatBLL.FORMATAGE_TELEPHONE_ERREUR);
 		} else {
 			retour = true;
-		}
-		// mdp 
-		if (codesErreurs.size() > 0) {
-			retour = false;
-		} else if (utilisateur.getMotDePasse() == null  || utilisateur.getMotDePasse().isBlank() || utilisateur.getMotDePasse().length() > 30
-						|| !utilisateur.getMotDePasse().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{12,30}$")){
-			codesErreurs.add(CodesResultatBLL.FORMATAGE_MOT_DE_PASSE_ERREUR);
-		} else {
-			HashMotDePasse hashMdp = HashMotDePasse.getInstance();
-			String mdpNonHash = utilisateur.getMotDePasse();
-			String mdpHash = hashMdp.shaHash(mdpNonHash);
-			utilisateur.setMotDePasse(mdpHash);
-			retour = true;
-		}		
+		}	
 		// rue
 		if (codesErreurs.size() > 0) {
 			retour = false;
