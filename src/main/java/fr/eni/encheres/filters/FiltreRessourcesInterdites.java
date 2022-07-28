@@ -20,14 +20,16 @@ import javax.servlet.http.HttpSession;
  * Servlet Filter implementation class FiltreRessourcesInterdites
  */
 @WebFilter(
-		urlPatterns= {"/detailVente*",
-						"/ServletEncheres*",
-						"/nouvelleVente*",
-						"/modificationProfil*",
-						"/supprimerProfil*",
-						"/afficherProfil*"}, // TODO faire la liste des urls concernées
+		urlPatterns= {"/detailVente",
+						"/ServletEncheres",
+						"/nouvelleVente",
+						"/modificationProfil",
+						"/supprimerProfil",
+						"/afficherProfil"}, // TODO faire la liste des urls concernées
 		dispatcherTypes = {DispatcherType.REQUEST,
-							DispatcherType.FORWARD
+							DispatcherType.FORWARD,
+							DispatcherType.INCLUDE,
+							DispatcherType.ERROR
 							}
 		)
 public class FiltreRessourcesInterdites extends HttpFilter implements Filter {
@@ -56,7 +58,7 @@ public class FiltreRessourcesInterdites extends HttpFilter implements Filter {
 		if (session.getAttribute("connecte") != null && (boolean)session.getAttribute("connecte") == true) {
 			httpRequest.removeAttribute("filtreInterdit");
 			chain.doFilter(request, response);
-		} else {
+		} else if ((session.getAttribute("connecte") != null && (boolean)session.getAttribute("connecte") == false) || session.getAttribute("connecte") == null) {
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpRequest.setAttribute("filtreInterdit", true);
 			httpResponse.sendRedirect(session.getServletContext().getContextPath() + "/authentification?filtreInterdit=true"); 
