@@ -10,13 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ServletEncheres
  */
-@WebServlet("/ServletEncheres")
-public class ServletEncheres extends HttpServlet {
+@WebServlet("/modifier-vente")
+public class ServletModifierVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	// TODO à faire
-	// TODO ne pas oublier d'intégrer à cette servlet le contenu de la SevletNouvelleVente
-	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
