@@ -29,6 +29,8 @@
 	</c:if>
 	
 		
+		
+		
 	<c:if test="${listeErreursEnchere != null}">
 		<div class="container">
 			<div class="row alert alert-warning alert-dismissible fade show" role="alert">
