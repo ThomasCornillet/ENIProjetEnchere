@@ -118,7 +118,7 @@ public class UtilisateursDAOJdbcImpl implements UtilisateursDAO {
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next()) {
-					utilisateur.setNoUtilisateur(1);
+					utilisateur.setNoUtilisateur(rs.getInt(1));
 				}
 				cnx.commit();
 			} catch (Exception e) {

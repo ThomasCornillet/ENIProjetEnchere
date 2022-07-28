@@ -35,6 +35,7 @@ public class ServletAuthentification extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.removeAttribute("connecte");
 			session.removeAttribute("UtilisateurConnecte");
+			session.invalidate();
 		}
 		
 		if (request.getParameter("filtreInterdit") != null) {

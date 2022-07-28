@@ -94,8 +94,10 @@ public class ServletInscription extends HttpServlet {
 
 						utilisateurMngr.insert(utilisateur);
 						HttpSession session = request.getSession();
+						
 						session.setAttribute("UtilisateurConnecte", utilisateur);
 						session.setAttribute("connecte", true);
+						
 						RequestDispatcher rd = request.getRequestDispatcher("/accueil"); 
 						rd.forward(request, response);
 						} catch (BusinessException e) {
