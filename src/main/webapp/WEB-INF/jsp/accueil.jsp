@@ -31,13 +31,13 @@
 		
 		
 		
-	<c:if test="${listeErreursEnchere != null}">
+	<c:if test="${!empty listeErreursEnchere}">
 		<div class="container">
-			<div class="row alert alert-warning alert-dismissible fade show" role="alert">
-				<h4 class="col alert-heading">Erreur</h4>
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+				<h4 class="row alert-heading">Erreur</h4>
 				<ul>
 					<c:forEach var="code" items="${listeErreursEnchere }">
-						<li>${LecteurMessage.getMessageErreur(code)}</li>
+						<li class="col">${LecteurMessage.getMessageErreur(code)}</li>
 					</c:forEach>
 				</ul>
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
