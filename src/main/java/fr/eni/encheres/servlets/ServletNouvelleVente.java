@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bll.CategoriesManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
@@ -101,7 +102,17 @@ public class ServletNouvelleVente extends HttpServlet {
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
-		//à partir de la servlet, on doit enregistrer l'article dans la base de donnée.
+		try {
+			ArticlesManager.getInstance().insertArticle(article);
+			response.sendRedirect("accueil");
+		} catch (BusinessException e) {
+			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+			
+			e.printStackTrace();
+		
+			request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		}
+		
 		
 	}	
 	
