@@ -86,6 +86,9 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	
 	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET vendu = 1 WHERE no_article = ?";
 	
+	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie,vendu) "
+														+ "VALUES (?,?,?,?,?,?,?,?)";
+	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
 		List<Articles> retour = new ArrayList<>();
@@ -389,6 +392,53 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC);
 			throw businessException;
 		}
+	}
+	
+	public void insertArticle(Articles article) throws BusinessException {
+		if (article == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS);
+				preparationDuStatement(article, pstmt);
+				pstmt.executeUpdate();
+				ResultSet rs = pstmt.getGeneratedKeys();
+				if (rs.next()) {
+					article.setNoArticle(1);
+				}
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.INSERT_ERREUR_INCONNUE);
+				throw businessException;
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_CONNEXION_ECHEC);
+			throw businessException;
+		}
+	}
+	
+	private void preparationDuStatement(Articles article, PreparedStatement pstmt) throws SQLException {
+		
+		pstmt.setString(1, article.getNomArticle());
+		pstmt.setString(2, article.getDescription());
+		pstmt.setDate(3, java.sql.Date.valueOf(article.getDate_debut_enchere()));
+		pstmt.setDate(4, java.sql.Date.valueOf(article.getDate_fin_enchere()));
+		pstmt.setInt(5, article.getPrix_initial());
+		
+		
+		pstmt.setInt(6, article.getNo_utilisateur());
+		pstmt.setInt(7, article.getNo_categorie());
+		pstmt.setBoolean(8, article.isVendu());	// attention ici, vue que c'est un boolean c'est pas get... mais is...
+
 	}
 
 
