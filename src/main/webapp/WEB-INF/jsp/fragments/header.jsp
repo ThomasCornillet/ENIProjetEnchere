@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <header>
 	<div class="container">
 		<div class="row ">
 			<div class="col ">
 				<a href="${pageContext.request.contextPath }/accueil" >
-					<img src="../../images/encheres.png"/>
+					<img height="70" src="${pageContext.request.contextPath}/images/encheres.png" />
 				</a>
 			</div>
 			<c:choose>
