@@ -88,7 +88,7 @@
         	
         	<div class="form-group row">
         		<div class="form-check col">
-        			<input class="form-check-input" type="checkbox" name="retrait" id="radioRetrait" value="retrait">
+        			<input class="form-check-input" type="checkbox" name="retrait" id="checkRetrait" value="retrait">
         			<label class="form-check-label" for="retrait">Point de retrait différent de l'adresse renseignée</label>
         		</div>
         	</div>

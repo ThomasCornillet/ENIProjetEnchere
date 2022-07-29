@@ -108,8 +108,8 @@ public class ServletNouvelleVente extends HttpServlet {
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
-		
-		if (request.getAttribute("retrait") != null && (boolean)request.getAttribute("retrait") == true) {
+		System.out.println(request.getAttribute("retrait") != null);
+		if (request.getAttribute("retrait") != null && request.getAttribute("retrait") == "retrait") {
 			RetraitsManager retraitsMnger = RetraitsManager.getInstance();
 			Retraits retrait = new Retraits();
 			retrait.setRue(request.getParameter("rue"));
