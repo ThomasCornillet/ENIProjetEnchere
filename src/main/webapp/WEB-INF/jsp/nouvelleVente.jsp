@@ -86,26 +86,28 @@
         		<label class="col col-form-label" for="retrait">Retrait</label>
         	</div>
         	
+        	<!-- 
         	<div class="form-group row">
         		<div class="form-check col">
         			<input class="form-check-input" type="checkbox" name="retrait" id="checkRetrait" value="retrait">
         			<label class="form-check-label" for="retrait">Point de retrait différent de l'adresse renseignée</label>
         		</div>
         	</div>
-        	
+        	 -->
+        	 
         	<div class="form-group row">
       			<label class="col col-form-label"for="rue">Rue :</label>
-          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes" disabled>
+          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes">
       		</div>
       		
       		<div class="form-group row">
           		<label class="col col-form-label" for="code_postal ">Code Postale :</label>
-         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800" disabled>
+         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800">
       		</div>
 
       		<div class="form-group row">
           		<label class="col col-form-label" for="ville">Ville :</label>
-          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain" disabled>
+          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain">
       		</div>
       		
       		
