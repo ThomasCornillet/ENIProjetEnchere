@@ -7,11 +7,11 @@
  
 
 function confirmerEnchere() {
-  let text = "Votre enchère est égale à :" + enchere + "\nOK pour confirmer.";
-  if (confirm(text) == true) {
-    text = "You pressed OK!";
-  } else {
-    text = "You canceled!";
-  }
-  document.getElementById("encherir").innerHTML = text;
+    var result = confirm("Do you want to continue?");
+
+              if(result)  {
+                  alert("OK Next lesson!");
+              } else {
+                  alert("Bye!");
+              }
 }
