@@ -46,15 +46,15 @@ public class ListenerDemarrageFinVente implements ServletContextListener {
         			// on check d'abord si la vente n'est pas déjà indiquée comme terminée // TODO à améliorer avec des attributs d'application
         			if (!a.isVendu()) {
 
-        				System.out.println(a.toString());
+//        				System.out.println(a.toString());
         				// pas encore marqué comme vendu
         				// on effectue le paiement  
         				UtilisateursManager utilisateursMngr = UtilisateursManager.getInstance();
         				EncheresManager encheresMngr = EncheresManager.getInstance();
 //        				Encheres enchereGagnante = encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle());
-        				System.out.println(a.getNoArticle());
+//        				System.out.println(a.getNoArticle());
         				List<Encheres> listeEncheres = encheresMngr.selectByNoArticle(a.getNoArticle());
-        				System.out.println(listeEncheres.toString());
+//        				System.out.println(listeEncheres.toString());
         				Utilisateurs vendeur = utilisateursMngr.selectById(a.getNo_utilisateur());
         				if (!listeEncheres.isEmpty()) {
         					Encheres enchereGagnante = listeEncheres.get(0);
