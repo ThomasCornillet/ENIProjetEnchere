@@ -3,8 +3,9 @@
 	<div class="container">
 		<div class="row ">
 			<div class="col ">
-				<a href="${pageContext.request.contextPath }/accueil">ENI-Encheres</a>
-				<!-- ici mettre logo? -->
+				<a href="${pageContext.request.contextPath }/accueil" >
+					<img src="../../images/encheres.png"/>
+				</a>
 			</div>
 			<c:choose>
 				<c:when test="${!connecte }">
