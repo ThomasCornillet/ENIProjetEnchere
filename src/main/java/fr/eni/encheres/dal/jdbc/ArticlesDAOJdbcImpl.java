@@ -307,8 +307,12 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 				LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
 				int montantEnchere = rs.getInt("montant_enchere");
 				int noUtilisateur = rs.getInt("no_utilisateur");
-				Encheres enchere = new Encheres(encherisseur, dateEnchere, noEnchere, montantEnchere, noUtilisateur);
-				retourEnchere.add(enchere);
+				Encheres enchere = new Encheres();
+				enchere.setNoEnchere(noEnchere);
+				enchere.setEncherisseur(encherisseur);
+				enchere.setDateEnchere(dateEnchere);
+				enchere.setMontantEnchere(montantEnchere);
+				enchere.setNoUtilisateur(noUtilisateur);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
