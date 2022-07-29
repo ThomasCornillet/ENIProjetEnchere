@@ -61,11 +61,15 @@ public class EncheresManager {
 		UtilisateursManager utilisateursMngr = UtilisateursManager.getInstance();
 		Articles article = articlesMngr.selectArticleByNoArticle(enchere.getNoArticle());
 		Utilisateurs encherisseur = utilisateursMngr.selectById(enchere.getNoUtilisateur());
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		List<Encheres> encheresPrecedentes = encheresMngr.selectByNoArticle(article.getNoArticle());
 		// Enchère trop basse
-		if (article.getMontant_enchere() > enchere.getMontantEnchere()) {
-			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_TROP_BASSE);
+		if(encheresPrecedentes.size()>0) {
+			Encheres meilleureEnchere = encheresPrecedentes.get(0);
+			if (meilleureEnchere.getMontantEnchere() >= enchere.getMontantEnchere()) {
+				listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_TROP_BASSE);
+			}
 		}
-		
 		
 		// vente pas commencée
 		if (article.getDate_debut_enchere().isAfter(LocalDate.now())) {
