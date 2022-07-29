@@ -57,6 +57,16 @@ public class ServletDetailVente extends HttpServlet {
 			request.setAttribute("noArticle", noArticle);
 			
 			Articles article = articleMngr.selectArticleByNoArticle(noArticle);
+			
+			/*
+			Boolean encherePasCommencee;
+			if (article.getDate_debut_enchere().isAfter(LocalDate.now())) {
+				encherePasCommencee = true;
+			} else {
+				encherePasCommencee = false;
+			}
+			request.setAttribute("encherePasCommencee", encherePasCommencee);
+			*/
 
 			if(article != null){
 				Utilisateurs vendeur = utilisateurMngr.selectById(article.getNo_utilisateur());
