@@ -84,7 +84,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	
 	private static final String SELECT_ALL_ARTICLES_EN_COURS = "SELECT * FROM ARTICLES WHERE date_fin_encheres <= ?";
 	
-	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET vendu = 1 WHERE no_article = ?";
+	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET prix_vente = ?, vendu = 1 WHERE no_article = ?";
 	
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie,vendu) "
 														+ "VALUES (?,?,?,?,?,?,?,?)";
@@ -382,7 +382,8 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			try {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_ARTICLE_VENTE_TERMINEE);
-				pstmt.setInt(1, article.getNoArticle());
+				pstmt.setInt(1, article.getPrix_vente());
+				pstmt.setInt(2, article.getNoArticle());
 				pstmt.executeUpdate();
 				cnx.commit();
 			} catch (Exception e) {

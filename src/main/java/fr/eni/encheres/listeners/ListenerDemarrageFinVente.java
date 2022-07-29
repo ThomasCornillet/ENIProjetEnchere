@@ -58,7 +58,7 @@ public class ListenerDemarrageFinVente implements ServletContextListener {
         				Utilisateurs vendeur = utilisateursMngr.selectById(a.getNo_utilisateur());
         				if (!listeEncheres.isEmpty()) {
         					Encheres enchereGagnante = listeEncheres.get(0);
-
+        					a.setPrix_vente(enchereGagnante.getMontantEnchere());
 	        				Utilisateurs acheteur = utilisateursMngr.selectById(enchereGagnante.getNoUtilisateur());
 	        				if (acheteur.getCredit() >= enchereGagnante.getMontantEnchere()) {
 	        					acheteur.setCredit(acheteur.getCredit() - enchereGagnante.getMontantEnchere());

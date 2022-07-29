@@ -135,6 +135,7 @@ public class ServletAccueil extends HttpServlet {
 					List<Articles> mesVentes = new ArrayList<>();
 					try {
 						mesVentes = articlesMngr.selectArticleByNoUtilisateur(((Utilisateurs)request.getSession().getAttribute("UtilisateurConnecte")).getNoUtilisateur());
+						listesArticlesFiltres = mesVentes;
 					} catch (BusinessException e) {
 						e.printStackTrace();
 						if (e.hasErreurs()) {
@@ -283,10 +284,12 @@ public class ServletAccueil extends HttpServlet {
 			Utilisateurs utilisateurConnecte = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
 			List<Encheres> encheresUtilisateur = encheresMngr.selectByNoUtilisateur(utilisateurConnecte.getNoUtilisateur());
 			for (Articles a : listesArticlesFiltres) {
-				if (a.getDate_fin_enchere().isBefore(LocalDate.now())) {
+				if (a.getDate_fin_enchere().isBefore(LocalDate.now())) { // ou if a.isVendu()
 					for (Encheres e : encheresUtilisateur) {
 						if (a.getNoArticle() == e.getNoArticle()) {
-							Encheres enchereGagnante = encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle());
+//							Encheres enchereGagnante = encheresMngr.selectEnchereGagnateByNoArticle(a.getNoArticle());
+							List<Encheres> encheresArticles = encheresMngr.selectByNoArticle(a.getNoArticle());
+							Encheres enchereGagnante = encheresArticles.get(0);
 							if (e.getNoEnchere() == enchereGagnante.getNoEnchere()) {
 								if (!listesArticlesFiltresConnecte.contains(a))
 									listesArticlesFiltresConnecte.add(a);

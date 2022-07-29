@@ -136,6 +136,14 @@ public class ArticlesManager {
 			throw be;
 		}
 		// TODO check métier à faire, mais pour l'isntant vu l'utilisation pas besoin (et pas le temps)
+		// on voit pour le prix de vente
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		if (encheresMngr.selectByNoArticle(article.getNoArticle()).isEmpty()) {
+			// pas d'encheres
+			article.setPrix_vente(0);
+		} else {
+			article.setPrix_vente(encheresMngr.selectByNoArticle(article.getNoArticle()).get(0).getMontantEnchere());
+		}
 		articlesDAO.updateVenteTerminee(article);
 	}
 	
