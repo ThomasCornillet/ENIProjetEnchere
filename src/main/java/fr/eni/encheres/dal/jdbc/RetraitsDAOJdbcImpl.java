@@ -16,7 +16,7 @@ import fr.eni.encheres.exceptions.BusinessException;
 public class RetraitsDAOJdbcImpl implements RetraitsDAO {
 	
 	public static final String SELECT_BY_NO_ARTICLE = "SELECT * FROM RETRAITS WHERE no_article = ?";
-	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (rue,code_postal,ville) VALUES (?,?,?)";
+	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article,rue,code_postal,ville) VALUES (?,?,?,?)";
 	
 
 	@Override
@@ -85,9 +85,10 @@ public class RetraitsDAOJdbcImpl implements RetraitsDAO {
 
 
 	private void preparationDuStatement(Retraits retrait, PreparedStatement pstmt) throws SQLException {
-		pstmt.setString(1, retrait.getRue());
-		pstmt.setString(2, String.valueOf(retrait.getCodePostal())); // TODO revoir le codepostale dans la bo pour que ce soit un string
-		pstmt.setString(3, retrait.getVille());
+		pstmt.setInt(1, retrait.getNoArticle());
+		pstmt.setString(2, retrait.getRue());
+		pstmt.setString(3, String.valueOf(retrait.getCodePostal())); // TODO revoir le codepostale dans la bo pour que ce soit un string
+		pstmt.setString(4, retrait.getVille());
 		
 	}
 

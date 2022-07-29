@@ -146,6 +146,12 @@ public class ArticlesManager {
 			throw be;
 		}
 		// TODO ajouter les vérifs métiers
+		// 1 er test nom_article max 30 caractères
+		if (article.getNomArticle().length() > 30) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.VERIF_INSERT_ARTICLE_NOM_TROP_GRAND);
+			throw be;
+		}
 		
 		articlesDAO.insertArticle(article);
 	}
