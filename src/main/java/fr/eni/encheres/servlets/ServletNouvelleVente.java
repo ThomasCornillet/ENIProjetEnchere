@@ -108,12 +108,13 @@ public class ServletNouvelleVente extends HttpServlet {
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
-		System.out.println(request.getAttribute("retrait") != null);
-		if (request.getAttribute("retrait") != null && request.getAttribute("retrait") == "retrait") {
+		System.out.println(request.getParameter("retrait") != null);
+		System.out.println(request.getParameter("retrait").equals("retrait"));
+		if (request.getParameter("retrait") != null && request.getParameter("retrait").equals("retrait")) {
 			RetraitsManager retraitsMnger = RetraitsManager.getInstance();
 			Retraits retrait = new Retraits();
 			retrait.setRue(request.getParameter("rue"));
-			retrait.setCodePostal(Integer.valueOf(request.getParameter("code_postal")));
+			retrait.setCodePosteChaine(request.getParameter("code_postal"));
 			retrait.setVille(request.getParameter("ville"));
 			try {
 				retraitsMnger.insert(retrait);
