@@ -48,5 +48,9 @@ public abstract class CodesResultatBLL {
 	public static final int VERIF_ENCHERE_VENDEUR = 25002;
 	public static final int VERIF_ENCHERE_CREDIT_INSUFFISANT = 25003;
 	public static final int INSERT_ARTICLE_ARTICLE_NULL = 25004;
+	
+	// Codes vérif insert articles/vente  (26***)
+
+	public static final int VERIF_INSERT_ARTICLE_NOM_TROP_GRAND = 26000;
 
 }
