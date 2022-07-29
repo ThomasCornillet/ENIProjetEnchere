@@ -410,7 +410,7 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 				pstmt.executeUpdate();
 				ResultSet rs = pstmt.getGeneratedKeys();
 				if (rs.next()) {
-					article.setNoArticle(1);
+					article.setNoArticle(rs.getInt(1));
 				}
 				cnx.commit();
 			} catch (Exception e) {

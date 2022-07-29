@@ -108,27 +108,29 @@ public class ServletNouvelleVente extends HttpServlet {
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
-		System.out.println(request.getParameter("retrait") != null);
-		System.out.println(request.getParameter("retrait").equals("retrait"));
-		if (request.getParameter("retrait") != null && request.getParameter("retrait").equals("retrait")) {
-			RetraitsManager retraitsMnger = RetraitsManager.getInstance();
-			Retraits retrait = new Retraits();
-			retrait.setRue(request.getParameter("rue"));
-			retrait.setCodePosteChaine(request.getParameter("code_postal"));
-			retrait.setVille(request.getParameter("ville"));
-			try {
-				retraitsMnger.insert(retrait);
-			} catch (BusinessException e) {
-				e.printStackTrace();
-				for (int code : e.getListeCodesErreur()) {
-					listeCodesErreur.add(code);
-				}
-			}
-		}
+		
 		
 		
 		try {
 			ArticlesManager.getInstance().insertArticle(article);
+			
+			if (request.getParameter("retrait") != null && request.getParameter("retrait").equals("retrait")) {
+				RetraitsManager retraitsMnger = RetraitsManager.getInstance();
+				Retraits retrait = new Retraits();
+				retrait.setNoArticle(article.getNoArticle());
+				retrait.setRue(request.getParameter("rue"));
+				retrait.setCodePosteChaine(request.getParameter("code_postal"));
+				retrait.setVille(request.getParameter("ville"));
+				try {
+					retraitsMnger.insert(retrait);
+				} catch (BusinessException e) {
+					e.printStackTrace();
+					for (int code : e.getListeCodesErreur()) {
+						listeCodesErreur.add(code);
+					}
+				}
+			}
+			
 			response.sendRedirect("accueil");
 		} catch (BusinessException e) {
 			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
