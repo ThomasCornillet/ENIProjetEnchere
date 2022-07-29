@@ -88,6 +88,15 @@ public class EncheresManager {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_CREDIT_INSUFFISANT);
 		}
 		
+		// on est déjà le meilleur encherisseur
+		List<Encheres> listeEncheresArticle = selectByNoArticle(article.getNoArticle());
+		if (listeEncheresArticle != null && !listeEncheresArticle.isEmpty()) {
+			Encheres meilleureEnchere = listeEncheresArticle.get(0);
+			if (encherisseur.getNoUtilisateur() == meilleureEnchere.getNoUtilisateur()) {
+				listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_DEJA_MEILLEUR_ENCHERISSEUR);
+			}
+		}
+		
 		if (listeErreursEnchere.isEmpty()) {
 			encheresDAO.insert(enchere);
 			retourOk = true;
