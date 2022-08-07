@@ -84,7 +84,12 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 	
 	private static final String SELECT_ALL_ARTICLES_EN_COURS = "SELECT * FROM ARTICLES WHERE date_fin_encheres <= ?";
 	
-	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET vendu = 1 WHERE no_article = ?";
+	private static final String UPDATE_ARTICLE_VENTE_TERMINEE = "UPDATE ARTICLES SET prix_vente = ?, vendu = 1 WHERE no_article = ?";
+	
+	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES (nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,no_utilisateur,no_categorie,vendu) "
+														+ "VALUES (?,?,?,?,?,?,?,?)";
+	private static final String UPDATE_VENTE = "UPDATE ARTICLES SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_utilisateur = ?, no_categorie"
+														+ "WHERE no_article = ?";
 	
 	@Override
 	public List<Articles> selectAll() throws BusinessException {
@@ -302,8 +307,12 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 				LocalDate dateEnchere = rs.getDate("date_enchere").toLocalDate();
 				int montantEnchere = rs.getInt("montant_enchere");
 				int noUtilisateur = rs.getInt("no_utilisateur");
-				Encheres enchere = new Encheres(encherisseur, dateEnchere, noEnchere, montantEnchere, noUtilisateur);
-				retourEnchere.add(enchere);
+				Encheres enchere = new Encheres();
+				enchere.setNoEnchere(noEnchere);
+				enchere.setEncherisseur(encherisseur);
+				enchere.setDateEnchere(dateEnchere);
+				enchere.setMontantEnchere(montantEnchere);
+				enchere.setNoUtilisateur(noUtilisateur);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -373,7 +382,8 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			try {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_ARTICLE_VENTE_TERMINEE);
-				pstmt.setInt(1, article.getNoArticle());
+				pstmt.setInt(1, article.getPrix_vente());
+				pstmt.setInt(2, article.getNoArticle());
 				pstmt.executeUpdate();
 				cnx.commit();
 			} catch (Exception e) {
@@ -389,6 +399,93 @@ public class ArticlesDAOJdbcImpl implements ArticlesDAO {
 			businessException.ajouterErreur(CodesResultatDAL.SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC);
 			throw businessException;
 		}
+	}
+	
+	public void insertArticle(Articles article) throws BusinessException {
+		if (article == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(INSERT_ARTICLE, PreparedStatement.RETURN_GENERATED_KEYS);
+				preparationDuStatement(article, pstmt);
+				pstmt.executeUpdate();
+				ResultSet rs = pstmt.getGeneratedKeys();
+				if (rs.next()) {
+					article.setNoArticle(rs.getInt(1));
+				}
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.INSERT_ERREUR_INCONNUE);
+				throw businessException;
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_CONNEXION_ECHEC);
+			throw businessException;
+		}
+	}
+	
+	private void preparationDuStatement(Articles article, PreparedStatement pstmt) throws SQLException {
+		
+		pstmt.setString(1, article.getNomArticle());
+		pstmt.setString(2, article.getDescription());
+		pstmt.setDate(3, java.sql.Date.valueOf(article.getDate_debut_enchere()));
+		pstmt.setDate(4, java.sql.Date.valueOf(article.getDate_fin_enchere()));
+		pstmt.setInt(5, article.getPrix_initial());
+		
+		
+		pstmt.setInt(6, article.getNo_utilisateur());
+		pstmt.setInt(7, article.getNo_categorie());
+		pstmt.setBoolean(8, article.isVendu());	// attention ici, vue que c'est un boolean c'est pas get... mais is...
+
+	}
+
+	@Override
+	public void updateVente(Articles articleModifie) throws BusinessException {
+		if (articleModifie == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_VENTE);
+				preparationStatementUpdate(articleModifie,pstmt);
+				pstmt.executeUpdate();
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.UPDATE_VENTE_ERREUR_INCONNUE);
+				throw businessException;
+			}	
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_VENTE_CONNEXION_ECHEC);
+			throw businessException;
+		}
+	}
+
+	private void preparationStatementUpdate(Articles articleModifie, PreparedStatement pstmt) throws SQLException {
+		pstmt.setString(1, articleModifie.getNomArticle());
+		pstmt.setString(2, articleModifie.getDescription());
+		pstmt.setDate(3, java.sql.Date.valueOf(articleModifie.getDate_debut_enchere()));
+		pstmt.setDate(4, java.sql.Date.valueOf(articleModifie.getDate_fin_enchere()));
+		pstmt.setInt(5, articleModifie.getPrix_initial());
+		pstmt.setInt(6, articleModifie.getNo_utilisateur());
+		pstmt.setInt(7, articleModifie.getNo_categorie());
+		pstmt.setInt(8, articleModifie.getNo_utilisateur());
 	}
 
 

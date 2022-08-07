@@ -12,7 +12,6 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
-	
 	<c:if test="${!empty listeCodesErreur}">
 		<div class="container">
 			<div class="row">
@@ -171,14 +170,30 @@
 						</td> 	
 				         </c:if>
 				          <th scope="row"></th>
-				         <td class="text-center">		
-					         <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
+				         <td class="text-center">
+				         	<c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
 					         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Back</button></a>
 					         </c:if>
-					        
 					         <c:if test="${article.isVendu() && UtilisateurConnecte.getNoUtilisateur() != enchere.getNoUtilisateur()}">
 					         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Retrait effectué</button></a>
 					         </c:if>
+				         	<!-- 
+				         	<c:choose>
+				         		<c:when test="${UtilisateurConnecte.getNoUtilisateur() == vendeur.getNoUtilisateur() && encherePasCommencee == true}">
+				         			<p>ok</p>
+				         			<a href="${pageContext.request.contextPath }/modifierVente?idArticle=${article.getNoArticle()}"><button>Modifier</button></a>
+				         		</c:when>
+				         		<c:otherwise>
+							         <c:if test="${UtilisateurConnecte.getNoUtilisateur() == enchere.getNoUtilisateur() && article.isVendu()}">
+							         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Back</button></a>
+							         </c:if>
+							        
+							         <c:if test="${article.isVendu() && UtilisateurConnecte.getNoUtilisateur() != enchere.getNoUtilisateur()}">
+							         	<a href="${pageContext.request.contextPath }/accueil?noArticle=${UtilisateurConnecte.getNoUtilisateur()}"><button>Retrait effectué</button></a>
+							         </c:if>
+						         </c:otherwise>
+					         </c:choose>
+					          -->
 				         </td>
 					    </tr>
 				  </tbody>

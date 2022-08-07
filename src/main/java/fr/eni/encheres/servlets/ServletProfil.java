@@ -103,7 +103,7 @@ public class ServletProfil extends HttpServlet {
 					listeCodesErreur.add(code);
 				}
 				request.setAttribute("listeCodesErreur", listeCodesErreur);
-				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
+				RequestDispatcher rd = request.getRequestDispatcher("/accueil");
 				rd.forward(request, response);
 		}
 		
@@ -160,14 +160,17 @@ public class ServletProfil extends HttpServlet {
 				}else {
 					listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
 					request.setAttribute("listeCodesErreur", listeCodesErreur);
-					RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-					rd.forward(request, response);
+					
+					doGet(request,response);
+//					RequestDispatcher rd = request.getRequestDispatcher("/modificationProfil?id=" + utilisateur.getNoUtilisateur());
+//					rd.forward(request, response);
 				}
 			}else {
 				listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
 				request.setAttribute("listeCodesErreur", listeCodesErreur);
-				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-				rd.forward(request, response);
+				doGet(request,response);
+//				RequestDispatcher rd = request.getRequestDispatcher("/modificationProfil?id=" + utilisateur.getNoUtilisateur());
+//				rd.forward(request, response);
 			}
 			
 		}
@@ -187,15 +190,17 @@ public class ServletProfil extends HttpServlet {
 					listeCodesErreur.add(code);
 				}
 				request.setAttribute("listeCodesErreur", listeCodesErreur);
-				RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-				rd.forward(request, response);
+				doGet(request,response);
+//				RequestDispatcher rd = request.getRequestDispatcher("/modificationProfil?id=" + utilisateur.getNoUtilisateur());
+//				rd.forward(request, response);
 			}
 			
 		}else {
 			listeCodesErreur.add(CodesResultatServlet.MOT_DE_PASSE_NON_CORRESPONDANT);
 			request.setAttribute("listeCodesErreur", listeCodesErreur);
-			RequestDispatcher rd = request.getRequestDispatcher(VUE_PROFILE);
-			rd.forward(request, response);
+			doGet(request,response);
+//			RequestDispatcher rd = request.getRequestDispatcher("/modificationProfil?id=" + utilisateur.getNoUtilisateur());
+//			rd.forward(request, response);
 		}
 	} else
 	

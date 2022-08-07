@@ -10,6 +10,7 @@ public abstract class CodesResultatDAL {
 	public static final int UPDATE_OBJET_NULL = 10004;
 	public static final int UPDATE_ERREUR_INCONNUE = 10005;
 	public static final int UPDATE_CONNEXION_ECHEC = 10006;
+
 	
 	// Codes thomas (11***)
 	public static final int INSERT_OBJET_NULL = 11000;
@@ -37,6 +38,10 @@ public abstract class CodesResultatDAL {
 	public static final int SELECT_RETRAIT_BY_NO_ARTICLE_CONNEXTION_ERROR = 11022;
 	public static final int SELECT_ALL_ARTICLES_EN_COURS_VIDE = 11023;
 	public static final int SELECT_SELECT_ALL_ARTICLES_EN_COURS_CONNEXION_ECHEC = 11024;
+	public static final int UPDATE_VENTE_ERREUR_INCONNUE = 11025;
+	public static final int UPDATE_VENTE_CONNEXION_ECHEC = 11026;
+	public static final int INSERT_RETRAIT_ERREUR_INCONNUE = 11027;
+	public static final int SINSERT_RETRAIT_CONNEXTION_ERROR = 11028;
 	
 
 	// Codes naoufel (12***)

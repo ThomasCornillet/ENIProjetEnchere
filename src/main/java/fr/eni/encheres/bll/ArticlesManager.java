@@ -136,7 +136,43 @@ public class ArticlesManager {
 			throw be;
 		}
 		// TODO check métier à faire, mais pour l'isntant vu l'utilisation pas besoin (et pas le temps)
+		// on voit pour le prix de vente
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		if (encheresMngr.selectByNoArticle(article.getNoArticle()).isEmpty()) {
+			// pas d'encheres
+			article.setPrix_vente(0);
+		} else {
+			article.setPrix_vente(encheresMngr.selectByNoArticle(article.getNoArticle()).get(0).getMontantEnchere());
+		}
 		articlesDAO.updateVenteTerminee(article);
+	}
+	
+	public void insertArticle(Articles article) throws BusinessException {
+		if (article == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.INSERT_ARTICLE_ARTICLE_NULL);
+			throw be;
+		}
+		// TODO ajouter les vérifs métiers
+		// 1 er test nom_article max 30 caractères
+		if (article.getNomArticle().length() > 30) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.VERIF_INSERT_ARTICLE_NOM_TROP_GRAND);
+			throw be;
+		}
+		
+		articlesDAO.insertArticle(article);
+	}
+
+	public void updateVente(Articles articleModifie) throws BusinessException {
+		if (articleModifie == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.UPDATE_VENTE_ARTICLE_NULL);
+			throw be;
+		}
+		// TODO ajouter les vérifs métiers
+		
+		articlesDAO.updateVente(articleModifie);
 	}
 	
 }

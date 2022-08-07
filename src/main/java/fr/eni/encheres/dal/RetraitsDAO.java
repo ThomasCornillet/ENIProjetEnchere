@@ -7,4 +7,6 @@ public interface RetraitsDAO {
 
 	public Retraits selectByNoArticle(int noArticle) throws BusinessException;
 
+	public void insert(Retraits retrait) throws BusinessException;
+
 }

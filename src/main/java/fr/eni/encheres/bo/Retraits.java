@@ -9,7 +9,14 @@ public class Retraits implements Serializable {
 	private String rue;
 	private int codePostal;
 	private String ville;
+	private String codePosteChaine;
 	
+	public String getCodePosteChaine() {
+		return codePosteChaine;
+	}
+	public void setCodePosteChaine(String codePosteChaine) {
+		this.codePosteChaine = codePosteChaine;
+	}
 	public int getNoArticle() {
 		return noArticle;
 	}

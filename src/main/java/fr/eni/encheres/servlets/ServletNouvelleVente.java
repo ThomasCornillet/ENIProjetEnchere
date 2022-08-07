@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.bll.ArticlesManager;
 import fr.eni.encheres.bll.CategoriesManager;
+import fr.eni.encheres.bll.RetraitsManager;
 import fr.eni.encheres.bo.Articles;
 import fr.eni.encheres.bo.Categories;
+import fr.eni.encheres.bo.Retraits;
 import fr.eni.encheres.bo.Utilisateurs;
 import fr.eni.encheres.exceptions.BusinessException;
 
@@ -61,7 +64,9 @@ public class ServletNouvelleVente extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8"); // permet d'avoir l'encodage en base de données, sinon les caractères spéciaux et accents s'affichent mal
 		Articles article = new Articles();
+		List<Integer> listeCodesErreur = new ArrayList<>();
 		
 		//FAIRE tout le traitement du formulaire 
 		
@@ -80,7 +85,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		article.setDescription(request.getParameter("description"));
 		
 		//date debut enchere
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // modification format
 		String date1 = request.getParameter("date_debut_encheres");
 		article.setDate_debut_enchere(LocalDate.parse(date1,dtf));
 		
@@ -93,15 +98,54 @@ public class ServletNouvelleVente extends HttpServlet {
 		article.setPrix_initial(Integer.valueOf(request.getParameter("prix")));
 		
 		//numero utilisateur 
-		String numeroUtilisateur = (String) request.getSession().getAttribute("UtilisateurConnecte");
-		article.setNo_utilisateur(Integer.valueOf(numeroUtilisateur));
+//		String numeroUtilisateur = (String) request.getSession().getAttribute("UtilisateurConnecte"); // modification
+//		article.setNo_utilisateur(Integer.valueOf(numeroUtilisateur));
+		Utilisateurs vendeur = (Utilisateurs) request.getSession().getAttribute("UtilisateurConnecte");
+		article.setNo_utilisateur(vendeur.getNoUtilisateur());
 		//numero categorie 
 		article.setNo_categorie(Integer.valueOf(request.getParameter("categorie")));
 		
 		//numero variable vendu 0 equivaut à false, 1 équivaut à true
 		article.setVendu(false);
 		
-		//à partir de la servlet, on doit enregistrer l'article dans la base de donnée.
+		
+		
+		
+		try {
+			ArticlesManager.getInstance().insertArticle(article);
+			
+			if (request.getParameter("retrait") != null && request.getParameter("retrait").equals("retrait")) {
+				RetraitsManager retraitsMnger = RetraitsManager.getInstance();
+				Retraits retrait = new Retraits();
+				retrait.setNoArticle(article.getNoArticle());
+				retrait.setRue(request.getParameter("rue"));
+				retrait.setCodePosteChaine(request.getParameter("code_postal"));
+				retrait.setVille(request.getParameter("ville"));
+				try {
+					retraitsMnger.insert(retrait);
+				} catch (BusinessException e) {
+					e.printStackTrace();
+					for (int code : e.getListeCodesErreur()) {
+						listeCodesErreur.add(code);
+					}
+				}
+			}
+			
+			response.sendRedirect("accueil");
+		} catch (BusinessException e) {
+			request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
+			
+			e.printStackTrace();
+			
+			for (int code : e.getListeCodesErreur()) {
+				listeCodesErreur.add(code);
+			}
+			
+			request.setAttribute("listeCodesErreur", listeCodesErreur);
+		
+			request.getRequestDispatcher("WEB-INF/jsp/nouvelleVente.jsp").forward(request, response);
+		}
+		
 		
 	}	
 	

@@ -61,6 +61,16 @@ public class EncheresManager {
 		UtilisateursManager utilisateursMngr = UtilisateursManager.getInstance();
 		Articles article = articlesMngr.selectArticleByNoArticle(enchere.getNoArticle());
 		Utilisateurs encherisseur = utilisateursMngr.selectById(enchere.getNoUtilisateur());
+		EncheresManager encheresMngr = EncheresManager.getInstance();
+		List<Encheres> encheresPrecedentes = encheresMngr.selectByNoArticle(article.getNoArticle());
+		// Enchère trop basse
+		if(encheresPrecedentes.size()>0) {
+			Encheres meilleureEnchere = encheresPrecedentes.get(0);
+			if (meilleureEnchere.getMontantEnchere() >= enchere.getMontantEnchere()) {
+				listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_TROP_BASSE);
+			}
+		}
+		
 		// vente pas commencée
 		if (article.getDate_debut_enchere().isAfter(LocalDate.now())) {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_VENTE_NON_COMMENCEE);
@@ -76,6 +86,15 @@ public class EncheresManager {
 		// pas assez de crédit
 		if (encherisseur.getCredit() < enchere.getMontantEnchere()) {
 			listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_CREDIT_INSUFFISANT);
+		}
+		
+		// on est déjà le meilleur encherisseur
+		List<Encheres> listeEncheresArticle = selectByNoArticle(article.getNoArticle());
+		if (listeEncheresArticle != null && !listeEncheresArticle.isEmpty()) {
+			Encheres meilleureEnchere = listeEncheresArticle.get(0);
+			if (encherisseur.getNoUtilisateur() == meilleureEnchere.getNoUtilisateur()) {
+				listeErreursEnchere.add(CodesResultatBLL.VERIF_ENCHERE_DEJA_MEILLEUR_ENCHERISSEUR);
+			}
 		}
 		
 		if (listeErreursEnchere.isEmpty()) {

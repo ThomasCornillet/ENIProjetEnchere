@@ -1,30 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="fr.eni.encheres.exceptions.LecteurMessage" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    
-    
-    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <!DOCTYPE html>
 <html>
-<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
-<title>Nouvelle vente</title>
+<head>
+	<jsp:include page="/WEB-INF/jsp/fragments/head.jsp"></jsp:include>
+	<title>Accueil</title>
+</head>
 <body>
-	<header>
-		<div class="container">
-			<div class="row">
-				<div class="col">
-					<p>ENI-Enchères</p>
-				</div>			
-			</div>
-		</div>		
-	</header>
+	<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"></jsp:include>
 	
 	<div class="container">
 		<div class="row">
 			<h1 class="col">Nouvelle Vente</h1>
 		</div>
 	</div>
+	
+	
+	<c:if test="${!empty listeCodesErreur }">
+		<div class="container">
+			<div class="row">
+	        	<div class="col">
+	        		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+	          			<h4 class="alert-heading">Au moins une erreur est survenue</h4>
+	          			<ul>
+	          			<c:forEach var="code" items="${listeCodesErreur}">
+	          				<li>${LecteurMessage.getMessageErreur(code)}</li>
+	          			</c:forEach>
+	          			</ul>
+	          		</div>
+	         	</div>
+	    	 </div>
+		</div>
+	</c:if>
+	
 	
 	<div class="container">
 		<form action="${pageContext.request.contextPath }/nouvelleVente" method="post">
@@ -53,7 +63,7 @@
 			
    			<div class="form-group row">	
             	<label class="col col-form-label" for="UPLOADER">Photo de l'article</label>
-           		<input type="file" name="uploader" id="uploader" placeholder="UPLOADER" required class="shadow-lg p-3 mb-5 bg-white"> 
+           		<input type="file" name="uploader" id="uploader" placeholder="UPLOADER" class="shadow-lg p-3 mb-5 bg-white"> 
            		           	
           	</div>
           	
@@ -68,34 +78,59 @@
         	</div>
         	
         	<div class="form-group row">
-            	<label class="col col-form-label" for="date_fin_encheres ">Fin de l'enchère :</label>
-            	<input class= "input" type="date" name="date_fin_encheres " id="date_fin_encheres " required> 
+            	<label class="col col-form-label" for="date_fin_encheres">Fin de l'enchère :</label>
+            	<input class= "input" type="date" name="date_fin_encheres" id="date_fin_encheres" required> 
         	</div>
         	
         	<div class="form-group row">
         		<label class="col col-form-label" for="retrait">Retrait</label>
         	</div>
         	
-        	
+        	<!-- 
+        	<div class="form-group row">
+        		<div class="form-check col">
+        			<input class="form-check-input" type="checkbox" name="retrait" id="checkRetrait" value="retrait">
+        			<label class="form-check-label" for="retrait">Point de retrait différent de l'adresse renseignée</label>
+        		</div>
+        	</div>
+        	 -->
+        	 
         	<div class="form-group row">
       			<label class="col col-form-label"for="rue">Rue :</label>
-          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes" required>
+          		<input class="input" type="text" name="rue" id="rue" maxlength="200" placeholder="Rue des mouettes">
       		</div>
       		
       		<div class="form-group row">
           		<label class="col col-form-label" for="code_postal ">Code Postale :</label>
-         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800" required>
+         		<input class="input" type="text" name="code_postal " id="code_postal " step="1000" min="0" maxlength="5" placeholder="44800">
       		</div>
 
       		<div class="form-group row">
           		<label class="col col-form-label" for="ville">Ville :</label>
-          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain" required>
+          		<input class="input" type="text" name="ville" id="ville" placeholder="Saint Herblain">
       		</div>
-      	
-      		<div class="form-group row">	
-			<button type="submit"  name="enregistrer">Enregistrer</button>	
-			<a href="#"><button type="submit" >Annuler</button></a>
-			</div>
+      		
+      		
+      		<c:choose>
+      			<c:when test="${VendeurVisiteur != null && VendeurVisiteru == true && connecte != null && connecte == true}">
+      				<div class="form-group row">
+      					<button type="submit"  name="modifier">Modifier</button>
+      					<a href="/modifierVente?idArticle=${articleModifie!=null?articleModifier.getNoArticle():null }">Remise à zéro</a>
+      				</div>
+      			</c:when>
+      			<c:otherwise>
+      				<div class="form-group row">	
+						<button type="submit"  name="enregistrer">Enregistrer</button>	
+						<a href="/accueil"><button type="submit" >Annuler</button></a>
+						<a href="/nouvelleVente">Remise à zéro</a>
+					</div>
+      			</c:otherwise>
+      		
+      		</c:choose>
+      		
+      		
+      		
+      		
 			
 	
 	
@@ -108,7 +143,7 @@
 			
 		
 		
-
+	<script type="text/javascript" src="${pageContext.request.contextPath }/js/filtre-nouvelle-vente-retrait.js"></script>
 <!-- import javascript pour Boostrap -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
